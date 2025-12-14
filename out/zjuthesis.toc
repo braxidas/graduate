@@ -1,0 +1,110 @@
+\contentsline {chapter}{勘误表}{I}{section*.1}%
+\contentsline {chapter}{致谢}{III}{section*.3}%
+\contentsline {chapter}{序言}{V}{section*.5}%
+\contentsline {chapter}{摘要}{VII}{section*.7}%
+\contentsline {chapter}{Abstract}{IX}{section*.9}%
+\contentsline {chapter}{缩略词表}{XI}{section*.11}%
+\contentsline {chapter}{目录}{XIII}{section*.13}%
+\contentsline {chapter}{图目录}{XVII}{section*.14}%
+\contentsline {chapter}{表目录}{XIX}{section*.15}%
+\contentsline {chapter}{\numberline {1\hspace {.3em}}绪论}{1}{chapter.0.1}%
+\contentsline {section}{\numberline {1.1}研究背景与意义}{1}{section.0.1.1}%
+\contentsline {section}{\numberline {1.2}国内外研究现状}{2}{section.0.1.2}%
+\contentsline {subsection}{\numberline {1.2.1}基于流量分析的策略生成技术}{2}{subsection.0.1.2.1}%
+\contentsline {subsection}{\numberline {1.2.2}基于角色的策略生成技术}{3}{subsection.0.1.2.2}%
+\contentsline {subsection}{\numberline {1.2.3}基于静态分析的策略生成技术}{5}{subsection.0.1.2.3}%
+\contentsline {section}{\numberline {1.3}研究内容与意义}{6}{section.0.1.3}%
+\contentsline {subsection}{\numberline {1.3.1}当前云原生零信任微隔离领域面临的主要挑战}{6}{subsection.0.1.3.1}%
+\contentsline {subsubsection}{\numberline {1.3.1.1}策略生成的准确性}{6}{subsubsection.0.1.3.1.1}%
+\contentsline {subsubsection}{\numberline {1.3.1.2}异构环境的一致性}{7}{subsubsection.0.1.3.1.2}%
+\contentsline {subsubsection}{\numberline {1.3.1.3}运行时防护的自愈能力}{8}{subsubsection.0.1.3.1.3}%
+\contentsline {subsubsection}{\numberline {1.3.1.4}决策逻辑的可解释性}{9}{subsubsection.0.1.3.1.4}%
+\contentsline {section}{\numberline {1.4}解决方案及其意义}{10}{section.0.1.4}%
+\contentsline {subsection}{\numberline {1.4.1}动静态深度融合的策略生成机制}{10}{subsection.0.1.4.1}%
+\contentsline {subsection}{\numberline {1.4.2}大模型驱动的语义对齐与合规解释}{11}{subsection.0.1.4.2}%
+\contentsline {subsection}{\numberline {1.4.3}研究意义}{11}{subsection.0.1.4.3}%
+\contentsline {section}{\numberline {1.5}论文结构}{12}{section.0.1.5}%
+\contentsline {section}{\numberline {1.6}本章小结}{13}{section.0.1.6}%
+\contentsline {chapter}{\numberline {2\hspace {.3em}}相关技术}{15}{chapter.0.2}%
+\contentsline {section}{\numberline {2.1}容器技术}{15}{section.0.2.1}%
+\contentsline {subsection}{\numberline {2.1.1}命名空间与控制组机制}{15}{subsection.0.2.1.1}%
+\contentsline {subsection}{\numberline {2.1.2}联合文件系统}{15}{subsection.0.2.1.2}%
+\contentsline {subsection}{\numberline {2.1.3}容器网络接口标准}{16}{subsection.0.2.1.3}%
+\contentsline {section}{\numberline {2.2}Kubernetes 容器编排技术}{16}{section.0.2.2}%
+\contentsline {subsection}{\numberline {2.2.1}核心架构与资源抽象}{16}{subsection.0.2.2.1}%
+\contentsline {subsection}{\numberline {2.2.2}网络策略模型}{17}{subsection.0.2.2.2}%
+\contentsline {subsection}{\numberline {2.2.3}Informer 事件驱动机制}{17}{subsection.0.2.2.3}%
+\contentsline {section}{\numberline {2.3}Soot 静态分析技术}{17}{section.0.2.3}%
+\contentsline {subsection}{\numberline {2.3.1}Java 字节码与类文件解析}{18}{subsection.0.2.3.1}%
+\contentsline {subsection}{\numberline {2.3.2}Jimple 中间表示}{18}{subsection.0.2.3.2}%
+\contentsline {subsection}{\numberline {2.3.3}类层次与结构分析能力}{18}{subsection.0.2.3.3}%
+\contentsline {section}{\numberline {2.4}大语言模型技术}{19}{section.0.2.4}%
+\contentsline {subsection}{\numberline {2.4.1}Transformer 架构与代码建模}{19}{subsection.0.2.4.1}%
+\contentsline {subsection}{\numberline {2.4.2}DeepWiki：仓库级依赖挖掘框架}{20}{subsection.0.2.4.2}%
+\contentsline {subsection}{\numberline {2.4.3}思维链推理与结构化生成}{20}{subsection.0.2.4.3}%
+\contentsline {section}{\numberline {2.5}本章小结}{20}{section.0.2.5}%
+\contentsline {chapter}{\numberline {3\hspace {.3em}}动静态分析的零信任网络策略生成系统}{23}{chapter.0.3}%
+\contentsline {section}{\numberline {3.1}运行时数据采集}{23}{section.0.3.1}%
+\contentsline {subsection}{\numberline {3.1.1}Kubernetes 资源}{23}{subsection.0.3.1.1}%
+\contentsline {subsubsection}{\numberline {3.1.1.1}基于 List-Watch 的增量同步机制}{24}{subsubsection.0.3.1.1.1}%
+\contentsline {subsubsection}{\numberline {3.1.1.2}关键资源对象与采集维度}{24}{subsubsection.0.3.1.1.2}%
+\contentsline {subsection}{\numberline {3.1.2}容器资源}{25}{subsection.0.3.1.2}%
+\contentsline {subsubsection}{\numberline {3.1.2.1}基于 CRI 的容器定位与元数据映射}{25}{subsubsection.0.3.1.2.1}%
+\contentsline {subsubsection}{\numberline {3.1.2.2}基于内存映射的活跃二进制集构建}{25}{subsubsection.0.3.1.2.2}%
+\contentsline {subsubsection}{\numberline {3.1.2.3}配置上下文与分层文件系统解析}{26}{subsubsection.0.3.1.2.3}%
+\contentsline {subsection}{\numberline {3.1.3}Java 字节码制品提取}{26}{subsection.0.3.1.3}%
+\contentsline {subsubsection}{\numberline {3.1.3.1}基于内存映射的活跃依赖识别}{27}{subsubsection.0.3.1.3.1}%
+\contentsline {subsubsection}{\numberline {3.1.3.2}无侵入式流式传输通道}{27}{subsubsection.0.3.1.3.2}%
+\contentsline {subsubsection}{\numberline {3.1.3.3}增量指纹比对与传输优化}{28}{subsubsection.0.3.1.3.3}%
+\contentsline {subsection}{\numberline {3.1.4}注册中心配置}{28}{subsection.0.3.1.4}%
+\contentsline {subsubsection}{\numberline {3.1.4.1}异构注册中心适配器设计}{28}{subsubsection.0.3.1.4.1}%
+\contentsline {subsubsection}{\numberline {3.1.4.2}逻辑服务名到物理地址的动态映射}{29}{subsubsection.0.3.1.4.2}%
+\contentsline {section}{\numberline {3.2}字节码静态分析}{29}{section.0.3.2}%
+\contentsline {subsection}{\numberline {3.2.1}第三方依赖包过滤}{29}{subsection.0.3.2.1}%
+\contentsline {subsection}{\numberline {3.2.2}自定义类的启发式过滤}{30}{subsection.0.3.2.2}%
+\contentsline {subsection}{\numberline {3.2.3}基于类的调用信息提取}{30}{subsection.0.3.2.3}%
+\contentsline {subsubsection}{\numberline {3.2.3.1}声明式调用提取（OpenFeign/Dubbo）}{30}{subsubsection.0.3.2.3.1}%
+\contentsline {subsubsection}{\numberline {3.2.3.2}编程式调用提取（RestTemplate/WebClient）}{31}{subsubsection.0.3.2.3.2}%
+\contentsline {section}{\numberline {3.3}调用关系图构建}{31}{section.0.3.3}%
+\contentsline {subsection}{\numberline {3.3.1}基于类的调用关系图}{31}{subsection.0.3.3.1}%
+\contentsline {subsubsection}{\numberline {3.3.1.1}基于成员变量注入的关联边}{32}{subsubsection.0.3.3.1.1}%
+\contentsline {subsubsection}{\numberline {3.3.1.2}基于继承与实现的泛化边}{32}{subsubsection.0.3.3.1.2}%
+\contentsline {subsubsection}{\numberline {3.3.1.3}基于切面的增强边}{32}{subsubsection.0.3.3.1.3}%
+\contentsline {subsection}{\numberline {3.3.2}基于微服务的调用关系图}{32}{subsection.0.3.3.2}%
+\contentsline {subsubsection}{\numberline {3.3.2.1}节点映射与聚合}{33}{subsubsection.0.3.3.2.1}%
+\contentsline {subsubsection}{\numberline {3.3.2.2}跨服务边的解析与生成}{33}{subsubsection.0.3.3.2.2}%
+\contentsline {section}{\numberline {3.4}网络策略生成}{33}{section.0.3.4}%
+\contentsline {subsection}{\numberline {3.4.1}Pod 标签与服务拓扑映射机制}{33}{subsection.0.3.4.1}%
+\contentsline {subsection}{\numberline {3.4.2}最小化白名单生成}{34}{subsection.0.3.4.2}%
+\contentsline {subsubsection}{\numberline {3.4.2.1}基线策略构建}{34}{subsubsection.0.3.4.2.1}%
+\contentsline {subsubsection}{\numberline {3.4.2.2}白名单规则合成}{34}{subsubsection.0.3.4.2.2}%
+\contentsline {subsection}{\numberline {3.4.3}策略冗余消除与冲突检测}{35}{subsection.0.3.4.3}%
+\contentsline {subsubsection}{\numberline {3.4.3.1}CIDR 聚合与冗余消除}{35}{subsubsection.0.3.4.3.1}%
+\contentsline {subsubsection}{\numberline {3.4.3.2}逻辑冲突检测}{35}{subsubsection.0.3.4.3.2}%
+\contentsline {section}{\numberline {3.5}本章小结}{35}{section.0.3.5}%
+\contentsline {chapter}{\numberline {4\hspace {.3em}}基于大模型代码分析的零信任微隔离策略双向智能生成}{37}{chapter.0.4}%
+\contentsline {section}{\numberline {4.1}统一的多源信息采集与代码仓库关联机制}{37}{section.0.4.1}%
+\contentsline {subsection}{\numberline {4.1.1}运行时通用指纹特征的采集}{37}{subsection.0.4.1.1}%
+\contentsline {subsection}{\numberline {4.1.2}基于大模型的仓库推断}{38}{subsection.0.4.1.2}%
+\contentsline {subsection}{\numberline {4.1.3}基于 DeepWiki 的配置文件定位与采集}{39}{subsection.0.4.1.3}%
+\contentsline {section}{\numberline {4.2}基于代码上下文的策略逆向解释机制}{40}{section.0.4.2}%
+\contentsline {subsection}{\numberline {4.2.1}策略与工作负载信息的级联采集}{40}{subsection.0.4.2.1}%
+\contentsline {subsection}{\numberline {4.2.2}基于 DeepWiki 的意图与证据提取}{40}{subsection.0.4.2.2}%
+\contentsline {subsection}{\numberline {4.2.3}基于大模型的策略语义生成的解释}{41}{subsection.0.4.2.3}%
+\contentsline {section}{\numberline {4.3}基于代码上下文的策略生成机制}{41}{section.0.4.3}%
+\contentsline {subsection}{\numberline {4.3.1}基于配置数据的目标解析}{41}{subsection.0.4.3.1}%
+\contentsline {subsection}{\numberline {4.3.2}隐式网络调用逻辑的语义挖掘}{42}{subsection.0.4.3.2}%
+\contentsline {subsection}{\numberline {4.3.3}基于大模型的策略生成与文档化}{42}{subsection.0.4.3.3}%
+\contentsline {section}{\numberline {4.4}本章小结}{43}{section.0.4.4}%
+\contentsline {chapter}{\numberline {5\hspace {.3em}}实验与分析}{45}{chapter.0.5}%
+\contentsline {section}{\numberline {5.1}实验环境搭建}{45}{section.0.5.1}%
+\contentsline {section}{\numberline {5.2}测试数据集与服务规模}{45}{section.0.5.2}%
+\contentsline {section}{\numberline {5.3}评价指标}{46}{section.0.5.3}%
+\contentsline {section}{\numberline {5.4}实验结果}{47}{section.0.5.4}%
+\contentsline {subsection}{\numberline {5.4.1}性能指标对比}{47}{subsection.0.5.4.1}%
+\contentsline {subsection}{\numberline {5.4.2}结果分析}{47}{subsection.0.5.4.2}%
+\contentsline {chapter}{参考文献}{49}{section*.19}%
+\contentsline {chapter}{附录}{53}{section*.21}%
+\contentsline {section}{\numberline {A}一个附录}{53}{section.0.6.1}%
+\contentsline {section}{\numberline {B}另一个附录}{53}{section.0.6.2}%
+\contentsline {chapter}{作者简历}{55}{section*.24}%
