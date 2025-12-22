@@ -1,10 +1,10 @@
-This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025) (preloaded format=xelatex 2025.11.9)  14 DEC 2025 22:18
+This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025) (preloaded format=xelatex 2025.11.9)  22 DEC 2025 17:55
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
  %&-line parsing enabled.
-**d:/wjw/graduate/zjuthesis-v10.0.1-overleaf/zjuthesis.tex
-(d:/wjw/graduate/zjuthesis-v10.0.1-overleaf/zjuthesis.tex
+**d:/wjw/graduate/zjuthesis2/graduate/zjuthesis.tex
+(d:/wjw/graduate/zjuthesis2/graduate/zjuthesis.tex
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-01-18>
 (./zjuthesis.cls
@@ -942,7 +942,7 @@ Invalid UTF-8 byte or sequence at line 11 replaced by U+FFFD.
 Package: algorithm 2009/08/24 v0.1 Document Style `algorithm' - floating environment
 \@float@every@algorithm=\toks35
 \c@algorithm=\count506
-)) (d:/compiler/texlive/2025/texmf-dist/tex/latex/algorithms/algorithmic.sty
+) (d:/compiler/texlive/2025/texmf-dist/tex/latex/algorithms/algorithmic.sty
 Invalid UTF-8 byte or sequence at line 11 replaced by U+FFFD.
 Package: algorithmic 2009/08/24 v0.1 Document Style `algorithmic'
 \c@ALC@unique=\count507
@@ -951,7 +951,266 @@ Package: algorithmic 2009/08/24 v0.1 Document Style `algorithmic'
 \c@ALC@depth=\count510
 \ALC@tlm=\skip151
 \algorithmicindent=\skip152
-) (./config/path.tex) (./config/commands.tex) (./config/format/format.tex (./config/format/general/reference.tex) (./config/format/general/caption.tex) (./config/format/general/geometry.tex) (./config/format/major/cs/geometry.tex) (./config/format/general/layout.tex
+) (d:/compiler/texlive/2025/texmf-dist/tex/latex/pgf/frontendlayer/tikz.sty (d:/compiler/texlive/2025/texmf-dist/tex/latex/pgf/basiclayer/pgf.sty (d:/compiler/texlive/2025/texmf-dist/tex/latex/pgf/utilities/pgfrcs.sty (d:/compiler/texlive/2025/texmf-dist/tex/generic/pgf/utilities/pgfutil-common.tex
+\pgfutil@everybye=\toks36
+\pgfutil@tempdima=\dimen302
+\pgfutil@tempdimb=\dimen303
+) (d:/compiler/texlive/2025/texmf-dist/tex/generic/pgf/utilities/pgfutil-latex.def
+\pgfutil@abb=\box83
+) (d:/compiler/texlive/2025/texmf-dist/tex/generic/pgf/utilities/pgfrcs.code.tex (d:/compiler/texlive/2025/texmf-dist/tex/generic/pgf/pgf.revision.tex)
+Package: pgfrcs 2023-01-15 v3.1.10 (3.1.10)
+))
+Package: pgf 2023-01-15 v3.1.10 (3.1.10)
+ (d:/compiler/texlive/2025/texmf-dist/tex/latex/pgf/basiclayer/pgfcore.sty (d:/compiler/texlive/2025/texmf-dist/tex/latex/pgf/systemlayer/pgfsys.sty (d:/compiler/texlive/2025/texmf-dist/tex/generic/pgf/systemlayer/pgfsys.code.tex
+Package: pgfsys 2023-01-15 v3.1.10 (3.1.10)
+ (d:/compiler/texlive/2025/texmf-dist/tex/generic/pgf/utilities/pgfkeys.code.tex
+\pgfkeys@pathtoks=\toks37
+\pgfkeys@temptoks=\toks38
+ (d:/compiler/texlive/2025/texmf-dist/tex/generic/pgf/utilities/pgfkeyslibraryfiltered.code.tex
+\pgfkeys@tmptoks=\toks39
+))
+\pgf@x=\dimen304
+\pgf@y=\dimen305
+\pgf@xa=\dimen306
+\pgf@ya=\dimen307
+\pgf@xb=\dimen308
+\pgf@yb=\dimen309
+\pgf@xc=\dimen310
+\pgf@yc=\dimen311
+\pgf@xd=\dimen312
+\pgf@yd=\dimen313
+\w@pgf@writea=\write4
+\r@pgf@reada=\read3
+\c@pgf@counta=\count511
+\c@pgf@countb=\count512
+\c@pgf@countc=\count513
+\c@pgf@countd=\count514
+\t@pgf@toka=\toks40
+\t@pgf@tokb=\toks41
+\t@pgf@tokc=\toks42
+\pgf@sys@id@count=\count515
+ (d:/compiler/texlive/2025/texmf-dist/tex/generic/pgf/systemlayer/pgf.cfg
+File: pgf.cfg 2023-01-15 v3.1.10 (3.1.10)
+)
+Driver file for pgf: pgfsys-xetex.def
+ (d:/compiler/texlive/2025/texmf-dist/tex/generic/pgf/systemlayer/pgfsys-xetex.def
+File: pgfsys-xetex.def 2023-01-15 v3.1.10 (3.1.10)
+ (d:/compiler/texlive/2025/texmf-dist/tex/generic/pgf/systemlayer/pgfsys-dvipdfmx.def
+File: pgfsys-dvipdfmx.def 2023-01-15 v3.1.10 (3.1.10)
+ (d:/compiler/texlive/2025/texmf-dist/tex/generic/pgf/systemlayer/pgfsys-common-pdf.def
+File: pgfsys-common-pdf.def 2023-01-15 v3.1.10 (3.1.10)
+)
+\pgfsys@objnum=\count516
+))) (d:/compiler/texlive/2025/texmf-dist/tex/generic/pgf/systemlayer/pgfsyssoftpath.code.tex
+File: pgfsyssoftpath.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgfsyssoftpath@smallbuffer@items=\count517
+\pgfsyssoftpath@bigbuffer@items=\count518
+) (d:/compiler/texlive/2025/texmf-dist/tex/generic/pgf/systemlayer/pgfsysprotocol.code.tex
+File: pgfsysprotocol.code.tex 2023-01-15 v3.1.10 (3.1.10)
+)) (d:/compiler/texlive/2025/texmf-dist/tex/generic/pgf/basiclayer/pgfcore.code.tex
+Package: pgfcore 2023-01-15 v3.1.10 (3.1.10)
+ (d:/compiler/texlive/2025/texmf-dist/tex/generic/pgf/math/pgfmath.code.tex (d:/compiler/texlive/2025/texmf-dist/tex/generic/pgf/math/pgfmathutil.code.tex) (d:/compiler/texlive/2025/texmf-dist/tex/generic/pgf/math/pgfmathparser.code.tex
+\pgfmath@dimen=\dimen314
+\pgfmath@count=\count519
+\pgfmath@box=\box84
+\pgfmath@toks=\toks43
+\pgfmath@stack@operand=\toks44
+\pgfmath@stack@operation=\toks45
+) (d:/compiler/texlive/2025/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.code.tex) (d:/compiler/texlive/2025/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.basic.code.tex) (d:/compiler/texlive/2025/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.trigonometric.code.tex) (d:/compiler/texlive/2025/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.random.code.tex) (d:/compiler/texlive/2025/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.comparison.code.tex) (d:/compiler/texlive/2025/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.base.code.tex) (d:/compiler/texlive/2025/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.round.code.tex) (d:/compiler/texlive/2025/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.misc.code.tex) (d:/compiler/texlive/2025/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.integerarithmetics.code.tex)
+(d:/compiler/texlive/2025/texmf-dist/tex/generic/pgf/math/pgfmathcalc.code.tex) (d:/compiler/texlive/2025/texmf-dist/tex/generic/pgf/math/pgfmathfloat.code.tex
+\c@pgfmathroundto@lastzeros=\count520
+)) (d:/compiler/texlive/2025/texmf-dist/tex/generic/pgf/math/pgfint.code.tex) (d:/compiler/texlive/2025/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepoints.code.tex
+File: pgfcorepoints.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgf@picminx=\dimen315
+\pgf@picmaxx=\dimen316
+\pgf@picminy=\dimen317
+\pgf@picmaxy=\dimen318
+\pgf@pathminx=\dimen319
+\pgf@pathmaxx=\dimen320
+\pgf@pathminy=\dimen321
+\pgf@pathmaxy=\dimen322
+\pgf@xx=\dimen323
+\pgf@xy=\dimen324
+\pgf@yx=\dimen325
+\pgf@yy=\dimen326
+\pgf@zx=\dimen327
+\pgf@zy=\dimen328
+) (d:/compiler/texlive/2025/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathconstruct.code.tex
+File: pgfcorepathconstruct.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgf@path@lastx=\dimen329
+\pgf@path@lasty=\dimen330
+) (d:/compiler/texlive/2025/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathusage.code.tex
+File: pgfcorepathusage.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgf@shorten@end@additional=\dimen331
+\pgf@shorten@start@additional=\dimen332
+) (d:/compiler/texlive/2025/texmf-dist/tex/generic/pgf/basiclayer/pgfcorescopes.code.tex
+File: pgfcorescopes.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgfpic=\box85
+\pgf@hbox=\box86
+\pgf@layerbox@main=\box87
+\pgf@picture@serial@count=\count521
+) (d:/compiler/texlive/2025/texmf-dist/tex/generic/pgf/basiclayer/pgfcoregraphicstate.code.tex
+File: pgfcoregraphicstate.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgflinewidth=\dimen333
+) (d:/compiler/texlive/2025/texmf-dist/tex/generic/pgf/basiclayer/pgfcoretransformations.code.tex
+File: pgfcoretransformations.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgf@pt@x=\dimen334
+\pgf@pt@y=\dimen335
+\pgf@pt@temp=\dimen336
+) (d:/compiler/texlive/2025/texmf-dist/tex/generic/pgf/basiclayer/pgfcorequick.code.tex
+File: pgfcorequick.code.tex 2023-01-15 v3.1.10 (3.1.10)
+) (d:/compiler/texlive/2025/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreobjects.code.tex
+File: pgfcoreobjects.code.tex 2023-01-15 v3.1.10 (3.1.10)
+) (d:/compiler/texlive/2025/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathprocessing.code.tex
+File: pgfcorepathprocessing.code.tex 2023-01-15 v3.1.10 (3.1.10)
+) (d:/compiler/texlive/2025/texmf-dist/tex/generic/pgf/basiclayer/pgfcorearrows.code.tex
+File: pgfcorearrows.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgfarrowsep=\dimen337
+) (d:/compiler/texlive/2025/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreshade.code.tex
+File: pgfcoreshade.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgf@max=\dimen338
+\pgf@sys@shading@range@num=\count522
+\pgf@shadingcount=\count523
+) (d:/compiler/texlive/2025/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreimage.code.tex
+File: pgfcoreimage.code.tex 2023-01-15 v3.1.10 (3.1.10)
+) (d:/compiler/texlive/2025/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreexternal.code.tex
+File: pgfcoreexternal.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgfexternal@startupbox=\box88
+) (d:/compiler/texlive/2025/texmf-dist/tex/generic/pgf/basiclayer/pgfcorelayers.code.tex
+File: pgfcorelayers.code.tex 2023-01-15 v3.1.10 (3.1.10)
+) (d:/compiler/texlive/2025/texmf-dist/tex/generic/pgf/basiclayer/pgfcoretransparency.code.tex
+File: pgfcoretransparency.code.tex 2023-01-15 v3.1.10 (3.1.10)
+) (d:/compiler/texlive/2025/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepatterns.code.tex
+File: pgfcorepatterns.code.tex 2023-01-15 v3.1.10 (3.1.10)
+) (d:/compiler/texlive/2025/texmf-dist/tex/generic/pgf/basiclayer/pgfcorerdf.code.tex
+File: pgfcorerdf.code.tex 2023-01-15 v3.1.10 (3.1.10)
+))) (d:/compiler/texlive/2025/texmf-dist/tex/generic/pgf/modules/pgfmoduleshapes.code.tex
+File: pgfmoduleshapes.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgfnodeparttextbox=\box89
+) (d:/compiler/texlive/2025/texmf-dist/tex/generic/pgf/modules/pgfmoduleplot.code.tex
+File: pgfmoduleplot.code.tex 2023-01-15 v3.1.10 (3.1.10)
+) (d:/compiler/texlive/2025/texmf-dist/tex/latex/pgf/compatibility/pgfcomp-version-0-65.sty
+Package: pgfcomp-version-0-65 2023-01-15 v3.1.10 (3.1.10)
+\pgf@nodesepstart=\dimen339
+\pgf@nodesepend=\dimen340
+) (d:/compiler/texlive/2025/texmf-dist/tex/latex/pgf/compatibility/pgfcomp-version-1-18.sty
+Package: pgfcomp-version-1-18 2023-01-15 v3.1.10 (3.1.10)
+)) (d:/compiler/texlive/2025/texmf-dist/tex/latex/pgf/utilities/pgffor.sty (d:/compiler/texlive/2025/texmf-dist/tex/latex/pgf/utilities/pgfkeys.sty (d:/compiler/texlive/2025/texmf-dist/tex/generic/pgf/utilities/pgfkeys.code.tex)) (d:/compiler/texlive/2025/texmf-dist/tex/latex/pgf/math/pgfmath.sty (d:/compiler/texlive/2025/texmf-dist/tex/generic/pgf/math/pgfmath.code.tex)) (d:/compiler/texlive/2025/texmf-dist/tex/generic/pgf/utilities/pgffor.code.tex
+Package: pgffor 2023-01-15 v3.1.10 (3.1.10)
+\pgffor@iter=\dimen341
+\pgffor@skip=\dimen342
+\pgffor@stack=\toks46
+\pgffor@toks=\toks47
+)) (d:/compiler/texlive/2025/texmf-dist/tex/generic/pgf/frontendlayer/tikz/tikz.code.tex
+Package: tikz 2023-01-15 v3.1.10 (3.1.10)
+ (d:/compiler/texlive/2025/texmf-dist/tex/generic/pgf/libraries/pgflibraryplothandlers.code.tex
+File: pgflibraryplothandlers.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgf@plot@mark@count=\count524
+\pgfplotmarksize=\dimen343
+)
+\tikz@lastx=\dimen344
+\tikz@lasty=\dimen345
+\tikz@lastxsaved=\dimen346
+\tikz@lastysaved=\dimen347
+\tikz@lastmovetox=\dimen348
+\tikz@lastmovetoy=\dimen349
+\tikzleveldistance=\dimen350
+\tikzsiblingdistance=\dimen351
+\tikz@figbox=\box90
+\tikz@figbox@bg=\box91
+\tikz@tempbox=\box92
+\tikz@tempbox@bg=\box93
+\tikztreelevel=\count525
+\tikznumberofchildren=\count526
+\tikznumberofcurrentchild=\count527
+\tikz@fig@count=\count528
+ (d:/compiler/texlive/2025/texmf-dist/tex/generic/pgf/modules/pgfmodulematrix.code.tex
+File: pgfmodulematrix.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgfmatrixcurrentrow=\count529
+\pgfmatrixcurrentcolumn=\count530
+\pgf@matrix@numberofcolumns=\count531
+)
+\tikz@expandcount=\count532
+ (d:/compiler/texlive/2025/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrarytopaths.code.tex
+File: tikzlibrarytopaths.code.tex 2023-01-15 v3.1.10 (3.1.10)
+))) (d:/compiler/texlive/2025/texmf-dist/tex/generic/pgf/libraries/pgflibraryarrows.meta.code.tex
+File: pgflibraryarrows.meta.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgfarrowinset=\dimen352
+\pgfarrowlength=\dimen353
+\pgfarrowwidth=\dimen354
+\pgfarrowlinewidth=\dimen355
+) (d:/compiler/texlive/2025/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibraryshadows.code.tex
+File: tikzlibraryshadows.code.tex 2023-01-15 v3.1.10 (3.1.10)
+ (d:/compiler/texlive/2025/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibraryfadings.code.tex
+File: tikzlibraryfadings.code.tex 2023-01-15 v3.1.10 (3.1.10)
+ (d:/compiler/texlive/2025/texmf-dist/tex/generic/pgf/libraries/pgflibraryfadings.code.tex
+File: pgflibraryfadings.code.tex 2023-01-15 v3.1.10 (3.1.10)
+))) (d:/compiler/texlive/2025/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibraryfit.code.tex
+File: tikzlibraryfit.code.tex 2023-01-15 v3.1.10 (3.1.10)
+) (d:/compiler/texlive/2025/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrarypositioning.code.tex
+File: tikzlibrarypositioning.code.tex 2023-01-15 v3.1.10 (3.1.10)
+) (d:/compiler/texlive/2025/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrarybackgrounds.code.tex
+File: tikzlibrarybackgrounds.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgf@layerbox@background=\box94
+\pgf@layerboxsaved@background=\box95
+) (d:/compiler/texlive/2025/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrarycalc.code.tex
+File: tikzlibrarycalc.code.tex 2023-01-15 v3.1.10 (3.1.10)
+) (d:/compiler/texlive/2025/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibraryshapes.code.tex
+File: tikzlibraryshapes.code.tex 2023-01-15 v3.1.10 (3.1.10)
+ (d:/compiler/texlive/2025/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibraryshapes.geometric.code.tex
+File: tikzlibraryshapes.geometric.code.tex 2023-01-15 v3.1.10 (3.1.10)
+ (d:/compiler/texlive/2025/texmf-dist/tex/generic/pgf/libraries/shapes/pgflibraryshapes.geometric.code.tex
+File: pgflibraryshapes.geometric.code.tex 2023-01-15 v3.1.10 (3.1.10)
+)) (d:/compiler/texlive/2025/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibraryshapes.misc.code.tex
+File: tikzlibraryshapes.misc.code.tex 2023-01-15 v3.1.10 (3.1.10)
+ (d:/compiler/texlive/2025/texmf-dist/tex/generic/pgf/libraries/shapes/pgflibraryshapes.misc.code.tex
+File: pgflibraryshapes.misc.code.tex 2023-01-15 v3.1.10 (3.1.10)
+)) (d:/compiler/texlive/2025/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibraryshapes.symbols.code.tex
+File: tikzlibraryshapes.symbols.code.tex 2023-01-15 v3.1.10 (3.1.10)
+ (d:/compiler/texlive/2025/texmf-dist/tex/generic/pgf/libraries/shapes/pgflibraryshapes.symbols.code.tex
+File: pgflibraryshapes.symbols.code.tex 2023-01-15 v3.1.10 (3.1.10)
+)) (d:/compiler/texlive/2025/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibraryshapes.arrows.code.tex
+File: tikzlibraryshapes.arrows.code.tex 2023-01-15 v3.1.10 (3.1.10)
+ (d:/compiler/texlive/2025/texmf-dist/tex/generic/pgf/libraries/shapes/pgflibraryshapes.arrows.code.tex
+File: pgflibraryshapes.arrows.code.tex 2023-01-15 v3.1.10 (3.1.10)
+)) (d:/compiler/texlive/2025/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibraryshapes.callouts.code.tex (d:/compiler/texlive/2025/texmf-dist/tex/generic/pgf/libraries/shapes/pgflibraryshapes.callouts.code.tex)) (d:/compiler/texlive/2025/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibraryshapes.multipart.code.tex
+File: tikzlibraryshapes.multipart.code.tex 2023-01-15 v3.1.10 (3.1.10)
+ (d:/compiler/texlive/2025/texmf-dist/tex/generic/pgf/libraries/shapes/pgflibraryshapes.multipart.code.tex
+File: pgflibraryshapes.multipart.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgfnodepartlowerbox=\box96
+\pgfnodeparttwobox=\box97
+\pgfnodepartthreebox=\box98
+\pgfnodepartfourbox=\box99
+\pgfnodeparttwentybox=\box100
+\pgfnodepartnineteenbox=\box101
+\pgfnodeparteighteenbox=\box102
+\pgfnodepartseventeenbox=\box103
+\pgfnodepartsixteenbox=\box104
+\pgfnodepartfifteenbox=\box105
+\pgfnodepartfourteenbox=\box106
+\pgfnodepartthirteenbox=\box107
+\pgfnodeparttwelvebox=\box108
+\pgfnodepartelevenbox=\box109
+\pgfnodeparttenbox=\box110
+\pgfnodepartninebox=\box111
+\pgfnodeparteightbox=\box112
+\pgfnodepartsevenbox=\box113
+\pgfnodepartsixbox=\box114
+\pgfnodepartfivebox=\box115
+))) (d:/compiler/texlive/2025/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrarychains.code.tex
+File: tikzlibrarychains.code.tex 2023-01-15 v3.1.10 (3.1.10)
+) (d:/compiler/texlive/2025/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrarydecorations.pathreplacing.code.tex (d:/compiler/texlive/2025/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrarydecorations.code.tex (d:/compiler/texlive/2025/texmf-dist/tex/generic/pgf/modules/pgfmoduledecorations.code.tex
+\pgfdecoratedcompleteddistance=\dimen356
+\pgfdecoratedremainingdistance=\dimen357
+\pgfdecoratedinputsegmentcompleteddistance=\dimen358
+\pgfdecoratedinputsegmentremainingdistance=\dimen359
+\pgf@decorate@distancetomove=\dimen360
+\pgf@decorate@repeatstate=\count533
+\pgfdecorationsegmentamplitude=\dimen361
+\pgfdecorationsegmentlength=\dimen362
+)
+\tikz@lib@dec@box=\box116
+) (d:/compiler/texlive/2025/texmf-dist/tex/generic/pgf/libraries/decorations/pgflibrarydecorations.pathreplacing.code.tex))) (./config/path.tex) (./config/commands.tex) (./config/format/format.tex (./config/format/general/reference.tex) (./config/format/general/caption.tex) (./config/format/general/geometry.tex) (./config/format/major/cs/geometry.tex) (./config/format/general/layout.tex
 \cftbeforealgotocloftskip=\skip153
 \cftalgotocloftindent=\skip154
 \cftalgotocloftnumwidth=\skip155
@@ -1013,8 +1272,8 @@ File: lstlang1.sty 2024/09/23 1.10c listings language file
 ) (d:/compiler/texlive/2025/texmf-dist/tex/latex/listings/lstmisc.sty
 File: lstmisc.sty 2024/09/23 1.10c (Carsten Heinz)
 )) (./config/format/general/title.tex)))
-\@quotelevel=\count511
-\@quotereset=\count512
+\@quotelevel=\count534
+\@quotereset=\count535
 Package translations Info: No language package found. I am going to use `english' as default language. on input line 166.
  (out/zjuthesis.aux)
 \openout1 = `zjuthesis.aux'.
@@ -1127,7 +1386,7 @@ Package caption Info: longtable package is loaded.
 Package: ltcaption 2021/01/08 v1.4c longtable captions (AR)
 )
 Package caption Info: End \AtBeginDocument code.
-\c@lstlisting=\count513
+\c@lstlisting=\count536
  (./page/graduate/cover.tex (./page/graduate/cover-chn.tex (d:/compiler/texlive/2025/texmf-dist/tex/latex/amsfonts/umsa.fd) (d:/compiler/texlive/2025/texmf-dist/tex/latex/amsfonts/umsb.fd)
 File: figure/logo/zjuchar.pdf Graphic file (type pdf)
 <use figure/logo/zjuchar.pdf>
@@ -1262,29 +1521,29 @@ Underfull \vbox (badness 1675) has occurred while \output is active []
 
 [13]
 
-[14])
-\tf@toc=\write4
-\openout4 = `zjuthesis.toc'.
+[14]
+
+[15])
+\tf@toc=\write5
+\openout5 = `zjuthesis.toc'.
 
 
 
-[15]
-
-[16
-
-] (out/zjuthesis.lof)
-\tf@lof=\write5
-\openout5 = `zjuthesis.lof'.
+[16] (out/zjuthesis.lof)
+\tf@lof=\write6
+\openout6 = `zjuthesis.lof'.
 
 
 
-[17]
+[17
+
+]
 
 [18
 
 ] (out/zjuthesis.lot)
-\tf@lot=\write6
-\openout6 = `zjuthesis.lot'.
+\tf@lot=\write7
+\openout7 = `zjuthesis.lot'.
 
 )
 
@@ -1309,10 +1568,19 @@ Underfull \vbox (badness 1675) has occurred while \output is active []
 [5]
 
 [6]
+Underfull \vbox (badness 1552) has occurred while \output is active []
+
+
 
 [7]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
 
 [8]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
 
 [9]
 
@@ -1321,21 +1589,24 @@ Underfull \vbox (badness 1675) has occurred while \output is active []
 [11]
 
 [12]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
 
 [13]
 
-[14
-
-]
+[14]
 2
 
-Overfull \hbox (17.84262pt too wide) in paragraph at lines 221--222
+Overfull \hbox (17.84262pt too wide) in paragraph at lines 293--294
 []\TU/FangSong(0)/m/n/12.045 容 器 的 隔 离 性 主 要 依 赖 于 \TU/TimesNewRoman(0)/m/n/12.045 Linux \TU/FangSong(0)/m/n/12.045 内 核 提 供 的 命 名 空 间  |（\TU/TimesNewRoman(0)/m/n/12.045 Namespaces\TU/FangSong(0)/m/n/12.045 ）|  与 控 制 组  |（\TU/TimesNewRoman(0)/m/n/12.045 Cgroups\TU/FangSong(0)/m/n/12.045 ）|
  []
 
 
 
-[15]
+[15
+
+]
 
 Package fontspec Info: 
 (fontspec)             Could not resolve font "FangSong/I" (it probably
@@ -1371,12 +1642,36 @@ Underfull \vbox (badness 1675) has occurred while \output is active []
 
 [16]
 
+Package fontspec Info: 
+(fontspec)             Could not resolve font "Microsoft YaHei Bold/I" (it
+(fontspec)             probably doesn't exist).
+
+
+Package fontspec Info: 
+(fontspec)             Could not resolve font "Microsoft YaHei/I" (it probably
+(fontspec)             doesn't exist).
+
+
+Package fontspec Info: 
+(fontspec)             Font family 'MicrosoftYaHei(0)' created for font
+(fontspec)             'Microsoft YaHei' with options
+(fontspec)             [Script={CJK},BoldFont={* Bold}].
+(fontspec)              
+(fontspec)              This font family consists of the following NFSS
+(fontspec)             series/shapes:
+(fontspec)              
+(fontspec)             - 'normal' (m/n) with NFSS spec.: <->"Microsoft
+(fontspec)             YaHei/OT:script=hani;language=dflt;"
+(fontspec)             - 'bold' (b/n) with NFSS spec.: <->"Microsoft YaHei
+(fontspec)             Bold/OT:script=hani;language=dflt;"
+(fontspec)             - 'bold italic' (b/it) with NFSS spec.: <->"Microsoft
+(fontspec)             YaHei/BI/OT:script=hani;language=dflt;"
+
+
+
 [17]
 
 [18]
-Underfull \vbox (badness 1194) has occurred while \output is active []
-
-
 
 [19]
 
@@ -1395,8 +1690,16 @@ Underfull \vbox (badness 1194) has occurred while \output is active []
 [24]
 
 [25]
+Underfull \hbox (badness 1231) in paragraph at lines 694--694
+[]|\TU/SimSun(1)/m/n/12.045 工 作 负 载 身 份 标 识 \TU/TimesNewRoman(0)/m/n/12.045 (Iden-
+ []
+
+
 
 [26]
+Underfull \vbox (badness 4954) has occurred while \output is active []
+
+
 
 [27]
 
@@ -1409,11 +1712,6 @@ Underfull \vbox (badness 1194) has occurred while \output is active []
 [31]
 
 [32]
-Overfull \hbox (24.98076pt too wide) in paragraph at lines 517--518
-[]\TU/FangSong(0)/m/n/12.045 编 程 式 调 用 解 析：|  若 节 点 $\OML/cmm/m/it/12.045 u$ \TU/FangSong(0)/m/n/12.045 中 包 含 指 向 \TU/lmtt/m/n/12.045 "http://inventory-service" \TU/FangSong(0)/m/n/12.045 的 \TU/lmtt/m/n/12.045 RestTemplate
- []
-
-
 
 [33]
 
@@ -1422,83 +1720,208 @@ Overfull \hbox (24.98076pt too wide) in paragraph at lines 517--518
 [35]
 
 [36]
-4
 
-
-[37
-
-]
+[37]
 
 [38]
+
+[39]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 
 
-[39]
-Overfull \hbox (1.36014pt too wide) in paragraph at lines 652--653
-[]\TU/FangSong(0)/m/n/12.045 仅 知 道 代 码 仓 库 地 址 是 不 够 的，|  因 为 一 个 仓 库 可 能 包 含 多 个 微 服 务 模 块  |（\TU/TimesNewRoman(0)/m/n/12.045 Monorepo\TU/FangSong(0)/m/n/12.045 ） ，|
- []
-
-
-
 [40]
-Overfull \hbox (26.56879pt too wide) in paragraph at lines 679--680
-\TU/FangSong(0)/m/n/12.045 代 码 仓 库，|  寻 找 读 取 配 置 的 代 码 片 段。|  例 如，|  它 能 定 位 到 \TU/TimesNewRoman(0)/m/n/12.045 Python \TU/FangSong(0)/m/n/12.045 代 码 中 \TU/lmtt/m/n/12.045 os.getenv('DB_HOST')
- []
-
-
 
 [41]
-Overfull \hbox (13.2943pt too wide) in paragraph at lines 690--691
-\TU/TimesNewRoman(0)/m/n/12.045 DeepWiki \TU/FangSong(0)/m/n/12.045 能 够 识 别 代 码 字 符 串 常 量 中 的 \TU/TimesNewRoman(0)/m/n/12.045 URL \TU/FangSong(0)/m/n/12.045 模 式  |（如 \TU/lmtt/m/n/12.045 http://user-service:8080\TU/FangSong(0)/m/n/12.045 ） ，|
- []
 
+[42
 
-Overfull \hbox (26.215pt too wide) in paragraph at lines 693--694
-\TU/FangSong(0)/m/n/12.045 它 能 分 析 出： “代 码 在 \TU/lmtt/m/n/12.045 OrderController \TU/FangSong(0)/m/n/12.045 中 接 收 到 请 求 后，|  会 调 用 \TU/lmtt/m/n/12.045 InventoryService.check()
- []
+]
+4
 
-
-
-[42]
 
 [43]
 
-[44
-
-]
-5
-
+[44]
 
 [45]
 
 [46]
 
-[47])
+[47]
+Overfull \hbox (26.88397pt too wide) in paragraph at lines 2086--2087
+[]\TU/FangSong(0)/m/n/12.045 该 机 制 的 核 心 在 于 构 建 一 个 包 含 严 密 推 理 逻 辑 的 \TU/TimesNewRoman(0)/m/n/12.045 Prompt \TU/FangSong(0)/m/n/12.045 模 板  |（即 \TU/lmtt/m/n/12.045 github_code_prompt\TU/FangSong(0)/m/n/12.045 ） ，|
+ []
 
-[48] (./body/graduate/post.tex (./body/graduate/post/ref.tex
 
-[49
+Underfull \vbox (badness 2197) has occurred while \output is active []
+
+
+
+[48]
+
+[49]
+Overfull \hbox (27.44145pt too wide) in paragraph at lines 2132--2134
+\TU/FangSong(0)/m/n/12.045 的 读 取 逻 辑。|  模 型 会 检 查 运 行 时 的 环 境 变 量  |（如 \TU/lmtt/m/n/12.045 MYSQL_HOME\TU/TimesNewRoman(0)/m/n/12.045 , \TU/lmtt/m/n/12.045 NACOS_APPLICATION_CONF\TU/FangSong(0)/m/n/12.045 ）|
+ []
+
+
+Underfull \vbox (badness 2197) has occurred while \output is active []
+
+
+
+[50]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
+
+[51]
+
+[52]
+
+[53]
+
+[54]
+
+[55]
+
+[56]
+Underfull \hbox (badness 10000) in paragraph at lines 2525--2525
+[]|\TU/SimSun(1)/m/n/12.045 识 别 \TU/TimesNewRoman(0)/m/n/12.045 K8s Service \TU/SimSun(1)/m/n/12.045 名 称
+ []
+
+
+Underfull \hbox (badness 5681) in paragraph at lines 2525--2525
+\TU/SimSun(1)/m/n/12.045 或 内 部 \TU/TimesNewRoman(0)/m/n/12.045 DNS \TU/SimSun(1)/m/n/12.045 域 名 \TU/TimesNewRoman(0)/m/n/12.045 (e.g.,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 2525--2525
+[]|\TU/SimSun(1)/m/n/12.045 生 成 \TU/lmtt/m/n/12.045 podSelector\TU/SimSun(1)/m/n/12.045 ，|  匹 配 目
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 2525--2525
+\TU/SimSun(1)/m/n/12.045 标 服 务 \TU/TimesNewRoman(0)/m/n/12.045 Labels\TU/SimSun(1)/m/n/12.045 。|  自 动 处 理
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 2525--2525
+[]|\TU/SimSun(1)/m/n/12.045 识 别 公 网 域 名 \TU/TimesNewRoman(0)/m/n/12.045 (e.g.,
+ []
+
+
+Underfull \hbox (badness 5203) in paragraph at lines 2525--2525
+[]|\TU/SimSun(1)/m/n/12.045 识 别 数 据 库\TU/TimesNewRoman(0)/m/n/12.045 /\TU/SimSun(1)/m/n/12.045 中 间 件 连 接
+ []
+
+
+Underfull \hbox (badness 2158) in paragraph at lines 2525--2525
+[]|\TU/SimSun(1)/m/n/12.045 自 动 注 入 \TU/lmtt/m/n/12.045 kube-dns \TU/SimSun(1)/m/n/12.045 放 行 规 则
+ []
+
+
+
+[57]
+
+[58]
+Overfull \hbox (5.3696pt too wide) in paragraph at lines 2559--2560
+[]\TU/FangSong(0)/b/n/12.045 代 码 证 据\TU/FangSong(0)/m/n/12.045 ：|  具 体 的 函 数 调 用 行 号 或 配 置 项 路 径  |（例 如：| \TU/lmtt/m/n/12.045 env: MYSQL_HOST=10.0.1.5\TU/FangSong(0)/m/n/12.045 ） 。| 
+ []
+
+
+
+[59]
+
+[60]
+Overfull \hbox (5.7389pt too wide) in paragraph at lines 2814--2815
+[]\TU/FangSong(0)/b/n/12.045 默 认 拒 绝 原 则\TU/FangSong(0)/m/n/12.045 ：|  若 代 码 分 析 结 果 显 示 某 容 器 无 任 何 出 站 依 赖  |（\TU/lmtt/m/n/12.045 egress_requirements
+ []
+
+
+
+[61]
+
+[62]
+5
+
+
+[63
+
+]
+
+[64]
+Underfull \vbox (badness 7186) has occurred while \output is active []
+
+
+
+[65]
+
+[66]
+
+[67]
+
+[68]
+
+[69]
+
+[70]
+Overfull \hbox (0.95122pt too wide) in paragraph at lines 3213--3214
+\TU/TimesNewRoman(0)/m/n/12.045 gleuser (8888)\TU/FangSong(0)/m/n/12.045 、| \TU/TimesNewRoman(0)/m/n/12.045 DNS (53) \TU/FangSong(0)/m/n/12.045 及 外 部 网 络 在 内 的 所 有 四 类 出 站 需 求。|  其 中，| \TU/TimesNewRoman(0)/m/n/12.045 DeepSeek
+ []
+
+
+Overfull \hbox (14.34264pt too wide) in paragraph at lines 3232--3243
+ [][] 
+ []
+
+
+Underfull \vbox (badness 5345) has occurred while \output is active []
+
+
+
+[71]
+
+[72]
+Overfull \hbox (74.12273pt too wide) in paragraph at lines 3277--3286
+ [][] 
+ []
+
+
+
+[73]
+
+[74]
+6
+
+
+[75
+
+])
+
+[76] (./body/graduate/post.tex (./body/graduate/post/ref.tex
+
+[77
 
 
 
 ]
 
-[50]
+[78]
 
-[51]) (./body/graduate/post/appendix.tex
+[79]) (./body/graduate/post/appendix.tex
 
-[52]
+[80]
 File: example-image.pdf Graphic file (type pdf)
 <use example-image.pdf>
 ) (./body/graduate/post/cv.tex
 
-[53
+[81
 
 
 ]
 
-[54
+[82
 
 ]))
 
@@ -1507,7 +1930,7 @@ See the caption package documentation for explanation.
 
 
 
-[55
+[83
 
 ] (out/zjuthesis.aux)
  ***********
@@ -1519,12 +1942,12 @@ Package logreq Info: Writing requests to 'zjuthesis.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 35244 strings out of 473832
- 795299 string characters out of 5729027
- 1720204 words of memory out of 5000000
- 57705 multiletter control sequences out of 15000+600000
- 578257 words of font info for 174 fonts, out of 8000000 for 9000
+ 49801 strings out of 473832
+ 1140106 string characters out of 5729027
+ 2024619 words of memory out of 5000000
+ 71929 multiletter control sequences out of 15000+600000
+ 580654 words of font info for 210 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 107i,13n,125p,1263b,5610s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 108i,13n,125p,1256b,5602s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on out/zjuthesis.xdv (83 pages, 1093896 bytes).
+Output written on out/zjuthesis.xdv (111 pages, 1910596 bytes).

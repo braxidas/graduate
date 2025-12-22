@@ -1,8 +1,17 @@
 \addvspace {10.0pt}
 \addvspace {10.0pt}
 \addvspace {10.0pt}
+\contentsline {table}{\numberline {3.1}{\ignorespaces Kubernetes 核心资源对象与策略生成维度的映射关系}}{26}{table.caption.20}%
+\contentsline {table}{\numberline {3.2}{\ignorespaces 微隔离策略冲突类型定义与系统消解动作}}{40}{table.caption.30}%
 \addvspace {10.0pt}
+\contentsline {table}{\numberline {4.1}{\ignorespaces 流量意图类型与 NetworkPolicy 规则合成逻辑对照表}}{57}{table.caption.35}%
 \addvspace {10.0pt}
-\contentsline {table}{\numberline {5.1}{\ignorespaces 双集群实验环境硬件配置}}{45}{table.caption.16}%
-\contentsline {table}{\numberline {5.2}{\ignorespaces 测试应用系统及自动生成的 NetworkPolicy 数量统计}}{46}{table.caption.17}%
-\contentsline {table}{\numberline {5.3}{\ignorespaces 大语言模型对 NetworkPolicy 正确性校验性能对比}}{47}{table.caption.18}%
+\contentsline {table}{\numberline {5.1}{\ignorespaces 实验环境多集群硬件配置表}}{63}{table.caption.38}%
+\contentsline {table}{\numberline {5.2}{\ignorespaces 实验环境软件系统版本及用途}}{64}{table.caption.39}%
+\contentsline {table}{\numberline {5.3}{\ignorespaces 实验项目集：业务场景与部署规模统计}}{65}{table.caption.40}%
+\contentsline {table}{\numberline {5.4}{\ignorespaces 动静态协同分析引擎在开源微服务项目上的测试结果统计}}{65}{table.caption.41}%
+\contentsline {table}{\numberline {5.5}{\ignorespaces 实验项目集：业务场景与部署规模统计}}{68}{table.caption.43}%
+\contentsline {table}{\numberline {5.6}{\ignorespaces 不同模型在单条策略审计任务中的平均性能指标对比表}}{69}{table.caption.44}%
+\contentsline {table}{\numberline {5.7}{\ignorespaces 不同大模型在微隔离策略解释任务中的定性能力对比}}{72}{table.caption.45}%
+\contentsline {table}{\numberline {5.8}{\ignorespaces 不同模型在正向策略生成任务中的平均性能指标对比表}}{73}{table.caption.46}%
+\addvspace {10.0pt}
