@@ -3019,25 +3019,22 @@
     <bcf:citekey order="70" intorder="1">Du2025DependEvalBL</bcf:citekey>
     <bcf:citekey order="71" intorder="1">wei2022chain</bcf:citekey>
     <bcf:citekey order="72" intorder="1">dobies2020kubernetes</bcf:citekey>
-    <bcf:citekey order="73" intorder="1">Burns2016DesignPF</bcf:citekey>
-    <bcf:citekey order="74" intorder="1">Ghavamnia2020ConfineAS</bcf:citekey>
-    <bcf:citekey order="75" intorder="1">cncf2023cri</bcf:citekey>
-    <bcf:citekey order="76" intorder="1">oci2023runtime</bcf:citekey>
-    <bcf:citekey order="77" intorder="1">Ghavamnia2020ConfineAS</bcf:citekey>
-    <bcf:citekey order="78" intorder="1">kerrisk2010linux</bcf:citekey>
-    <bcf:citekey order="79" intorder="1">Jamshidi2018MicroservicesTJ</bcf:citekey>
-    <bcf:citekey order="80" intorder="1">richardson2018microservices</bcf:citekey>
-    <bcf:citekey order="81" intorder="1">soto2021bloat</bcf:citekey>
-    <bcf:citekey order="82" intorder="1">Bruneton2002ASMAC</bcf:citekey>
-    <bcf:citekey order="83" intorder="1">Arzt2014FlowDroidPC</bcf:citekey>
-    <bcf:citekey order="84" intorder="1">Tip2000ScalablePC</bcf:citekey>
-    <bcf:citekey order="85" intorder="1">Zhou2018FaultAA</bcf:citekey>
-    <bcf:citekey order="86" intorder="1">nist800204b</bcf:citekey>
-    <bcf:citekey order="87" intorder="1">Cuppens2014</bcf:citekey>
-    <bcf:citekey order="88" intorder="1">kerrisk2013namespaces</bcf:citekey>
-    <bcf:citekey order="88" intorder="2">Kubernetes2024Ephemeral</bcf:citekey>
-    <bcf:citekey order="89" intorder="1">chen2021evaluating</bcf:citekey>
-    <bcf:citekey order="90" intorder="1">KubeGuard2025</bcf:citekey>
+    <bcf:citekey order="73" intorder="1">Ghavamnia2020ConfineAS</bcf:citekey>
+    <bcf:citekey order="74" intorder="1">oci2023runtime</bcf:citekey>
+    <bcf:citekey order="75" intorder="1">Ghavamnia2020ConfineAS</bcf:citekey>
+    <bcf:citekey order="76" intorder="1">kerrisk2010linux</bcf:citekey>
+    <bcf:citekey order="77" intorder="1">Jamshidi2018MicroservicesTJ</bcf:citekey>
+    <bcf:citekey order="78" intorder="1">richardson2018microservices</bcf:citekey>
+    <bcf:citekey order="79" intorder="1">soto2021bloat</bcf:citekey>
+    <bcf:citekey order="80" intorder="1">Arzt2014FlowDroidPC</bcf:citekey>
+    <bcf:citekey order="81" intorder="1">Tip2000ScalablePC</bcf:citekey>
+    <bcf:citekey order="82" intorder="1">Zhou2018FaultAA</bcf:citekey>
+    <bcf:citekey order="83" intorder="1">nist800204b</bcf:citekey>
+    <bcf:citekey order="84" intorder="1">Cuppens2014</bcf:citekey>
+    <bcf:citekey order="85" intorder="1">kerrisk2013namespaces</bcf:citekey>
+    <bcf:citekey order="85" intorder="2">Kubernetes2024Ephemeral</bcf:citekey>
+    <bcf:citekey order="86" intorder="1">chen2021evaluating</bcf:citekey>
+    <bcf:citekey order="87" intorder="1">KubeGuard2025</bcf:citekey>
   </bcf:section>
   <!-- SORTING TEMPLATES -->
   <bcf:sortingtemplate name="none">

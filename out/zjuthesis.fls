@@ -1,8 +1,8 @@
-PWD d:/wjw/graduate/zjuthesis2/graduate
+PWD d:/wjw/graduate/graduate
 INPUT d:/compiler/texlive/2025/texmf.cnf
 INPUT d:/compiler/texlive/2025/texmf-dist/web2c/texmf.cnf
 INPUT d:/compiler/texlive/2025/texmf-var/web2c/xetex/xelatex.fmt
-INPUT d:/wjw/graduate/zjuthesis2/graduate/zjuthesis.tex
+INPUT d:/wjw/graduate/graduate/zjuthesis.tex
 OUTPUT out/zjuthesis.log
 INPUT ./zjuthesis.cls
 INPUT zjuthesis.cls

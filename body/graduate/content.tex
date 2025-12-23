@@ -84,7 +84,7 @@
 
 \begin{enumerate}
     \item 策略维护难：在 Kubernetes 集群中，容器的生灭往往以分钟甚至秒为单位，IP 地址的剧烈变动使得基于 IP 的传统黑白名单瞬间失效。运维人员很难手动维护一套能够实时跟随业务变化的动态策略\cite{Li2019ServiceMC}。
-    \item 管理复杂度高：微服务架构将单体应用拆分为成百上千个独立服务，服务间的调用链路呈指数级增长。面对如此庞大的分布式网络，依靠人工梳理业务逻辑并配置数万条隔离规则，不仅效率极低，而且极易出现配置冲突或遗漏。
+    \item 管理复杂度高：微服务架构将单体应用拆分为成百上千个独立服务，服务间的调用链路呈指数级增长。面对如此庞大的分布式网络，依靠人工梳理业务逻辑并配置上前条隔离规则，不仅效率极低，而且极易出现配置冲突或遗漏。
     \item 流量可视性差：现有的安全工具大多只能监控到网络层（L3/L4）的连接状态，缺乏对应用层（L7）业务语义的理解。这意味着安全团队很难区分正常的业务调用与利用合法端口进行的恶意攻击，难以制定出既安全又不影响业务的精准策略\cite{2021AttributebasedAC}。
 \end{enumerate}
 
@@ -128,7 +128,7 @@
 
     \item 过度授权带来的权限泄露风险：为了规避角色爆炸带来的管理难题，工程实践中往往会出现“走捷径”的现象。Kuhn 等人\cite{Kuhn2010AddingAT}指出，通过“角色复用”来减少配置量虽然降低了管理成本，但不可避免地扩大了攻击面 。这一点在近年来的安全报告中得到了验证。Red Hat 发布的 2024 年 Kubernetes 安全报告\cite{RedHat2024}显示，超过 46\% 的组织曾因权限配置错误（Misconfiguration）导致安全事故 。最新的自动化检测研究 EPScan \cite{EPScan2025}也证实，在生产环境中，大量的微服务拥有它们实际业务逻辑并不需要的“僵尸权限”，这意味着一旦单一容器被攻陷，攻击者就可以继承该角色所有的多余权限进行横向移动 。
 
-    \item 静态授权无法适应动态风险：传统的 RBAC 模型本质上是一种静态授权机制。策略决策完全依赖于预先定义的静态绑定关系，缺乏对运行时上下文（Context-Awareness）的感知能力。NIST 的研究员 Hu 等人指出，静态角色难以将动态属性（如当前的负载压力、访问时间窗口、客户端地理位置或实时的威胁情报等级）纳入决策逻辑 \cite{Hu2014GuideTA}。在零信任架构中，访问请求的合法性往往取决于瞬时的系统状态，基于静态角色的策略在应对突发威胁时，往往显得过于僵化。
+    \item 静态授权无法适应动态风险：传统的 RBAC 模型本质上是一种静态授权机制。策略决策完全依赖于预先定义的静态绑定关系，缺乏对运行时上下文（Context-Awareness）的感知能力。NIST 的研究员 Hu 等人\cite{Hu2014GuideTA}指出，静态角色难以将动态属性（如当前的负载压力、访问时间窗口、客户端地理位置或实时的威胁情报等级）纳入决策逻辑 。在零信任架构中，访问请求的合法性往往取决于瞬时的系统状态，基于静态角色的策略在应对突发威胁时，往往显得过于僵化。
 \end{enumerate}
 
 综上所述，基于角色的策略生成技术虽然解决了网络标识漂移的问题，但在细粒度控制与动态适应性方面仍存在天然的逻辑局限。
@@ -228,17 +228,17 @@
 
 为了解决单一分析视角存在的“盲区”，本文设计了静态代码分析（Static Analysis）与动态运行时感知（Dynamic Monitoring）的双向校验机制，以实现策略生成的全覆盖与高精度。
 
-在静态侧，系统引入了程序语言分析领域的经典工具 Soot 框架。Vallée-Rai 等人在 1999 年提出的 Soot 框架能够对 Java 字节码进行全程序分析（Whole-Program Analysis），构建高精度的类粒度调用图（Call Graph）\cite{Soot1999}。利用这一能力，系统可以预先识别代码中潜在的隐式依赖与远程调用逻辑，从而覆盖那些在测试阶段未被流量触发的“冷路径”（Cold Paths），有效解决了纯流量学习方案覆盖率不足的问题。
+在静态侧，系统引入了程序语言分析领域的经典工具 Soot 框架。Vallée-Rai 等人\cite{Soot1999}在 1999 年提出的 Soot 框架能够对 Java 字节码进行全程序分析（Whole-Program Analysis），构建高精度的类粒度调用图（Call Graph）。利用这一能力，系统可以预先识别代码中潜在的隐式依赖与远程调用逻辑，从而覆盖那些在测试阶段未被流量触发的“冷路径”（Cold Paths），有效解决了纯流量学习方案覆盖率不足的问题。
 
-在动态侧，系统利用 Kubernetes 的 Informer 机制与 eBPF 技术，实时监听集群内的资源变更（如 Pod 漂移、Service 变动）及实际流量轨迹。Isovalent 的研究表明，通过内核层的 eBPF 探针可以无侵入地获取服务间的真实拓扑 \cite{Isovalent2023}。本文通过将静态分析提取的调用链路与动态采集的运行时拓扑进行图同构映射（Graph Isomorphism Mapping），既剔除掉了静态代码中未被加载的死代码（Dead Code），又补全了静态分析无法感知的动态反射调用，从而实现了策略生成的“高召回”与“低误报”。
+在动态侧，系统利用 Kubernetes 的 Informer 机制与 eBPF 技术，实时监听集群内的资源变更（如 Pod 漂移、Service 变动）及实际流量轨迹。Isovalent 的研究表明\cite{Isovalent2023}，通过内核层的 eBPF 探针可以无侵入地获取服务间的真实拓扑 。本文通过将静态分析提取的调用链路与动态采集的运行时拓扑进行图同构映射（Graph Isomorphism Mapping），既剔除掉了静态代码中未被加载的死代码（Dead Code），又补全了静态分析无法感知的动态反射调用，从而实现了策略生成的高覆盖率。
 
 \subsection{大模型驱动的语义对齐与合规解释}
 
 针对自动化策略生成过程中的“黑盒化”与“语义鸿沟”问题，本文引入大语言模型（LLM）作为安全知识的推理引擎，利用其强大的语义理解能力来提升策略的可解释性。
 
-首先，系统集成了 DeepWiki 仓库级依赖挖掘技术。Du 等人在 ACL 2025 上发表的研究指出，DeepWiki 能够跨越文件边界，精准提取代码库中的深层依赖关系 \cite{Du2025DependEvalBL}。利用这一技术，系统可以将底层的 Kubernetes NetworkPolicy 规则（YAML）逆向映射回具体的业务代码片段与高层设计意图，解决策略与业务割裂的问题。
+首先，系统集成了 DeepWiki 仓库级依赖挖掘技术。Du 等人\cite{Du2025DependEvalBL}在 ACL 2025 上发表的研究指出，DeepWiki 能够跨越文件边界，精准提取代码库中的深层依赖关系 。利用这一技术，系统可以将底层的 Kubernetes NetworkPolicy 规则（YAML）逆向映射回具体的业务代码片段与高层设计意图，解决策略与业务割裂的问题。
 
-其次，系统采用了思维链（Chain-of-Thought, CoT）推理技术。Wei 等人在 NeurIPS 上证明，通过引导大模型生成中间推理步骤，可以显著提升其处理复杂逻辑任务的准确性 \cite{wei2022chain}。本文利用 CoT 技术构建了双向解释机制：一方面，将自然语言描述的安全需求自动转化为形式化的 ACL 规则；另一方面，为每一条生成的阻断策略提供符合自然语言逻辑的“归因证据”，例如指出某条规则是基于哪个业务模块的数据库访问需求而生成的。Chen 等人的研究表明，这种基于代码语义的解释机制能够显著降低安全审计的认知门槛，使自动化策略满足合规性要求 \cite{chen2021evaluating}。
+其次，系统采用了思维链（Chain-of-Thought, CoT）推理技术。Wei 等人\cite{wei2022chain}在 NeurIPS 上证明，通过引导大模型生成中间推理步骤，可以显著提升其处理复杂逻辑任务的准确性 。本文利用 CoT 技术构建了双向解释机制：一方面，将自然语言描述的安全需求自动转化为形式化的 ACL 规则；另一方面，为每一条生成的阻断策略提供符合自然语言逻辑的“归因证据”，例如指出某条规则是基于哪个业务模块的数据库访问需求而生成的。Chen 等人\cite{chen2021evaluating}的研究表明，这种基于代码语义的解释机制能够显著降低安全审计的认知门槛，使自动化策略满足合规性要求 。
 
 \subsection{研究意义}
 
@@ -290,7 +290,7 @@
 容器技术通过操作系统级的虚拟化实现应用的轻量级封装与隔离，是云原生架构的基石。不同于传统虚拟机（Virtual Machine, VM）依赖Hypervisor模拟硬件层，容器直接运行于宿主机内核之上，具备毫秒级启动与高密度部署特性~\cite{merkel2014docker}。
 
 \subsection{命名空间与控制组机制}
-容器的隔离性主要依赖于Linux内核提供的命名空间（Namespaces）与控制组（Cgroups）机制。命名空间负责实现资源的逻辑隔离，其中PID Namespace实现了进程视图的隔离，Network Namespace提供了独立的网络协议栈（包括网卡、路由表、防火墙规则），而Mount Namespace则通过挂载点隔离构建了独立的文件系统视图~\cite{kerrisk2013namespaces}。控制组（Cgroups）则负责对CPU、内存、磁盘I/O等物理资源进行配额限制与优先级调度，防止单一容器耗尽节点资源~\cite{menage2007cgroups}。
+容器的隔离性主要依赖Linux内核的命名空间（Namespaces）与控制组（Cgroups）机制。命名空间负责实现资源的逻辑隔离，例如PID Namespace实现了进程视图的隔离，Network Namespace提供了独立的网络协议栈（包括网卡、路由表、防火墙规则），而Mount Namespace则通过挂载点隔离构建了独立的文件系统视图~\cite{kerrisk2013namespaces}。控制组（Cgroups）则负责对CPU、内存、磁盘I/O等物理资源进行配额限制与优先级调度，防止单一容器耗尽节点资源~\cite{menage2007cgroups}。
 
 然而，容器的隔离本质上是共享内核的进程级隔离。相比于虚拟机的硬件级虚拟化，容器并未实现彻底的攻击面隔离。研究表明，一旦发生内核漏洞逃逸，攻击者极易突破命名空间限制获取宿主机权限~\cite{sultan2019container}，这对容器间的网络微隔离提出了更高的防护要求。
 
@@ -376,11 +376,11 @@ Kubernetes 采用典型的“控制平面-数据平面”解耦架构。控制�
     \begin{scope}[on background layer]
       \node[draw=gray!20, dashed, fill=gray!2, rounded corners=8pt, fit=(apiserver) (fifo), inner sep=12pt] (bg_cp) {};
       % 灰字移动到上方
-      \node[anchor=south west, font=\scriptsize\bfseries, text=gray!40] at (bg_cp.north west) {Kubernetes 控制平面 (Control Plane)};
+    %   \node[anchor=south west, font=\scriptsize\bfseries, text=gray!40] at (bg_cp.north west) {Kubernetes 控制平面 (Control Plane)};
 
       \node[draw=blue!10, dashed, fill=blue!2, rounded corners=8pt, fit=(indexer) (handler), inner sep=15pt] (bg_client) {};
       % 蓝字移动到下方
-      \node[anchor=north east, font=\scriptsize\bfseries, text=blue!30] at (bg_client.south east) {Client-go Informer 框架};
+    %   \node[anchor=north east, font=\scriptsize\bfseries, text=blue!30] at (bg_client.south east) {Client-go Informer 框架};
     \end{scope}
 
     \end{tikzpicture}
@@ -613,63 +613,76 @@ DeepWiki 的技术路径主要包含两个关键步骤：
 如图 \ref{fig:system_architecture_refined} 所示，系统整体架构严格遵循论文的逻辑脉络，由以下四个核心层级组成：
 
 \begin{enumerate} 
-    \item \textbf{基础设施层 (Infrastructure Layer)：} 位于架构底部，是整个系统的数据源头。该层涵盖了处于运行态的 \textbf{Kubernetes 集群}以及待分析的 \textbf{Java 字节码制品} .
-    \item \textbf{动态感知与静态分析模块：} 承接基础设施层提供的数据流。
+    \item 基础设施层 (Infrastructure Layer)： 位于架构底部，是整个系统的数据源头。该层涵盖了处于运行态的 Kubernetes 集群以及待分析的 Java 字节码制品 .
+    \item 动态感知与静态分析模块： 承接基础设施层提供的数据流。
 \begin{itemize}
-    \item \textbf{动态感知模块}：利用 \textbf{运行时探针 (Probe)} 实时捕获集群事件，并执行 \textbf{动态指纹提取}，以获取环境变量与注册中心配置。
-    \item \textbf{静态分析模块}：通过 \textbf{三级过滤漏斗} 剔除冗余依赖，随后驱动 \textbf{Soot 分析引擎} 对字节码进行调用提取与语义分析。
+    \item 动态感知模块：利用 运行时探针 (Probe) 实时捕获集群事件，并执行动态指纹提取，以获取环境变量与注册中心配置。
+    \item 静态分析模块：通过 三级过滤漏斗剔除冗余依赖，随后驱动 Soot 分析引擎 对字节码进行调用提取与语义分析。
 \end{itemize}
 
-\item \textbf{微服务依赖图构建引擎 (Dependency Graph Builder)：} 作为系统的核心中枢，负责将动态感知的运行拓扑 $G_{runtime}$ 与静态分析得到的调用链 $G_{static}$ 进行深度融合。该引擎消除了动静态信息之间的“语义盲区”，构建出完整的服务依赖全景图。
+\item 微服务依赖图构建引擎 (Dependency Graph Builder)： 作为系统的核心中枢，负责将动态感知的运行拓扑 $G_{runtime}$ 与静态分析得到的调用链 $G_{static}$ 进行深度融合。该引擎消除了动静态信息之间的“语义盲区”，构建出完整的服务依赖全景图。
 
-\item \textbf{策略交付层 (Policy Layer)：} 处于架构顶端，基于融合后的依赖图执行 \textbf{确定性策略生成}。通过标签映射与白名单合成，并结合 \textbf{策略冲突消解} 模块，最终输出可落地的 Kubernetes NetworkPolicy。
+\item 策略交付层 (Policy Layer)：处于架构顶端，基于融合后的依赖图执行 确定性策略生成。通过标签映射与白名单合成，并结合 策略冲突消解 模块，最终输出可落地的 Kubernetes NetworkPolicy。
 \end{enumerate}
 
 本章后续小节将围绕上述模块，依次论述各关键技术的具体设计思路与算法实现。
 
 
 
-
-
-
-
 \section{运行时数据采集}
 \label{sec:runtime_collection}
-构建精确的零信任微隔离策略，首要前提是建立对云原生集群运行状态的全景感知。传统的静态分析技术往往因缺乏运行时上下文（Runtime Context），难以解析配置文件中的占位符或动态绑定的服务地址，导致生成的依赖关系图存在断裂或误判。为此，本系统设计并实现了一个轻量级的运行时采集探针（Collector），作为独立服务部署于 Kubernetes 集群中。
 
-采集探针的设计遵循“无侵入”与“低开销”原则，负责收集以下四类关键数据，为后续的动静态协同分析提供确定性的环境输入：
+零信任微隔离策略的精确生成，依赖于对云原生集群运行状态的全面、真实刻画。仅依靠静态配置或离线代码分析，往往难以覆盖动态调度、弹性伸缩以及运行期配置变更等复杂场景，进而导致策略推导结果与实际运行环境存在偏差。为弥补这一不足，本文从运行时视角出发，构建了一套面向云原生环境的状态采集机制，为后续动静态联合分析提供可靠的环境上下文支撑。
+
+针对上述需求，本文设计并实现了一个轻量级运行时采集探针（Collector），以独立服务的形式部署于 Kubernetes 集群内部。该探针不参与业务请求处理路径，仅通过标准接口感知集群运行态信息，其整体设计遵循“无侵入、低开销、强一致”的原则，确保在不影响业务稳定性的前提下，持续获取高可信度的运行数据。
+
+运行时采集探针主要聚焦于以下四类关键信息，这些信息共同构成零信任策略生成所需的基础输入空间：
+
 \begin{enumerate}
-    \item 编排元数据：包括 Pod、Service 等 Kubernetes 原生资源对象的生命周期状态与标签信息，用于构建网络层面的拓扑基座；
-    \item 容器运行时信息：包括容器进程的环境变量、启动参数及文件系统挂载点，用于还原应用启动时的配置上下文；
-    \item 应用资产（Artifacts）：指运行态容器内的 Java 字节码文件（JAR/WAR），作为静态依赖提取的直接输入源；
-    \item 服务注册信息：包括 Nacos、Eureka 等注册中心维护的服务实例列表，用于解析微服务架构中的逻辑调用寻址。
+    \item 编排元数据：采集 Pod、Service 等 Kubernetes 原生资源对象的生命周期状态、命名空间归属及标签信息，用于构建微服务之间的基础网络拓扑与身份映射关系；
+    \item 容器运行时信息：获取容器进程的环境变量、启动参数以及文件系统挂载结构，用以还原应用实例在运行阶段的真实配置上下文；
+    \item 应用资产（Artifacts）：提取运行态容器内实际加载的 Java 字节码制品（如 JAR、WAR 文件），作为后续静态依赖分析与调用关系解析的直接输入；
+    \item 服务注册信息：采集 Nacos、Eureka 等注册中心维护的服务实例与地址映射数据，用于解析微服务架构中逻辑服务名到物理网络地址之间的动态对应关系。
 \end{enumerate}
 
-本节将详细阐述上述数据的采集机制及其工程实现。
+通过对上述多源运行态信息的统一采集与建模，系统能够在策略生成阶段获得与真实集群状态高度一致的环境视图，从而为后续的静态分析、合规性审计以及策略正向生成提供确定性的输入基础。
+
 
 
 \subsection{Kubernetes 资源}
 \label{subsec:k8s_resource_collection}
 
-Kubernetes 集群中的资源对象处于高频变更状态，Pod 的扩缩容、故障迁移（Failover）以及 Service 定义的更新都会直接影响微隔离策略的有效性。为了实现对集群资源拓扑的毫秒级感知，本系统摒弃了高延迟的 API 轮询（Polling）模式，转而采用基于 Kubernetes 官方客户端库 \texttt{client-go} 的 \textbf{SharedInformer} 事件驱动机制~\cite{dobies2020kubernetes}。
+在云原生环境中，Kubernetes 作为事实上的容器编排标准，其资源对象承载了集群运行状态与服务组织结构的核心信息。Pod、Service、Deployment 等资源不仅描述了应用的部署形态，还隐含了服务实例之间的潜在通信边界与身份语义。因此，准确、持续地获取 Kubernetes 资源状态，是构建零信任网络策略的重要前提。
+
+与传统静态配置文件不同，Kubernetes 资源具有高度动态性。服务实例可能因弹性伸缩、滚动更新或故障迁移而频繁变化，若仅在策略生成初期进行一次性资源快照采集，将难以反映真实的运行环境，进而导致生成的网络策略在时效性和准确性上存在明显不足。针对这一问题，本文从“持续一致性”的角度出发，对 Kubernetes 资源的采集机制进行了专门设计。
+
+
+Kubernetes 集群中的资源对象处于高频变更状态，Pod 的扩缩容、故障迁移（Failover）以及 Service 定义的更新都会直接影响微隔离策略的有效性。为了实现对集群资源拓扑的毫秒级感知，本系统摒弃了高延迟的 API 轮询（Polling）模式，转而采用基于 Kubernetes 官方客户端库 client-go的 SharedInformer 事件驱动机制~\cite{dobies2020kubernetes}。
 
 \subsubsection{基于 List-Watch 的增量同步机制}
-采集器内部维护了一个针对核心资源的本地缓存（Local Cache）。在启动初期，采集器通过 \texttt{List} 接口从 API Server 拉取全量资源快照，建立初始索引。随后，通过建立长连接并调用 \texttt{Watch} 接口，实时监听资源对象的增量变更事件（Add、Update、Delete）。
+为了在保证数据完整性的同时降低采集开销，本文采用 Kubernetes 提供的 List-Watch 机制，实现对资源对象的增量同步。List-Watch 是 Kubernetes API Server 提供的一种事件驱动式资源监听模型，其核心思想是通过初始全量查询（List）与后续事件订阅（Watch）的组合，持续感知资源状态的变化过程。
 
-具体而言，底层的 \texttt{Reflector} 组件负责将 API Server 推送的二进制流反序列化为资源对象，并存入 \texttt{DeltaFIFO} 增量队列中。采集器的主控制循环（Controller Loop）从队列中消费事件，更新本地的 \texttt{Indexer} 索引，并触发回调函数将变更数据结构化存储。这种机制确保了采集器与 API Server 之间的数据一致性，同时将对控制平面的网络压力降至最低~\cite{Burns2016DesignPF}。
+在系统启动阶段，采集探针首先通过 List 接口获取目标资源类型的完整快照，以建立本地的初始状态视图。该阶段确保系统在任意时间点接入集群时，均能够获得一致且完整的资源基线。随后，探针通过 Watch 接口订阅资源变更事件，包括资源的创建、更新与删除操作。每当集群中相关资源状态发生变化时，API Server 会以事件流的形式将变更信息推送至探针侧，从而避免了周期性轮询带来的额外开销。
+
+相较于基于定时扫描的采集方式，List-Watch 机制具有以下优势：一方面，其事件驱动特性显著降低了不必要的 API 请求数量，减少了对控制面的压力；另一方面，资源状态的变化能够被近实时感知，有助于保持本地视图与集群实际状态之间的一致性。这种增量同步能力对于后续基于运行态事实生成网络策略尤为关键。
+
+在具体实现中，本文通过为不同类型的 Kubernetes 资源分别维护独立的 Watch 通道，并结合资源版本号（ResourceVersion）进行一致性校验，从而在网络波动或探针重启等异常情况下，避免资源状态丢失或重复处理的问题。通过上述机制，系统能够在复杂运行环境下稳定、持续地获取 Kubernetes 资源变化信息。
+
+
 
 \subsubsection{关键资源对象与采集维度}
 
 
-为了支撑后续的静态分析与策略生成，如图\ref{fig:k8s_resource_mapping_final_v2},系统重点采集以下几类 Kubernetes 资源对象：
+在完成资源同步机制设计的基础上，本文进一步明确了 Kubernetes 资源采集的对象范围与具体维度，以确保后续分析阶段具备充分且必要的上下文信息。针对零信任网络策略生成的需求，如表\ref{tab:k8s_resource_mapping}，本文重点关注以下几类资源对象及其属性。
 
-\begin{itemize}
-    \item Pod：主要的采集对象是 \texttt{metadata.labels}（业务标签）、\texttt{status.podIP}（实际 IP）以及 \texttt{spec.nodeName}（所在节点）。其中，标签是微隔离策略 \texttt{podSelector} 的直接映射依据，必须确保实时准确。
-    \item Service：主要的采集对象是 \texttt{spec.selector}（后端 Pod 选择器）与 \texttt{spec.clusterIP}（虚拟 IP）。这对于解析代码中硬编码的 ClusterIP 或通过 DNS 发现的服务名称至关重要。
-    \item Endpoints/EndpointSlice：主要的采集对象是 Service 对应的实际后端 IP 列表。在某些未定义 Selector 的特殊服务（如外部数据库映射）场景下，Endpoints 是确定流量目标的唯一依据。
-    \item ConfigMap 与 Secret：重点采集被业务 Pod 挂载的配置资源。Java 应用通常将数据库连接串、注册中心地址等敏感信息存储于这些对象中。采集器通过解析 Pod 的 \texttt{spec.volumes} 字段建立关联，获取配置文件的真实内容，从而在静态分析阶段将代码中的配置占位符（如 \texttt{\$\{DB\_URL\}}）替换为真实值。
-    \item Namespace：主要的采集对象是命名空间的名称与标签，用于生成跨命名空间的隔离规则（\texttt{namespaceSelector}）。
-\end{itemize}
+对于 Pod 资源，采集内容包括其所属 Namespace、Label 集合、节点调度信息以及容器规格等元数据。这些信息用于刻画服务实例的运行位置与逻辑身份，为后续 Pod 级访问控制策略的生成提供基础依据。特别地，Label 信息在 Kubernetes 中承担着逻辑分组与身份标识的双重角色，是实现细粒度策略匹配的重要锚点。
+
+对于 Service 资源，系统重点采集其 Selector 定义、端口映射关系以及服务类型等属性，并同步引入对 Endpoint 资源的实时监听机制。通过解析 Selector 与 Pod Label 之间的静态对应关系，并结合 Endpoint 对象中实时更新的后端 Pod IP 列表，系统建立起逻辑服务到具体实例集合的动态映射模型。这种机制不仅明确了服务级与实例级的通信边界，更确保了当应用发生扩缩容或节点漂移时，系统能够即时感知后端具体地址的变化，从而消除静态策略与动态环境之间的滞后性。
+
+此外，Namespace 作为 Kubernetes 原生的隔离单元，其名称与关联策略信息同样被纳入采集范围。通过综合 Namespace 与 Label 两个维度，系统能够在保持策略表达灵活性的同时，避免因过度细化而导致的策略碎片化问题。
+
+通过对上述关键资源对象及其多维属性的系统化采集，运行时数据采集模块,如图\ref{fig:k8s_resource_mapping_final_v2}，为后续的静态分析结果校验、访问意图推理以及零信任网络策略的正向生成奠定了统一且可靠的基础。
+
 
 \begin{table}[htbp]
   \centering
@@ -678,9 +691,9 @@ Kubernetes 集群中的资源对象处于高频变更状态，Pod 的扩缩容�
   \resizebox{0.95\textwidth}{!}{
     \begin{tabular}{llp{5cm}l}
     \toprule
-    \textbf{资源对象} & \textbf{关键字段 (Key Fields)} & \textbf{语义映射 (Semantic Mapping)} & \textbf{策略生成用途} \\
+    \textbf{资源对象} & \textbf{关键字段 } & \textbf{语义映射 } & \textbf{策略生成用途} \\
     \midrule
-    \multirow{2}{*}{Pod} & \texttt{metadata.labels} & 工作负载身份标识 (Identity) & \texttt{podSelector} \\
+    \multirow{2}{*}{Pod} & \texttt{metadata.labels} & 工作负载身份标识  & \texttt{podSelector} \\
                          & \texttt{spec.nodeName} & 物理拓扑位置 & 辅助故障域分析 \\
     \midrule
     Service & \texttt{spec.selector} & 逻辑服务分组 & 确定流量目标 \\
@@ -783,9 +796,14 @@ Kubernetes 集群中的资源对象处于高频变更状态，Pod 的扩缩容�
 借鉴基于运行时分析的沙箱挖掘思想~\cite{Ghavamnia2020ConfineAS}，本系统设计了一套“活跃资产锁定（Active Artifact Locking）”机制。该机制通过深度交互容器运行时接口（CRI）与 Linux 内核数据结构，精准识别并提取“积极参与业务逻辑”的进程与文件，从而收敛分析边界。
 
 \subsubsection{基于 CRI 的容器定位与元数据映射}
-在 Kubernetes 的动态调度环境下，容器的生命周期与宿主机解耦。采集器首先通过 gRPC 协议连接节点上的 CRI Socket（如 \texttt{/run/containerd/containerd.sock}），调用 \texttt{ListContainers} 接口获取当前节点所有活跃容器的运行时状态。
+在 Kubernetes 体系中，容器的具体运行状态由底层容器运行时负责管理，而 Kubernetes 本身并不直接维护容器级别的详细信息。为实现对不同运行时实现的统一适配，Kubernetes 提供了容器运行时接口（Container Runtime Interface，CRI），用于规范编排系统与容器运行时之间的交互方式。
 
-系统通过解析 \texttt{ContainerStatus} 结构体，提取出容器的唯一标识符（Container ID）、关联的 Pod UID 以及镜像的哈希摘要（ImageRef）。这一步骤建立了“逻辑 Pod $\leftrightarrow$ 物理容器”的确定性映射，解决了 Overlay 网络掩盖下真实负载难以定位的问题，为后续进入容器命名空间（Namespace）提供了必要的句柄~\cite{cncf2023cri}。
+本文基于 CRI 接口实现对容器实例的统一定位与管理。通过 CRI 提供的接口，系统能够获取集群中运行容器的唯一标识、所属 Pod 信息以及对应的运行时元数据，从而建立 Kubernetes 资源对象与具体容器实例之间的映射关系。该映射关系是后续从容器层面提取运行态信息的基础。
+
+在具体实现中，采集模块通过关联 Pod UID、容器名称与运行时返回的容器 ID，实现对容器实例的精确定位。同时，为应对集群中可能存在的多种容器运行时实现（如 containerd、CRI-O 等），系统通过 CRI 抽象接口屏蔽底层差异，确保采集逻辑在不同运行环境下具有一致性与可移植性。
+
+通过上述机制，系统能够在不依赖特定运行时实现细节的前提下，稳定获取容器级运行态信息，为后续的配置解析与应用制品提取奠定基础。
+
 
 \subsubsection{基于内存映射的活跃二进制集构建}
 
@@ -913,55 +931,66 @@ Kubernetes 集群中的资源对象处于高频变更状态，Pod 的扩缩容�
 \end{figure}
 
 
-为了剔除镜像中“存在但未运行”的僵尸文件，如图\ref{fig:active_artifact_locking}，本系统利用 Linux 内核的内存管理机制来识别当前活跃的业务代码。具体而言，采集器通过 \texttt{setns} 系统调用进入目标容器的 PID Namespace，读取目标进程的 \texttt{/proc/<PID>/maps} 内存映射文件。
+为了剔除镜像中“存在但未运行”的僵尸文件，如图\ref{fig:active_artifact_locking}，本系统利用 Linux 内核的内存管理机制来识别当前活跃的业务代码。具体而言，采集器通过 setns系统调用进入目标容器的 PID Namespace，读取目标进程的 /proc/<PID>/maps 内存映射文件。
 
 该文件记录了进程虚拟地址空间中加载的所有可执行文件与动态链接库（Shared Libraries）。系统通过解析这些内存段，构建出当前容器的“活跃二进制集（Active Binary Set）”：
 \begin{enumerate}
-    \item 主执行体定位：识别映射具有 \texttt{r-xp}（可读可执行）权限且路径指向文件系统的主程序，过滤掉由 \texttt{entrypoint.sh} 或 \texttt{tini} 启动的父进程包装器；
-    \item 解释器透视：对于 Java 应用，系统识别出 JVM 进程（如 \texttt{java} 二进制文件），并进一步扫描其打开的文件描述符（\texttt{/proc/<PID>/fd}），从而精准定位到被加载到内存中的 JAR 包或类文件，而非扫描整个 \texttt{/app} 目录；
-    \item 动态库依赖：记录进程加载的 \texttt{glibc} 等基础库版本，这为后续基于二进制分析提取系统调用（Syscall）特征提供了必要的依赖上下文。
+    \item 主执行体定位：识别映射具有 r-xp（可读可执行）权限且路径指向文件系统的主程序，过滤掉由 entrypoint.sh 或 tini 启动的父进程包装器；
+    \item 解释器透视：对于 Java 应用，系统识别出 JVM 进程（如 java 二进制文件），并进一步扫描其打开的文件描述符（/proc/<PID>/fd），从而精准定位到被加载到内存中的 JAR 包或类文件，而非扫描整个 /app 目录；
 \end{enumerate}
 
-这种基于运行时内存视图的采集方法，能够从根本上排除“镜像内打包了 \texttt{curl} 但业务从未调用”带来的策略噪声，确保后续分析仅聚焦于真实的业务实体。
+这种基于运行时内存视图的采集方法，能够从根本上排除“镜像内打包了curl但业务从未调用”带来的策略噪声，确保后续分析仅聚焦于真实的业务实体。
 
 \subsubsection{配置上下文与分层文件系统解析}
-依据云原生应用的配置最佳实践，微服务的关键拓扑信息（如数据库地址、注册中心 URL）通常在启动时通过环境变量注入，而非硬编码于镜像中。
 
-采集器通过读取容器进程的 \texttt{/proc/<PID>/environ} 文件，无侵入地提取全量环境变量键值对。同时，针对容器镜像采用的联合文件系统（UnionFS, 如 OverlayFS），系统解析 \texttt{/proc/mounts} 信息，区分 \texttt{LowerDir}（只读镜像层）与 \texttt{UpperDir}（读写容器层）。这使得分析引擎能够优先处理运行时产生的文件修改（Copy-on-Write），不仅还原了应用启动时的完整配置上下文，也确保了对热更新（Hot-Swap）代码的实时感知~\cite{oci2023runtime}。
+除应用代码本身外，运行期配置同样对服务行为与通信方式产生重要影响。环境变量、配置文件以及启动参数等信息，往往决定了服务对外暴露的端口、依赖的外部服务地址以及启用的功能模块。因此，在生成零信任网络策略时，有必要对容器的配置上下文进行系统化采集与解析。
 
+本文结合容器分层文件系统的特性，对运行期配置进行有针对性的解析。采集器通过以只读方式访问读容器进程的 /proc/<PID>/environ 文件，无侵入地提取全量环境变量键值对。同时，针对容器镜像采用的联合文件系统（UnionFS, 如 OverlayFS），系统解析 /proc/mounts信息，区分 LowerDir（只读镜像层）与UpperDir （读写容器层）。这使得分析引擎能够优先处理运行时产生的文件修改（Copy-on-Write），不仅还原了应用启动时的完整配置上下文，也确保了对热更新（Hot-Swap）代码的实时感知~\cite{oci2023runtime}。
+
+通过将配置上下文与前述活跃二进制集进行关联，系统能够在后续分析阶段更准确地理解代码行为与运行环境之间的关系，为策略生成提供更加完整的上下文支撑。
 
 
 \subsection{Java 字节码制品提取}
 \label{subsec:bytecode_extraction}
 
-在云原生应用中，业务逻辑被封装在 JAR（Java ARchive）或 WAR 包等二进制制品中。传统的静态分析方法往往采用“全量扫描”策略，即对容器镜像中的所有类库进行无差别分析。然而，生产环境的镜像中往往包含大量冗余的第三方依赖（Bloatware），这些代码在实际运行时从未被加载或者对实际的服务调用没有关联。若将这些非必要代码纳入分析范围，不仅会引入与业务无关的误报，还会导致后续调用图构建阶段出现严重的路径爆炸（Path Explosion）。
+在微服务架构中，服务间通信关系最终体现在应用代码的实际执行路径之中。相较于源码级分析，直接面向运行环境中加载的 Java 字节码制品进行分析，能够有效规避源码缺失、版本不一致以及构建环境差异等问题。因此，本文选择以运行态 Java 字节码制品作为静态分析阶段的主要输入。
 
-依据本文提出的“动静态结合”理念，本节设计了一种基于运行时内存映射的“活跃依赖锁定（Active Dependency Locking）”机制，旨在精准提取当前微服务实例真正使用的字节码制品。
+需要注意的是，在容器化部署场景下，镜像中包含的字节码文件并不一定全部参与实际运行。一方面，部分依赖可能因配置条件限制而未被加载；另一方面，应用在运行过程中可能通过插件机制或动态加载方式引入额外制品。若不加区分地对文件系统进行全量提取，容易引入大量与实际执行和服务调用无关的分析对象，进而影响后续调用关系与通信语义建模的准确性。
+
+基于上述考虑，本文从运行态视角出发，设计了一套面向 Java 应用的字节码制品提取方法，重点关注“实际被加载，参与执行，服务调用相关”的代码集合，为后续静态分析提供精简且可信的输入。
+
 
 \subsubsection{基于内存映射的活跃依赖识别}
 
+在 Java 应用运行过程中，JVM 的类加载机制（ClassLoader）决定了并非所有 ClassPath 下的 JAR 包都会被加载，而是会根据程序执行路径按需加载类定义，并将对应的字节码映射至进程地址空间。由此，进程的内存映射信息在一定程度上反映了当前运行状态下实际生效的代码依赖关系。采集器利用 Linux 内核提供的进程文件系统（procfs）进行透视。通过分析容器内 Java 进程的内存映射结果，识别运行阶段被加载的 JAR 文件与类路径。相较于仅依据镜像内容或构建配置文件进行推断，该方法能够更直接地反映应用在当前实例中的真实依赖集合。
 
-
-JVM 的类加载机制（ClassLoader）决定了并非所有 ClassPath 下的 JAR 包都会被加载。为了获取真实的加载视图，采集器利用 Linux 内核提供的进程文件系统（procfs）进行透视。
-
-具体而言，采集器通过读取容器内 Java 主进程的 \texttt{/proc/<PID>/maps} 内存映射文件，筛选出所有映射路径以 \texttt{.jar} 结尾的内存段。该文件记录了进程虚拟地址空间中所有动态加载的文件描述符。与静态扫描磁盘相比，这种方法的优势在于：
+具体而言，采集器通过读取容器内 Java 主进程的 /proc/<PID>/maps 内存映射文件，筛选出所有映射路径以 .jar 结尾的内存段，剔除与 Java 应用执行无关的系统库与运行时组件。该文件记录了进程虚拟地址空间中所有动态加载的文件描述符。与静态扫描磁盘相比，这种方法的优势在于：
 \begin{enumerate}
-    \item 排除冗余：自动忽略存在于磁盘但未被 JVM 加载的“僵尸依赖”（例如未启用的数据库驱动或测试框架）；
+    \item 排除冗余：能自动忽略存在于磁盘但未被 JVM 加载的“僵尸依赖”（例如未启用的数据库驱动或测试框架）；
     \item 解析动态路径：能够识别被自定义 ClassLoader 动态加载到非标准路径下的 JAR 文件；
     \item 处理软链接：通过解析文件描述符的真实路径（Real Path），自动处理符号链接导致的路径混淆~\cite{Ghavamnia2020ConfineAS}。
 \end{enumerate}
+
+
 
 \subsubsection{无侵入式流式传输通道}
 为了将锁定的活跃 JAR 包提取至后端分析引擎，系统设计了基于 Kubernetes API 的流式传输通道。采集器不依赖 \texttt{docker cp} 等宿主机特权命令，而是与 API Server 建立 HTTP/2 长连接。
 
 
+通过调用 SKBN，采集器在目标容器内执行轻量级的拷贝命令，将筛选出的活跃 JAR 文件列表打包为二进制流，并通过标准输出（Stdout）管道实时传输。该过程采用了“零落地（Fileless）”策略，数据流直接在内存中转发，避免了在业务容器内创建临时文件，从而消除了对业务磁盘 I/O 的干扰及潜在的残留风险~\cite{kerrisk2010linux}。该方式在控制单次资源占用的同时，降低了对容器 I/O 与内存的瞬时压力。
 
-通过调用 \texttt{PodExec} 接口，采集器在目标容器内执行轻量级的 \texttt{tar} 打包命令，将筛选出的活跃 JAR 文件列表打包为二进制流，并通过标准输出（Stdout）管道实时传输。该过程采用了“零落地（Fileless）”策略，数据流直接在内存中转发，避免了在业务容器内创建临时文件，从而消除了对业务磁盘 I/O 的干扰及潜在的残留风险~\cite{kerrisk2010linux}。
+
+通过将制品提取与传输过程解耦，系统能够在不影响业务请求处理的前提下，完成字节码数据的采集，为后续分析阶段提供稳定输入。
+
 
 \subsubsection{增量指纹比对与传输优化}
-在微服务集群中，同一服务的多个副本（Replicas）共享完全相同的代码层，且不同服务之间往往存在公共的基础架构组件（如 Spring Cloud 全家桶）。全量传输所有 JAR 包将产生巨大的网络带宽开销。
+在微服务集群中，容器实例可能因滚动更新或弹性伸缩而频繁创建和销毁，同一服务的多个副本（Replicas）共享完全相同的代码层，且不同服务之间往往存在公共的基础架构组件（如 Spring Cloud 全家桶）。若在每次实例启动后均对全部字节码制品进行完整传输，将带来不必要的网络与存储开销。为此，本文在字节码制品传输阶段引入增量指纹比对机制，以减少重复数据的传输。
 
-为此，系统引入了基于 SHA-256 的增量指纹比对机制。在传输前，采集器在容器内计算目标文件的哈希摘要（Digest），并利用布隆过滤器（Bloom Filter）快速判断该哈希值是否已存在于分析引擎的制品库中。仅当检测到全新的哈希值（对应版本更新或新引入的依赖）时，才触发实际的数据传输。
+具体而言，系统引入了基于 SHA-256 的增量指纹比对机制。在传输前，采集器在容器内计算目标文件的哈希摘要（Digest），并利用布隆过滤器（Bloom Filter）快速判断该哈希值是否已存在于分析引擎的制品库中。仅当检测到全新的哈希值（对应版本更新或新引入的依赖）时，才触发实际的数据传输。
+
+
+该增量优化机制在不影响分析准确性的前提下，有效降低了数据传输规模，使字节码制品提取过程能够更好地适应云原生环境中实例频繁变动的运行特征。
+
 
 
 \subsection{注册中心配置}
@@ -1071,10 +1100,17 @@ JVM 的类加载机制（ClassLoader）决定了并非所有 ClassPath 下的 JA
 \end{figure}
 
 
-在云原生微服务架构中，服务间的通信不再依赖静态 IP，而是通过服务注册与发现机制实现动态寻址。静态代码分析虽然能够提取出微服务间的逻辑调用关系（例如代码中硬编码的 \texttt{"http://payment-service/pay"}），但无法直接推导出 Kubernetes NetworkPolicy 所需的确切网络五元组（IP Block 或 Pod Selector）。为了建立“逻辑服务标识”与“物理网络实体”之间的映射视图，如图\ref{fig:registry_adapter_fixed},本系统设计了针对服务注册中心（Service Registry）的实时采集模块~\cite{Jamshidi2018MicroservicesTJ}。
+在基于微服务的云原生系统中，服务实例的网络可达性有时并非通过静态配置直接确定，而是由注册中心在运行期间动态维护。应用在启动或状态变更时，可以将自身实例信息注册至注册中心；调用方则通过逻辑服务名完成服务发现。由此，注册中心成为连接应用代码与实际网络通信路径的重要中介，其配置状态直接影响服务之间的可达关系。
+
+如果仅依据 Kubernetes 层面的 Service 或 Pod 信息进行分析，往往难以准确刻画逻辑服务名与真实网络地址之间的映射关系，尤其是在多注册中心并存或注册信息频繁变更的场景下。静态代码分析虽然能够提取出微服务间的逻辑调用关系（例如代码中硬编码的 "http://payment-service/pay"），但无法直接推导出 Kubernetes NetworkPolicy 所需的确切网络五元组（IP Block 或 Pod Selector）。为了建立“逻辑服务标识”与“物理网络实体”之间的映射视图，如图\ref{fig:registry_adapter_fixed},本系统设计了针对服务注册中心（Service Registry）的实时采集模块~\cite{Jamshidi2018MicroservicesTJ}，以弥补编排层信息在服务发现语义上的不足。
+
 
 \subsubsection{异构注册中心适配器设计}
-鉴于企业技术栈的演进往往导致多种注册中心共存（例如存量应用使用 Eureka，新应用使用 Nacos），采集器采用了适配器模式（Adapter Pattern）构建统一的接入层。该层屏蔽了底层异构协议（如 Nacos 的 gRPC/UDP 推送、Eureka 的 HTTP 长轮询）的差异，向上层分析引擎提供标准化的 \texttt{ServiceInstance} 模型。
+
+
+在实际工程环境中，微服务系统可能同时采用多种注册中心实现，例如 Nacos、Eureka 或基于自研组件的服务发现机制。不同注册中心在接口形式、数据模型以及一致性语义等方面均存在差异，若针对每一种实现单独设计采集逻辑，将显著增加系统复杂度与维护成本。
+
+因此，采集器采用了适配器模式（Adapter Pattern）构建统一的接入层，适配器对外提供一致的数据访问模型，对内负责将具体注册中心返回的信息转换为标准化表示。该层屏蔽了底层异构协议（如 Nacos 的 gRPC/UDP 推送、Eureka 的 HTTP 长轮询）的差异，向上层分析引擎提供标准化的 ServiceInstance模型。在适配器实现过程中，系统重点关注服务实例的逻辑服务名、实例地址、端口信息以及健康状态等关键字段。这些字段直接决定了服务发现的结果，也是后续解析服务间实际通信路径所需的核心输入。
 
 系统目前已内置支持云原生领域主流的服务发现协议：
 \begin{itemize}
@@ -1083,23 +1119,39 @@ JVM 的类加载机制（ClassLoader）决定了并非所有 ClassPath 下的 JA
 \end{itemize}
 
 \subsubsection{逻辑服务名到物理地址的动态映射}
-采集器将从各注册中心获取的数据聚合为一张全局的“服务寻址映射表（Service Addressing Map）”。该表维护了 \texttt{Service Name} $\rightarrow$ \texttt{List<Instance IP, Port, Metadata>} 的实时对应关系。
 
-在后续的策略生成阶段，该映射表发挥着关键的“桥梁”作用：例如当静态分析引擎识别到 Java 代码中发起对 \texttt{user-service} 的 OpenFeign 调用时，系统查询该表即可锁定目标服务在当前集群中所有活跃实例的 IP 集合。
+在注册中心机制下，服务调用通常以逻辑服务名作为入口，具体请求在运行时被路由至一个或多个实际服务实例。因此，从零信任网络策略的角度来看，仅限制逻辑层面的服务访问并不足以形成可执行的网络控制规则，还需要进一步解析其对应的物理网络地址范围。
+
+本文通过对注册中心中维护的实例信息进行解析，构建逻辑服务名与物理地址之间的动态映射关系。该映射关系能够随着服务实例的注册、下线或状态变更而实时更新，从而反映集群运行阶段的真实通信可能性。
+
+采集器将从各注册中心获取的数据聚合为一张全局的“服务寻址映射表（Service Addressing Map）”。该表维护了 Service Name$\rightarrow$ List<Instance Address, Port, Metadata>的实时对应关系，其中Address既可以表现为IP 地址，也可以表现为Pod Selector。
+
+在后续的策略生成阶段，该映射表发挥着关键的“桥梁”作用：例如当静态分析引擎识别到 Java 代码中发起对 user-service的 OpenFeign 调用时，系统查询该表即可锁定目标服务在当前集群中所有活跃实例的地址集合。
 
 
 
 \section{字节码静态分析}
 \label{sec:static_analysis}
 
-在完成运行时的制品采集后，分析引擎获得了去重后的业务 JAR 包。然而，现代微服务应用通常包含大量的第三方依赖库（Third-party Libraries），这些库的代码量往往是业务逻辑代码的数十倍。若直接对全量字节码构建调用图，不仅计算开销巨大，且容易引入与业务无关的调用路径（如日志框架内部的网络请求）。
 
-为此，本节设计了一个“三级过滤漏斗”模型，依次执行第三方依赖剔除、非业务类过滤及核心调用链提取，确保静态分析仅聚焦于能够产生服务间交互的关键代码片段。
+
+
+在完成运行时数据采集后，系统已经获得了与实际部署环境高度一致的应用制品集合。然而，仅依赖运行态信息仍不足以全面刻画服务之间的潜在通信关系。一方面，部分调用路径可能因条件分支或配置差异在当前运行实例中尚未触发；另一方面，零信任网络策略的生成需要对“可能发生的访问行为”进行约束，而不仅限于已观测到的通信事实。
+
+基于上述考虑，本文引入字节码层面的静态分析方法，对 Java 应用的调用结构与通信语义进行系统建模。相较于源码分析，字节码分析不依赖于源码可得性，且能够直接反映编译后的真实执行逻辑，更适用于云原生环境中多版本、多构建产物并存的实际情况。
+
+
+静态分析模块以 3.1 节提取的活跃字节码制品为输入，围绕方法调用关系、控制流与数据流传播等关键要素展开分析，旨在从代码层面还原服务对外通信的潜在意图，为后续的合规性审计与策略正向生成提供结构化依据。然而，在实际工程环境中，微服务应用通常会引入数量庞大的第三方依赖库，其规模往往远超业务逻辑代码本身。若直接对全量字节码构建调用关系，不仅会带来显著的计算开销，还容易引入大量与业务语义无关的调用路径，例如日志框架或通用工具库内部的网络行为，从而干扰后续依赖关系的判定。除了第三方依赖库，在剩下的业务 JAR 包中，仍然存在大量不直接参与远程调用的类，例如仅用于数据封装的 POJO、通用工具类或配置类。这类代码虽然在程序运行中不可或缺，但其本身并不承载服务间通信语义。
+
+为此，本节设计了一个“三级过滤漏斗”模型，依次执行第三方，非业务类剔除、自定义类过滤及核心调用链提取，确保静态分析仅聚焦于能够产生服务间交互的关键代码片段。
 
 \subsection{第三方依赖包过滤}
 \label{subsec:dep_filtering}
 
-为了解决 Java 应用普遍存在的代码膨胀（Bloatware）问题，系统首先在 JAR 包粒度进行粗筛。该过程基于软件成分分析（SCA）思想，构建了一个包含 Maven Central 主流组件的“指纹黑名单库”~\cite{soto2021bloat}。
+在实际微服务应用中，业务代码通常依赖大量第三方库以实现基础功能支持，例如日志记录、序列化、配置管理及网络通信封装等。从零信任网络策略生成的角度来看，第三方依赖几乎不具备分析价值。多数通用依赖库内部虽可能包含网络相关实现，但其行为通常由业务代码间接触发，且不直接反映服务间的逻辑依赖关系。因此，本文在字节码静态分析阶段引入第三方依赖包过滤机制，将分析重点聚焦于更可能承载业务通信语义的代码范围。
+
+
+为了解决第三方库带来的 Java 应用普遍存在的代码膨胀（Bloatware）问题，系统首先在 JAR 包粒度进行粗筛。该过程基于软件成分分析（SCA）思想，构建了一个包含 Maven Central 主流组件的“指纹黑名单库”~\cite{soto2021bloat}。
 
 \begin{figure}[htbp]
   \centering
@@ -1229,7 +1281,7 @@ JVM 的类加载机制（ClassLoader）决定了并非所有 ClassPath 下的 JA
         node[pos=0.3, above, label font] {是 (Yes)};
 
   \end{tikzpicture}
-  \caption{基于指纹与启发式规则的第三方依赖三级过滤流程}
+  \caption{基于指纹与启发式规则的第三方依赖过滤流程}
   \label{fig:dep_filtering}
 \end{figure}
 
@@ -1237,31 +1289,47 @@ JVM 的类加载机制（ClassLoader）决定了并非所有 ClassPath 下的 JA
 \begin{enumerate}
     \item 指纹计算：对输入的 JAR 包计算 SHA-256 哈希值；
     \item 黑名单匹配：将哈希值与指纹库进行 $O(1)$ 匹配。指纹库预置了 Spring Boot Starter、Netty、Jackson 等基础设施组件的哈希特征。
-    \item 包名启发式过滤：对于未命中的 JAR 包（如企业私有二方库），进一步检查其包名（Package Name）。若包名匹配 \texttt{org.apache.*}、\texttt{org.springframework.*} 或 \texttt{io.kubernetes.*} 等标准前缀，且不包含特定业务关键词，则将其标记为非业务依赖进行剔除。
+    \item 包名启发式过滤：对于未命中的 JAR 包，进一步检查其包名（Package Name）。若包名匹配 org.apache.*、org.springframework.* 或 io.kubernetes.* 等标准前缀，且不包含特定业务关键词，则将其标记为非业务依赖进行剔除。
 \end{enumerate}
-通过该步骤，分析引擎能够过滤掉约 90\% 的基础设施代码，显著降低了后续 Soot 分析的内存压力。
+通过该步骤，分析引擎能够过滤掉基础设施代码，显著降低了后续 Soot 分析的内存压力。
 
-\subsection{自定义类的启发式过滤}
+\subsection{自定义类的过滤}
 \label{subsec:class_filtering}
 
-在保留下来的业务 JAR 包中，仍存在大量不参与远程调用的数据对象（POJO）、工具类（Utils）或配置类（Configuration）。为了进一步收敛分析范围，系统利用轻量级的 ASM 字节码操作框架，在不加载完整类结构的情况下扫描常量池（Constant Pool），执行启发式过滤~\cite{Bruneton2002ASMAC}。
 
-系统仅保留满足以下特征之一的“活跃类”：
+在完成第三方依赖包过滤后，剩余待分析的字节码主要由业务自身定义的类构成。然而，即便在业务代码范围内，仍然存在大量不直接参与服务通信的类，例如数据传输对象、配置封装类以及通用工具类等。若对这类自定义类进行同等粒度的静态分析，同样会引入冗余调用路径，影响分析结果的清晰度。
+
+针对上述问题，本文在静态分析流程中进一步引入自定义类的过滤策略，以在不牺牲通信语义完整性的前提下，减少无关类对分析过程的干扰。该策略并不依赖完整的控制流或数据流分析，而是基于字节码层面的轻量级特征进行快速判断，适用于分析初期的规模裁剪阶段。
+
+具体而言，系统通过检查类的结构特征与常量池信息。系统仅保留满足以下特征之一的“活跃类”：
 \begin{itemize}
-    \item 入口特征：包含 \texttt{@Controller}、\texttt{@RestController} 或 \texttt{@Schduled} 等注解的类，这通常是服务调用的起点；
-    \item 出口特征：包含 \texttt{@FeignClient}、\texttt{@DubboReference} 等注解的接口或字段，这代表了明确的远程调用意图；
-    \item 行为特征：常量池中包含 \texttt{"http://"}、\texttt{"https://"} 或常见服务名前缀字符串的类，提示可能存在编程式的网络请求。
+    \item 入口特征：包含 @Controller、@RestController 或 @Scheduled 等注解的类，这通常是服务调用的起点；
+    \item 出口特征：包含 @FeignClient、@DubboReference 等注解的接口或字段，这代表了明确的远程调用意图；
+    \item 行为特征：常量池中包含 "http://"、"https://" 或常见服务名前缀字符串的类，提示可能存在编程式的网络请求。
 \end{itemize}
+
+需要指出的是，启发式过滤策略本身并不保证绝对精确，其设计目标在于以较低成本显著缩小分析范围。因此，本文在过滤过程中采取保守策略，即在无法明确判断类是否参与通信行为时，优先将其保留进入后续分析阶段，以避免因过度过滤而遗漏潜在通信路径。
+
+通过引入自定义类的启发式过滤机制，系统在分析效率与语义覆盖之间取得了较为平衡的效果，为后续调用链构建与服务依赖关系推断提供了更加聚焦的分析输入。
+
+
+
+
+
 
 \subsection{基于类的调用信息提取}
 \label{subsec:invocation_extraction}
 
-经过前两级过滤后，剩余的类被加载至 Soot 框架中生成 Jimple 中间表示。本节针对云原生环境中最常见的两种调用模式，设计了专用的提取器（Extractor）。
+在完成第三方依赖包与自定义类的多级过滤后，字节码静态分析的对象范围已被显著收敛。此时，分析重点由“缩小分析规模”转向“提取有意义的调用关系”，以刻画业务代码中可能存在的服务间通信路径。考虑到方法级调用分析在复杂工程环境中易产生规模膨胀问题，本文选择以类为基本分析粒度，对调用信息进行抽象建模。
 
-\subsubsection{声明式调用提取（OpenFeign/Dubbo）}
-对于基于接口代理的声明式调用，分析引擎重点解析接口上的元数据注解。以 OpenFeign 为例，系统扫描所有带有 \texttt{@FeignClient} 注解的接口，提取 \texttt{name} 或 \texttt{value} 属性作为目标服务标识，提取 \texttt{path} 属性作为基础路径。同时，解析接口方法上的 \texttt{@RequestMapping} 注解，获取具体的 HTTP 动词与子路径。这些信息组合后，构成了确定的 \texttt{<Caller, CalleeService, Path>} 三元组。
+基于类的调用信息提取旨在识别不同类之间的调用依赖关系，而不深入展开类内部的具体方法实现细节。通过这种方式，系统能够在保持调用关系整体结构的同时，有效控制分析复杂度，避免在早期阶段引入过多细粒度信息。
 
-\subsubsection{编程式调用提取（RestTemplate/WebClient）}
+在具体实现过程中，系统通过解析字节码中的方法调用指令，统计类之间的调用关系，并据此构建类级调用依赖集合。本节针对云原生环境中最常见的两种调用模式，设计了专用的提取器（Extractor）。
+
+\subsubsection{声明式调用提取}
+对于基于接口代理的声明式调用，分析引擎重点解析接口上的元数据注解。以 OpenFeign 为例，系统扫描所有带有 @FeignClient 注解的接口，提取 name 或 value 属性作为目标服务标识，提取 path 属性作为基础路径。同时，解析接口方法上的 @RequestMapping 注解，获取具体的 HTTP 动词与子路径。这些信息组合后，构成了确定的 <Caller, CalleeService, Path> 三元组。
+
+\subsubsection{编程式调用提取}
 
 \begin{figure}[htbp]
     \centering
@@ -1404,7 +1472,11 @@ JVM 的类加载机制（ClassLoader）决定了并非所有 ClassPath 下的 JA
 \section{调用关系图构建}
 \label{sec:call_graph_construction}
 
-经过字节码静态提取与运行时配置解析，系统已获取了大量离散的调用链路片段（Call Segments）。为了推导微服务间的全局依赖拓扑，本节提出了一种两阶段图构建算法：首先构建细粒度的类级调用图（Class-level Call Graph），以此为基础，结合微服务部署元数据，聚合生成粗粒度的微服务依赖图（Microservice Dependency Graph）。
+在完成类级调用信息提取后，静态分析阶段已经获得了一组离散的调用依赖关系。然而，这些依赖关系在形式上仍然是相互独立的调用对，尚不足以反映业务逻辑中更高层次的调用结构。为进一步刻画服务内部及服务之间可能存在的调用路径，有必要对上述调用信息进行系统化组织，构建统一的调用关系图。
+
+调用关系图以类作为基本节点，以类之间的调用依赖作为有向边，用于描述程序中可能存在的调用传播路径。通过将离散的调用信息整合为图结构，系统能够从整体视角分析调用关系的连通性与层次性，为后续识别完整调用链提供基础支撑。相较于线性调用列表，图结构在表达复杂依赖关系时更具灵活性，也更适合进行后续的聚合与裁剪操作。
+
+为了推导微服务间的全局依赖拓扑，本节提出了一种两阶段图构建算法：首先构建细粒度的类级调用图，以此为基础，结合微服务部署元数据，聚合生成粗粒度的微服务依赖图。
 
 \subsection{基于类的调用关系图}
 \label{subsec:class_call_graph}
@@ -1478,7 +1550,7 @@ JVM 的类加载机制（ClassLoader）决定了并非所有 ClassPath 下的 JA
   \label{fig:class_transitivity_example}
 \end{figure}
 
-在 Spring Cloud 等现代微服务框架中，服务间的调用往往被封装在复杂的对象关系之中。为了还原这些隐式联系，分析引擎构建了一个有向图 $G_{class} = (V_c, E_c)$，其中节点 $V_c$ 代表业务类（Class），边 $E_c$ 代表类与类之间的关联关系。
+在 Spring Cloud 等现代微服务框架中，服务间的调用往往被封装在复杂的对象关系之中。为了还原这些隐式联系，分析引擎构建了一个有向图 $G_{class} = (V_c, E_c)$，其中节点 $V_c$ 代表业务类，边 $E_c$ 代表类与类之间的关联关系。
 
 不同于传统仅基于函数调用的构图方法，本文针对云原生应用的开发范式，如图\ref{fig:class_transitivity_example},设计了以下三种特定类型的边生成规则，以解决依赖注入（DI）与面向切面编程（AOP）带来的断链问题：
 
@@ -1810,19 +1882,22 @@ Conflict(R_{new}, R_{exist}) \iff (Action_{new} \neq Action_{exist}) \land (Scop
 \chapter{基于大模型代码分析的零信任微隔离策略双向智能生成}
 \label{chap:llm_analysis}
 
-本章在上一章的物理拓扑基础之上，提出了一种\textbf{基于大语言模型（LLM）与 DeepWiki 代码知识库的双向智能生成框架}。该框架旨在引入外部语义知识，弥合底层基础设施与上层业务逻辑之间的鸿沟。
+
+
+
+本章提出了一种基于大语言模型（LLM）与 DeepWiki 代码知识库的双向智能生成框架。该框架旨在引入外部语义知识，弥合底层基础设施与上层业务逻辑之间的鸿沟。
 
 系统的总体架构如图 \ref{fig:llm_system_architecture_final} 所示，核心逻辑包含以下三个层次：
 
 \begin{enumerate}
-    \item \textbf{多源信息关联层 (Context Layer)}：针对云原生环境下容器运行时与静态代码割裂的痛点，本层并不重复底层的全量采集工作，而是聚焦于“关联”。通过引入 \textbf{LLM 仓库推断 (Repo Inference)} 模块，系统利用运行时捕获的环境变量、启动指令等指纹特征，智能推导并锁定目标容器对应的源代码仓库地址，从而建立起“运行时实例 $\leftrightarrow$ 静态代码库”的语义索引，为后续分析提供物理入口。
+    \item 多源信息关联层 (Context Layer)：针对云原生环境下容器运行时与静态代码割裂的痛点，本层并不重复底层的全量采集工作，而是聚焦于“关联”。通过引入 LLM 仓库推断 (Repo Inference) 模块，系统利用运行时捕获的环境变量、启动指令等指纹特征，智能推导并锁定目标容器对应的源代码仓库地址，从而建立起“运行时实例 $\leftrightarrow$ 静态代码库”的语义索引，为后续分析提供物理入口。
     
-    \item \textbf{语义推理层 (Semantic Reasoning Layer)}：该层是本章系统的智能中枢，由两大核心组件构成。\textbf{DeepWiki 引擎}负责对代码仓库进行深度扫描，挖掘跨文件的隐式依赖与配置文件路径，构建代码知识图谱；\textbf{LLM 推理代理 (Reasoning Agent)} 则基于 DeepWiki 提供的知识上下文，利用思维链 (Chain-of-Thought, CoT) 技术执行复杂的逻辑推演，负责构建合规性证据链与意图识别。
+    \item 语义推理层 (Semantic Reasoning Layer)：该层是本章系统的智能中枢，由两大核心组件构成。DeepWiki 引擎负责对代码仓库进行深度扫描，挖掘跨文件的隐式依赖与配置文件路径，构建代码知识图谱；LLM 推理代理 (Reasoning Agent) 则基于 DeepWiki 提供的知识上下文，利用思维链 (Chain-of-Thought, CoT) 技术执行复杂的逻辑推演，负责构建合规性证据链与意图识别。
     
-    \item \textbf{双向生成与应用层 (Application Layer)}：基于推理层的语义理解能力，系统向上提供两种截然不同的工作模式，以覆盖微隔离的全生命周期需求：
+    \item 双向生成与应用层 (Application Layer)：基于推理层的语义理解能力，系统向上提供两种截然不同的工作模式，以覆盖微隔离的全生命周期需求：
     \begin{itemize}
-        \item \textbf{逆向解释 (Inverse Explanation)}：面向存量系统的审计场景。系统接收现有的 NetworkPolicy，回溯代码层面的业务证据，生成包含因果归因的可解释性审计报告，解决“策略为何存在”的可解释性难题。
-        \item \textbf{正向生成 (Forward Generation)}：面向新上线服务的防护场景。针对无历史流量的新服务，系统直接从代码逻辑中提取通信意图，生成默认安全的微隔离策略，解决“冷启动”阶段的防护难题。
+        \item 逆向解释 (Inverse Explanation)：面向存量系统的审计场景。系统接收现有的 NetworkPolicy，回溯代码层面的业务证据，生成包含因果归因的可解释性审计报告，解决“策略为何存在”的可解释性难题。
+        \item 正向生成 (Forward Generation)：面向新上线服务的防护场景。针对无历史流量的新服务，系统直接从代码逻辑中提取通信意图，生成默认安全的微隔离策略，解决“冷启动”阶段的防护难题。
     \end{itemize}
 \end{enumerate}
 
@@ -1926,6 +2001,9 @@ Conflict(R_{new}, R_{exist}) \iff (Action_{new} \neq Action_{exist}) \land (Scop
 \section{统一的多源信息采集与代码仓库关联机制}
 \label{sec:multisource_collection}
 
+
+
+
 在上一章中，系统通过运行时探针与字节码静态分析技术，从物理层面还原了微服务集群的网络拓扑结构，有效解决了“谁访问了谁”的链路发现问题。然而，这种仅依赖二进制制品（Artifacts）与底层网络状态的确定性分析方法仍存在显著的局限性：编译后的字节码虽然精准保留了程序的执行逻辑，却不可避免地丢失了开发者在编码阶段注入的大量关键语义信息，例如业务逻辑注释、架构设计文档、具有描述性的变量命名以及特定的代码组织结构。这些“元信息”承载了服务的设计初衷与业务意图，而它们的缺失直接导致了通用大语言模型（LLM）难以仅凭反编译代码或底层元数据进行高效、深度的逻辑推理 。
 
 
@@ -1934,6 +2012,7 @@ Conflict(R_{new}, R_{exist}) \iff (Action_{new} \neq Action_{exist}) \land (Scop
 \subsection{运行时通用指纹特征的采集}
 \label{subsec:runtime_fingerprinting}
 
+在缺乏显式仓库标识的情况下，运行时环境中仍然保留了大量可用于识别代码来源的隐含特征。本文将这类特征统称为运行时通用指纹特征，其本质是能够在不同部署实例之间保持相对稳定、且与代码仓库存在潜在关联的信息集合。
 
 \begin{figure}[htbp]
   \centering
@@ -2053,93 +2132,83 @@ Conflict(R_{new}, R_{exist}) \iff (Action_{new} \neq Action_{exist}) \land (Scop
 
 \subsubsection{策略一：基于流式传输的数据采集}
 
-该策略通过与 Kubernetes API Server 建立长连接，利用 SPDY 或 HTTP/2 协议建立流式传输通道。采集探针向目标容器发送标准化的 Shell 指令，直接读取标准输出（Stdout）流获取数据。
-\begin{itemize}
-    \item \textbf{优势}：实现简单，响应速度快，且无需在宿主机上预装任何代理。
-    \item \textbf{适用场景}：开发测试环境或未进行严格镜像瘦身的传统微服务应用。
-\end{itemize}
+该策略通过与 Kubernetes API Server 建立长连接，利用HTTP/2 协议构建稳定的流式传输通道，实现对容器运行时信息的实时采集。采集探针通过 API Server 向目标容器发送标准化的 Shell 指令，并持续读取其标准输出（Stdout）流，从而获取所需的运行时数据。
+
+相较于基于轮询的采集方式，流式传输能够在保持实现简单的同时，显著降低数据获取延迟，并避免频繁建立连接所带来的额外开销。此外，该策略完全依赖 Kubernetes 提供的原生接口实现，无需在宿主机或集群节点侧预先部署任何代理组件，部署成本较低。
+
+需要指出的是，该策略依赖目标容器中保留基本的 Shell 与命令执行环境，因此更适用于开发测试场景，或尚未进行严格镜像裁剪的传统微服务应用。在采用 Distroless 等极简镜像的生产环境中，该策略的适用性将受到一定限制。
+
+
 
 \subsubsection{策略二：基于临时容器的无侵入透视}
-为了追求极致的安全与攻击面收敛，现代云原生生产环境大量采用了 Distroless 或 Scratch 等“极简镜像”。这类镜像移除了 Shell、\texttt{ls}、\texttt{ps} 等所有基础工具，导致常规的 \texttt{exec} 命令无法执行。针对这一难题，系统采用了基于\textbf{临时容器（Ephemeral Container）}的调试机制。
+在对安全性与攻击面控制要求较高的生产环境中，微服务应用通常采用 Distroless 或 Scratch 等“极简镜像”进行部署。这类镜像在构建过程中移除了 Shell 及常用基础工具，导致基于 \verb|exec| 的运行时采集方式无法正常工作，从而使传统的命令注入式采集策略失效。
 
-系统利用 Kubernetes 的 \texttt{Debug} 功能，动态地将一个包含完整工具集（如 BusyBox）的临时容器注入到目标 Pod 中，并配置其与业务容器共享进程命名空间（Process Namespace）。通过这种机制，采集探针可以在不重启业务 Pod、不修改原有镜像的前提下，获得对目标容器的“上帝视角”：
-\begin{itemize}
-    \item \textbf{进程透视}：临时容器可直接扫描 \verb|/proc| 文件系统，读取业务容器内 PID 1 进程的 \verb|/proc/<PID>/environ|（环境变量）和 \verb|/proc/<PID>/cmdline|（启动参数），从而规避了业务容器缺失 Shell 的限制，实现了全场景的无盲区采集\cite{kerrisk2013namespaces, Kubernetes2024Ephemeral}。
-    \item \textbf{优势}：完全无侵入，不污染原镜像环境，符合“不可变基础设施”原则。
-\end{itemize}
+针对上述问题，系统引入基于临时容器（Ephemeral Container）的无侵入式透视机制。该机制利用 Kubernetes 提供的 Debug 能力，在不重启业务 Pod、也不修改原有镜像的前提下，动态注入一个包含完整工具集的临时容器，并配置其与业务容器共享进程命名空间（Process Namespace）。
+
+通过这一方式，采集探针可以从临时容器侧直接访问 \verb|/proc| 文件系统，读取业务容器内 PID 1 进程对应的 \verb|/proc/<PID>/environ| 与 \verb|/proc/<PID>/cmdline| 等关键信息，从而规避业务容器缺失 Shell 工具的限制，实现对运行时环境的完整观测\cite{kerrisk2013namespaces, Kubernetes2024Ephemeral}。由于整个采集过程不对业务容器本身产生任何修改，该策略符合“不可变基础设施”的设计原则，适用于安全要求较高的生产部署场景。
 
 \subsubsection{策略三：基于元数据定义的静态解析}
-在某些极端的高安全敏感场景下（如禁止任何形式的运行时注入或 Exec 操作），系统回退至基于 Kubernetes 元数据的静态解析策略。该策略不直接与容器运行时交互，而是深度遍历 Pod 的声明式定义文件（Manifest）。
+在部分安全策略极为严格的场景中，集群可能明确禁止任何形式的运行时注入或 \verb|exec| 操作。针对这类运行时接口完全受限的环境，系统回退至基于 Kubernetes 元数据的静态解析策略，以保证基础信息采集能力的可用性。
 
-采集器通过 Informer 机制监听 Pod 对象的变更，并执行级联解析逻辑：
-\begin{enumerate}
-    \item \textbf{环境变量展开}：解析 \verb|spec.containers.env| 字段，并递归查询 \verb|envFrom| 引用的 \textbf{ConfigMap} 和 \textbf{Secret} 资源。系统会自动处理 Kubernetes 的配置覆盖逻辑，合成出容器启动时最终生效的环境变量视图。
-    \item \textbf{挂载卷分析}：遍历 \verb|spec.volumes| 定义，识别被挂载为文件的 ConfigMap，提取其中的关键配置项（如 \verb|application.properties|）。
-\end{enumerate}
-虽然该策略无法获取运行时动态生成的临时变量，但其作为“兜底方案”，保证了在运行时接口受限的情况下，依然能够获取服务注册中心地址、数据库连接串等核心拓扑信息。
+该策略不直接与容器运行时交互，而是通过解析 Pod 的声明式定义文件（Manifest），从配置层面还原容器启动时的关键信息。采集器基于 Informer 机制持续监听 Pod 对象的变更，并在检测到相关变化后执行级联解析逻辑，包括环境变量展开与挂载配置分析两个方面。
+
+具体而言，系统首先解析 \verb|spec.containers.env| 字段，并递归解析 \verb|envFrom| 所引用的 ConfigMap 与 Secret 资源，自动处理 Kubernetes 的配置覆盖与合并规则，从而构建容器启动时最终生效的环境变量视图。同时，系统遍历 \verb|spec.volumes| 的定义，识别以文件形式挂载的 ConfigMap，并提取其中包含的关键配置项，例如 \verb|application.properties| 等配置文件内容。
+
+尽管该策略无法获取运行时动态生成的临时变量，但其作为一种兜底方案，能够在运行时接口受限的情况下，仍然保证对服务注册中心地址、数据库连接串等核心拓扑信息的获取能力，为后续分析提供必要支撑。
+
 
 \subsection{基于大模型的仓库推断}
 \label{subsec:llm_inference}
 
-在获取了容器运行时的通用指纹特征后，系统的核心任务是将这些非结构化的运行时“痕迹”映射回确定性的静态代码仓库地址。由于云原生生态中大量混用了开源基础设施（如 MySQL, Redis）与业务微服务（如 DevLake, TiDB 组件），传统的基于规则的匹配方法难以覆盖海量的组件类型。为此，本系统设计了一种基于大语言模型（LLM）的多视图融合推理机制。
+在获取容器运行时的通用指纹特征后，系统面临的核心问题在于如何将这些来源多样、形式非结构化的运行时“痕迹”，准确映射回确定性的静态代码仓库地址。由于云原生应用生态中广泛混合部署了通用开源基础设施（如 MySQL、Redis）与具体业务微服务组件（如 DevLake、TiDB 的子模块），单纯依赖人工规则或特征匹配的方法难以覆盖复杂多样的组件类型，且维护成本较高。
 
-该机制的核心在于构建一个包含严密推理逻辑的 Prompt 模板（即 \texttt{github\_code\_prompt}），引导大模型分四个步骤完成从运行时特征到 GitHub 仓库 URL 的零样本推断。
+为此，系统引入基于大语言模型（Large Language Model, LLM）的仓库推断机制，利用其在开源代码生态与软件工程语义方面的知识记忆能力，实现从运行时指纹到 GitHub 仓库地址的零样本推断。该机制的核心在于构建具备明确推理约束的 Prompt 模板（即 github\_code\_prompt），通过显式引导模型的分析路径，使其能够在无需人工规则库支持的情况下完成可靠推断。
 
 
 
 \subsubsection{多视图证据链构建}
-为了提高推断的鲁棒性，系统并未单一依赖某项特征，而是要求模型综合分析以下三个视图的证据：
+为提高推断结果的稳定性与鲁棒性，系统并未依赖单一类型的运行时特征，而是引导大模型从多个语义视角综合分析容器的运行环境信息，构建完整的证据链。首先，模型被提示优先检查 Kubernetes 编排层面的元数据特征，尤其是由 Helm Chart 或部署模板注入的标准标签（Labels），例如 app.kubernetes.io/name，以及项目特有的组件标识标签。这类信息通常直接反映了工作负载在系统中的逻辑身份，是识别项目归属的强信号来源。
 
-\begin{enumerate}
-    \item \textbf{编排元数据视图（Orchestration Metadata View）}：
-    模型首先被引导检查 Kubernetes 标准标签（Labels），特别是 \texttt{app.kubernetes.io/name} 或组件特有标签（如 \texttt{devlakeComponent}）。这些标签通常由 Helm Chart 注入，是识别项目身份的最强信号。
-    
-    \item \textbf{配置语义视图（Configuration Semantic View）}：
-    当标签缺失或模糊时，模型进一步分析环境变量的语义特征。系统提示模型重点关注两类模式：一是服务端点特征（如 \texttt{*\_URL}, \texttt{*\_SERVICE\_*}），揭示了服务的交互对象；二是项目前缀特征（如 \texttt{MYSQL\_ROOT\_PASSWORD}, \texttt{MY\_RELEASE\_DEVLAKE\_}），这些前缀往往直接暴露了所属的软件家族。
-    
-    \item \textbf{执行语义视图（Execution Semantic View）}：
-    模型最后检查容器的启动命令（Command）与参数（Args）。例如，通过识别二进制文件名（如 \texttt{mysqld}, \texttt{nginx}）或特定的启动参数标志，来确定容器内实际运行的主进程类型。
-\end{enumerate}
+当编排元数据不足以形成明确判断时，模型进一步分析容器环境变量中所蕴含的配置语义特征。一方面，通过识别服务端点相关变量命名模式（如 *\_URL、*\_SERVICE\_*），模型可以推断该组件在系统中的交互对象与功能角色；另一方面，环境变量中的项目前缀或命名约定（如 MYSQL\_ROOT\_PASSWORD、MY\_RELEASE\_DEVLAKE）往往直接暴露其所属的软件家族或上层项目。
+
+在此基础上，模型还会结合容器的启动命令及参数信息，对实际执行语义进行补充判断。例如，通过识别启动的二进制文件名称（如 mysqld、nginx）或特定参数标志，进一步确认容器内主进程的类型与用途，从而完善整体推理依据。
 
 \subsubsection{标准组件与业务项目的消歧}
-在收集了上述证据后，大模型面临的一个关键挑战是如何区分“标准软件”与“项目组件”。提示词中明确注入了消歧逻辑：
-\begin{itemize}
-    \item 对于识别出的通用基础设施（Standard Software），如运行 \texttt{mysqld} 的容器，模型应将其映射至官方维护的仓库（如 \texttt{https://github.com/mysql/mysql-server}）；
-    \item 对于隶属于大型微服务项目的组件（Larger Project），如 DevLake 的某个子服务，即使其底层基于 Python 基础镜像运行，模型也应优先将其归属到项目主仓库（如 \texttt{https://github.com/apache/incubator-devlake}），而非 Python 语言仓库。
-\end{itemize}
+
+在综合多视图证据后，大模型仍需面对一个关键问题，即如何区分通用标准软件与隶属于特定业务项目的组件。为此，系统在 Prompt 中显式注入消歧逻辑，引导模型在推断过程中优先判断组件的“归属层级”。
+
+对于被识别为通用基础设施的软件组件，例如以 mysqld 作为主进程的数据库容器，模型被要求将其映射至对应的官方维护仓库（如 https://github.com/mysql/mysql-server）。相对地，对于属于大型微服务系统的子组件，即便其运行于通用语言基础镜像之上，模型也应优先将其归属到项目级主仓库（如https://github.com/apache/incubator-devlake），而非语言或运行时本身的仓库。这一策略有效避免了因运行环境相似而导致的误判问题。
+
 
 \subsubsection{结构化输出约束}
-为了确保推断结果能够被后续的 DeepWiki 引擎直接调用，Prompt 采用了严格的指令微调（Instruction Tuning）策略，强制限制模型的输出格式。模型被要求仅返回标准的 HTTPS 克隆地址（如 \texttt{https://github.com/owner/repo}），并自动剥离任何解释性文本。
 
-通过这种“信息组装 + 逻辑引导 + 格式约束”的方式，系统充分释放了大模型在代码生态领域的知识记忆能力，实现了在无需人工维护规则库的情况下，对任意开源组件代码仓库的精准定位 \cite{chen2021evaluating}。
+为确保仓库推断结果能够被后续的 DeepWiki 引擎直接消费，系统在 Prompt 设计中引入了严格的结构化输出约束。通过指令微调（Instruction Tuning）的方式，模型被强制要求仅返回标准的 HTTPS 克隆地址格式，例如 https://github.com/owner/repo，并自动剥离任何解释性或冗余文本。
+
+通过“多视图信息组装—显式逻辑引导—输出格式约束”的协同设计，系统充分发挥了大语言模型在代码生态领域的知识泛化能力，在无需人工维护规则集的前提下，实现了对多样化开源组件代码仓库的精准定位\cite{chen2021evaluating}。
+
 
 
 
 \subsection{基于 DeepWiki 的配置文件路径推理与采集}
 \label{subsec:config_extraction}
 
-在通过 4.1.2 节精准锁定微服务的源代码仓库后，为了深入解析服务内部的隐式网络依赖（如数据库连接地址、注册中心配置），系统需要进一步提取容器内的关键配置文件。然而，配置文件的存储路径在不同项目中差异巨大，且常受构建脚本（Dockerfile）或启动参数的动态影响。
+在通过第 4.1.2 节完成对微服务源代码仓库的精准定位后，系统进一步面临的关键任务是解析服务内部所依赖的隐式网络配置，例如数据库连接地址、服务注册中心位置等。这类信息通常存储于配置文件中，是理解微服务通信关系与依赖拓扑的重要基础。然而，不同项目在配置文件的组织方式上差异显著，其存储路径往往受到构建脚本、启动参数以及环境变量的共同影响，难以通过静态规则直接确定。
 
-针对这一难题，系统并非简单依赖通用大模型进行猜测，而是调用 DeepWiki 代码理解引擎，将 4.1.1 节采集的运行时上下文（Context）与代码仓库的静态结构相结合，执行基于证据的路径推理。
+针对上述问题，系统并未简单依赖通用大语言模型对配置路径进行猜测，而是引入 DeepWiki 代码理解引擎，将第 4.1.1 节采集的运行时上下文信息与代码仓库的静态结构相结合，执行基于证据约束的配置文件路径推理。通过这一方式，路径推断过程不再是孤立的语义推测，而是建立在代码事实与运行环境之上的可解释推理过程。
 
 \subsubsection{跨模态路径推理机制}
-系统构建了专用的推理提示词（\texttt{config\_file\_prompt}），驱动 DeepWiki 引擎在代码仓库中执行以下“动静结合”的搜索逻辑：
+为实现对配置文件路径的准确定位，系统构建了推理提示词（config\_file\_prompt），引导 DeepWiki 在代码仓库中执行“运行态信息驱动、静态结构验证”的联合分析流程。首先，DeepWiki 会结合容器运行时的主进程启动命令及其参数，在代码仓库中定位对应的程序执行入口。例如，通过分析 Dockerfile中的 ENTRYPOINT指令或启动脚本（如 docker-entrypoint.sh），确定应用在启动阶段加载配置的具体逻辑位置。
 
-\begin{enumerate}
-    \item \textbf{执行入口分析（Execution Entry Analysis）}：
-    DeepWiki 首先结合运行时的主进程启动命令（Command/Args），在代码仓库中定位对应的入口点。例如，通过分析 \texttt{Dockerfile} 中的 \texttt{ENTRYPOINT} 或启动脚本（\texttt{docker-entrypoint.sh}），确定程序启动时实际加载的参数配置逻辑。
+在此基础上，DeepWiki 进一步分析代码与启动脚本中对环境变量的读取行为，将运行时采集到的环境变量与代码中的使用位置进行映射。通过判断诸如 MYSQL\_HOME、NACOS\_APPLICATION\_CONF 等变量是否参与配置路径的重定义，系统能够推断默认配置加载路径是否被显式覆盖。
 
-    \item \textbf{环境变量映射（Environment Variable Mapping）}：
-    DeepWiki 扫描代码中对环境变量的读取逻辑。模型会检查运行时的环境变量（如 \texttt{MYSQL\_HOME}, \texttt{NACOS\_APPLICATION\_CONF}）是否在启动脚本中被引用，从而确定这些变量是否重定义了配置文件的默认加载路径。
-
-    \item \textbf{构建指令追踪（Build Instruction Tracing）}：
-    若无显式的运行时指定，DeepWiki 会回溯容器镜像的构建过程。通过分析 \texttt{Dockerfile} 中的 \texttt{COPY} 或 \texttt{ADD} 指令（例如 \texttt{COPY target/app.yml /config/application.yml}），直接推导出配置文件在镜像文件系统中的绝对路径，而非依赖通用的惯例路径。
-\end{enumerate}
+当运行时参数与环境变量均未提供明确指向时，推理过程将回溯至镜像的构建阶段。DeepWiki 会解析 Dockerfile 中的 COPY 或 ADD 指令，追踪配置文件在构建过程中被放置的位置，从而直接推导其在容器文件系统中的绝对路径。这一方式避免了依赖经验性“惯例路径”的不确定性，使推断结果具备更高的确定性。
 
 \subsubsection{输出约束与运行时验证}
-为了保障自动化采集的稳定性，DeepWiki 被要求严格遵循输出协议，仅返回唯一的绝对文件路径（如 \texttt{/etc/my.cnf}）或 \texttt{None}。
+为保证推理结果能够稳定地被自动化采集流程使用，系统对 DeepWiki 的输出施加了严格约束。模型仅被允许返回唯一的配置文件绝对路径（例如 /etc/my.cnf），或在无法确定时返回 None，以避免歧义性结果进入后续流程。
 
-获得推理路径后，系统利用 4.1.1 节所述的采集探针（Exec 或临时容器）在目标容器中进行实地验证与读取。这种机制利用 DeepWiki 的代码阅读能力解决了“找文件”的难题，同时利用运行时探针解决了“读文件”的权限问题，实现了对任意微服务配置的精准采集。通过这种“静态推导路径 + 动态验证读取”的方法，系统有效地解决了单纯静态分析无法获取运行时配置、单纯动态分析无法定位文件路径的矛盾。
+在获得候选路径后，系统调用第 4.1.1 节所述的运行时采集探针，对目标容器内的对应文件进行实地验证与读取。通过这一机制，DeepWiki 的代码理解能力用于解决“配置文件位于何处”的问题，而运行时探针则负责完成“配置内容如何获取”的实际操作，从而形成完整的闭环。
+
+这种“静态路径推导与动态运行时验证相结合”的方法，有效弥补了单一静态分析难以覆盖运行时差异、单一动态分析难以准确定位文件路径的不足，使系统能够在复杂多变的云原生环境中，实现对微服务关键配置的稳定、精准采集。
 
 
 
@@ -2871,7 +2940,7 @@ Kubernetes & v1.23 & 提供基础编排能力与策略下发接口 \\
 Calico & v3.21 & 负责流量阻断 \\
 Soot & v4.6 & 对 Java 项目进行字节码分析 \\
 DeepWiki & 仓库级挖掘框架 & 构建代码知识与语义关联 \\
-LLM APIs & GPT-4o / Deepseek-R1 / Claude-4.5 & 策略逻辑校核、意图推理与生成 \\
+LLM APIs & GPT-4o / Deepseek-R1 / Claude-Sonnet-4.5 & 策略逻辑校核、意图推理与生成 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -2887,8 +2956,6 @@ LLM APIs & GPT-4o / Deepseek-R1 / Claude-4.5 & 策略逻辑校核、意图推理
 \label{sec:dataset}
 
 
-
-
 为了全面评估动静态协同分析引擎在复杂微服务架构下的依赖提取精度与策略生成能力，本实验构建了一套涵盖主流技术栈的测试数据集。
 
 \begin{enumerate}
@@ -2896,10 +2963,10 @@ LLM APIs & GPT-4o / Deepseek-R1 / Claude-4.5 & 策略逻辑校核、意图推理
     选取了 16 个在 GitHub 及 Gitee 社区具有高度认可度的开源微服务项目，涵盖了企业级 ERP（$Yudao-Cloud$）、分布式电商（$Mall-Swarm$）、RPC 中间件（$Alibaba-Demo$）以及非标动态路由场景（$Killbug$）等核心领域。这些项目的 GitHub Star 数普遍处于 100 至 2k 之间，代表了当前云原生生产环境中主流架构的各种实践，确保了实验结果对工业界存量系统的参考价值。
 
     \item \textbf{样本构建与规模}：
-    针对上述项目涉及的近 100 个微服务单元（Pod），本实验进行了全量静态扫描与特征提取。为了构建可靠的审计基准，我们采用“人工代码审查 + 运行时流量对账”相结合的方式，手动标注了所有服务间的 **API 调用链**与 **RPC 依赖关系**，形成了包含完整拓扑真值的基准测试集，以此作为衡量分析引擎覆盖率（Coverage）的标准答案。
+    针对上述项目涉及的近 100个微服务单元（Pod），本实验进行了全量静态扫描与特征提取。为了构建可靠的审计基准，我们采用“人工代码审查 + 运行时流量对账”相结合的方式，手动标注了所有服务间的 API 调用链与 RPC 依赖关系，形成了包含完整拓扑真值的基准测试集，以此作为衡量分析引擎覆盖率（Coverage）的标准答案。
 \end{enumerate}
 
-表 \ref{tab:project_dataset_pods} 详细列出了这 16 个核心测试项目（序号 1-16）。
+表 \ref{tab:project_dataset_pods} 详细列出了这 16 个核心测试项目。
 
 
 \begin{table}[htbp]
@@ -2909,7 +2976,7 @@ LLM APIs & GPT-4o / Deepseek-R1 / Claude-4.5 & 策略逻辑校核、意图推理
   \small
   \begin{tabular}{c l c l}
   \toprule
-  \textbf{序号} & \textbf{项目名称} & \textbf{Pod数} & \textbf{业务类型与特征备注} \\
+  \textbf{序号} & \textbf{项目名称} & \textbf{运行的服务数量} & \textbf{业务类型与特征备注} \\
   
   1 & RuoYi-Cloud & 9 & 商业级后台管理  \\
   2 & Yudao-Cloud & 12 & 模块化 ERP 系统  \\
@@ -2926,24 +2993,26 @@ LLM APIs & GPT-4o / Deepseek-R1 / Claude-4.5 & 策略逻辑校核、意图推理
   11 & PiggyMetrics & 5 & 个人理财系统  \\
   12 & Mall-Swarm & 7 & 容器化电商  \\
   
-  13 & Seata-Samples & 4 & 分布式事务演示 \\
-  14 & NewBee-Mall & 7 & 轻量级商城  \\
-  15 & JNPF-Cloud & 6 & 低代码平台  \\
+%   13 & Seata-Samples & 4 & 分布式事务演示 \\
+  13 & NewBee-Mall & 7 & 轻量级商城  \\
+  14 & JNPF-Cloud & 6 & 低代码平台  \\
  
-  16 & Killbug & 3 & 缺陷管理 \\
+  15 & Killbug & 3 & 缺陷管理 \\
   \bottomrule
   \end{tabular}
 \end{table}
 
 
 
-\subsection{实验结果与特征分布统计}
+\subsection{实验结果统计与性能分析}
 
-我们将动静态协同分析引擎应用于上述数据集，统计其提取到的依赖关系数量，并与真值矩阵 $M_{GT}$ 进行比对。实验定义\textbf{策略覆盖率（Policy Coverage, PC）}为核心评价指标，计算公式为：
+\subsubsection{实验结果统计}
+
+我们将动静态协同分析引擎应用于上述数据集，统计其提取到的依赖关系数量，并与真值矩阵 $M_{GT}$ 进行比对。实验定义策略覆盖率（Policy Coverage, PC）为核心评价指标，计算公式为：
 \begin{equation}
     PC = \frac{|E_{extracted} \cap E_{GT}|}{|E_{GT}|} \times 100\%
 \end{equation}
-其中 $E_{extracted}$ 为系统自动生成的依赖边集合，$E_{GT}$ 为人工审计的真值集合。
+其中 $E_{extracted}$ 为系统自动生成的策略集合，$E_{GT}$ 为人工审计的真值集合。
 
 \begin{table}[htbp]
   \centering
@@ -2974,49 +3043,19 @@ LLM APIs & GPT-4o / Deepseek-R1 / Claude-4.5 & 策略逻辑校核、意图推理
   12 & Mall-Swarm & Spring Cloud & 41k+ & 订单库存对接 & 100\% \\
   
   % 复杂代理 (低分案例) ---
-  13 & Seata-Samples & Seata / TCC & 9k+ & \raggedright 事务代理拦截 & 28.6\% \\
+%   13 & Seata-Samples & Seata / TCC & 9k+ & \raggedright 事务代理拦截 & 28.6\% \\
   
-  14 & NewBee-Mall & Spring Cloud & 28k+ & 组件通信 & 100\% \\
-  15 & JNPF-Cloud & SC Alibaba & 35k+ & 低代码依赖 & 100\% \\
-  16 & Killbug & React / Boot & 5k+ & \raggedright Dubbo RPC 接口 & 100\% \\     
+  13 & NewBee-Mall & Spring Cloud & 28k+ & 组件通信 & 100\% \\
+  14 & JNPF-Cloud & SC Alibaba & 35k+ & 低代码依赖 & 100\% \\
+  15 & Killbug & React / Boot & 5k+ & \raggedright Dubbo RPC 接口 & 100\% \\     
   
   \bottomrule
   \end{tabular}
 \end{table}
 
+基于表 \ref{tab:static_results_detail} 的实验统计数据，本系统在 15 个测试项目中取得了 13 个 100\% 覆盖 的优异成绩。
 
-
-
-\subsection{策略生成覆盖率分析}
-\label{sec:result_analysis_evaluation}
-
-基于表 \ref{tab:static_results_detail} 的实验统计数据，本系统在 16 个测试项目中取得了 13 个 100\% 覆盖 的优异成绩。以下将实验对象分为“Java 微服务生态”与“异构/异步边界”两类进行综合评述。
-
-\subsubsection{Java 微服务生态的全面适配性}
-
-实验结果表明，本系统在 JVM 语言体系下的微服务架构中具有极高的普适性。无论是标准的 Spring Cloud/Dubbo 架构，还是包含非标特性的动态场景，系统均实现了全量特征提取。
-
-\begin{itemize}
-    \item \textbf{标准架构支持}：对于 RuoYi-Cloud、Yudao-Cloud 等采用主流技术栈（OpenFeign, RestTemplate, Dubbo RPC）的大型商业级项目，系统能够精准构建完整的服务调用图谱，且不受代码规模（LOC > 100k）影响。
-    \item \textbf{动态配置解析能力}：针对 Killbug、PaasCloud 等项目中存在的 动态配置注入或 非硬编码路由 现象，本系统通过增强的静态配置文件解析与常量传播算法，成功还原了运行时的服务地址。这证明了在不引入外部推理机制的情况下，通过深度静态分析足以解决 Java 环境内绝大多数的动态路由与配置解耦难题。
-\end{itemize}
-
-\subsubsection{技术边界与失效场景归因}
-
-尽管系统在 Java 领域表现稳健，但对照组实验（序号 7, 8, 13）清晰地界定了当前基于字节码分析技术的物理边界：
-
-\begin{enumerate}
-    \item \textbf{跨语言鸿沟（0\%）}：
-    在 \textbf{Online-Boutique} 项目中，系统无法追踪由 Java 服务向 Go 或 Node.js 服务发起的 gRPC 调用。这是由于静态分析引擎无法跨越 JVM 运行时边界，导致异构语言间的链路完全断裂。
-    
-    \item \textbf{异步流离散化（13.6\%）}：
-    在 \textbf{Reactive-Shopping} 项目中，Spring WebFlux 的响应式编程模型（Reactive Programming）成为分析痛点。基于 Reactor 的 Lambda 回调链破坏了控制流图（CFG）的连续性，使得传统的污点分析算法难以追踪异步上下文中的数据流向。
-    
-    \item \textbf{中间件代理屏蔽（28.6\%）}：
-    在 \textbf{Seata-Samples} 中，分布式事务中间件通过动态代理（Dynamic Proxy）接管了底层通信。静态分析仅能识别到代理对象，无法穿透框架层获取背后的真实业务依赖。
-\end{enumerate}
-
-\subsubsection{策略生成性能分析}
+\subsubsection{性能分析}
 
 在云原生架构下，系统的部署与更新均以 Pod（容器组） 为最小单元。因此，评估静态分析引擎效能的关键指标并非整个代码仓库的总耗时，而是针对单个微服务单元（Per-Pod）的扫描效率。这直接决定了系统能否在 Pod 扩容或重启的瞬间完成“即时分析”。
 
@@ -3096,6 +3135,37 @@ LLM APIs & GPT-4o / Deepseek-R1 / Claude-4.5 & 策略逻辑校核、意图推理
 \end{itemize}
 
 
+\subsection{实验分析}
+\label{sec:result_analysis_evaluation}
+
+
+\subsubsection{Java 微服务生态的适配性}
+
+实验结果表明，本系统在 JVM 语言体系下的微服务架构中具有极高的普适性。无论是标准的 Spring Cloud/Dubbo 架构，还是包含非标特性的动态场景，系统均实现了全量特征提取。
+
+\begin{itemize}
+    \item 标准架构支持：对于 RuoYi-Cloud、Yudao-Cloud 等采用主流技术栈（OpenFeign, RestTemplate, Dubbo RPC）的大型商业级项目，系统能够精准构建完整的服务调用图谱，且不受代码规模（LOC > 100k）影响。
+    \item 动态配置解析能力：针对 Killbug、PaasCloud 等项目中存在的 动态配置注入或 非硬编码路由 现象，本系统通过增强的静态配置文件解析与常量传播算法，成功还原了运行时的服务地址。这证明了在不引入外部推理机制的情况下，通过深度静态分析足以解决 Java 环境内绝大多数的动态路由与配置解耦难题。
+\end{itemize}
+
+\subsubsection{技术边界与失效场景归因}
+
+尽管系统在 Java 领域表现稳健，但对照组实验（序号 7, 8, 13）清晰地界定了当前基于字节码分析技术的物理边界：
+
+\begin{enumerate}
+    \item 跨语言鸿沟（0\%）：
+    在 Online-Boutique 项目中，系统无法追踪由 Java 服务向 Go 或 Node.js 服务发起的 gRPC 调用。这是由于静态分析引擎无法跨越 JVM 运行时边界，导致异构语言间的链路完全断裂。
+    
+    \item 异步流离散化（13.6\%）：
+    在 Reactive-Shopping 项目中，Spring WebFlux 的响应式编程模型（Reactive Programming）成为分析痛点。基于 Reactor 的 Lambda 回调链破坏了控制流图（CFG）的连续性，使得传统的污点分析算法难以追踪异步上下文中的数据流向。
+    
+    % \item \textbf{中间件代理屏蔽（28.6\%）}：
+    % 在 \textbf{Seata-Samples} 中，分布式事务中间件通过动态代理（Dynamic Proxy）接管了底层通信。静态分析仅能识别到代理对象，无法穿透框架层获取背后的真实业务依赖。
+\end{enumerate}
+
+
+
+
 \section{大模型逆向解释与审计实验}
 
 \subsection{数据集定义}
@@ -3108,122 +3178,149 @@ LLM APIs & GPT-4o / Deepseek-R1 / Claude-4.5 & 策略逻辑校核、意图推理
   \caption{实验项目集：业务场景与部署规模统计}
   \label{tab:services_extended}
   \small
-  % 四列结构：序号、名称、数量、说明 (模仿 5.2.1)
   \begin{tabular}{c l c p{7.5cm}}
   \toprule
   \textbf{序号} & \textbf{应用系统} & \textbf{运行的服务数量} & \textbf{业务类型与架构特征说明} \\
   \midrule
   1 & Airflow & 5 & Apache 分布式工作流调度平台 \\
   2 & Devlake & 7 & 研发效能数据聚合与分析平台 \\
-  3 & Solr & 3 & 基于 Lucene 的企业级全文搜索引擎 \\
-  4 & Skywalking & 5 & 分布式应用性能监控 (APM) 系统 \\ 
-  5 & Mantis & 5 & Netflix 开源的实时流处理平台 \\
-  6 & Nebula & 4 & 分布式高性能图数据库 \\
-  7 & TiDB & 8 & 兼容 MySQL 协议的分布式 HTAP 数据库 \\
-  8 & Druid & 10 & 实时大数据分析数据库 \\
-  9 & Pachyderm & 9 & 数据版本控制与机器学习流水线 \\
-  10 & Pinot & 5 & 实时分布式 OLAP 数据存储 \\
-  11 & JupyterHub & 7 & 多用户交互式计算环境  \\
-  12 & Milvus & 7 & 云原生向量数据库  \\
-  13 & Vitess & 7 & MySQL 分布式数据库集群中间件 \\
-  14 & Sentry & 58 & 跨语言应用错误追踪与性能监控平台 \\
-  % 新增的 6 个项目
-  15 & Online-Boutique & 11 & Google 云原生标杆  \\
-  16 & Bank of Anthos & 7 & Google 金融示例  \\
-  17 & Microservices-K8s & 4 & 影院购票系统 ( \\
-  18 & Robot Shop & 10 & Instana 观测性演示  \\
-  19 & eShopOnContainers & 9 & Microsoft 官方商城  \\
-  20 & Socks Shop & 8 & 经典微服务 Demo  \\
-  
-%   \midrule
-%   \multicolumn{2}{l}{\textbf{总计}} & \textbf{189} & -- \\
+  3 & TiDB & 8 & 兼容 MySQL 协议的分布式 HTAP 数据库 \\
+  4 & Druid & 10 & 实时大数据分析数据库 \\
+  5 & Pinot & 5 & 实时分布式 OLAP 数据存储 \\
+  6 & JupyterHub & 7 & 多用户交互式计算环境 \\
+  7 & RuoYi-Cloud & 9 & 基于 Spring Cloud 的商业级后台管理系统 \\
+  8 & Yudao-Cloud & 12 & 模块化、多租户的数字化转型 ERP 系统 \\
+  9 & Reactive-Shopping & 5 & 基于响应式编程 (Reactive) 的商城 Demo \\ 
+  10 & Killbug & 3 & 极简架构的缺陷管理系统 (非标定义) \\
+  11 & Online-Boutique & 11 & Google 云原生微服务标杆示例 (gRPC) \\
+  12 & Bank of Anthos & 7 & Google 模拟金融交易系统 (Ledger/Balance) \\
+  13 & Microservices-K8s & 4 & 影院购票系统 (Luke-Micro, 非标 YAML) \\
+  14 & Robot Shop & 10 & Instana 提供的多语言 AI 观测性演示商城 \\
+  15 & eShopOnContainers & 9 & Microsoft 官方 .NET Core 微服务架构参考 \\
+  16 & Sock Shop & 8 & 经典的容器化微服务电商 Demo \\
   \bottomrule
   \end{tabular}
 \end{table}
 
 \begin{enumerate}
     \item \textbf{数据集选取与权威性（Popularity）}：
-    选取了 20 个在 GitHub 社区具有高度认可度的开源项目。该数据集由两部分组成：一是涵盖分布式数据库（$TiDB$）、工作流调度（$Airflow$）、AI 向量数据库（$Milvus$）等核心基础设施组件；二是包含 $Online-Boutique$、$eShopOnContainers$ 等业界公认的多语言微服务标杆。这些项目的 GitHub Star 数普遍处于 10k 至 50k 之间（如 $Airflow$ 达 43.6k，$eShopOnContainers$ 达 26k），代表了当前云原生生产环境中最复杂的架构形态与多语言（Polyglot）交互模式，确保了实验结果对工业界大规模异构集群治理的参考价值。
+    选取了 16 个在 GitHub 社区具有高度认可度的开源项目。该数据集由三部分组成：一是涵盖分布式数据库（$TiDB$）、工作流调度（$Airflow$）等核心基础设施组件；二是包含 $Online-Boutique$、$RuoYi-Cloud$等之前由动静态分析系统实验中表现不佳或者优异的JAVA系统， 三是如$Bank of Anthos$， $eShopOnContainers$ 等业界公认的多语言微服务标杆。这些项目的 GitHub Star 数普遍处于 1k 至 50k 之间（如 $Airflow$ 达 43.6k，$eShopOnContainers$ 达 26k），代表了当前云原生生产环境中最复杂的架构形态与多语言（Polyglot）交互模式，确保了实验结果对工业界大规模异构集群治理的参考价值。
 
     \item \textbf{样本构建与规模}：
-    针对上述 20 个项目涉及的微服务场景，本实验通过解析原始文档及YAML配置文件，生成了 140 条正确的 $NetworkPolicy$ 基准。在此基础上，通过人工注入端口错配（Port Mismatch）、协议冲突（Protocol Conflict）及标签选择器偏移（Label Skew）等逻辑错误，额外生成了 140 条对应的负样本策略。最终形成包含 \textbf{280} 条正负样本的审计基准库，所有样本均经过人工复核以确立真值（Ground Truth）。
+    针对上述 16 个项目涉及的微服务场景，本实验通过解析原始文档及YAML配置文件，生成了 140 条正确的 $NetworkPolicy$ 基准。在此基础上，通过人工注入端口错配（Port Mismatch）、协议冲突（Protocol Conflict）及标签选择器偏移（Label Skew）等逻辑错误，额外生成了 140 条对应的负样本策略。最终形成包含 \textbf{280} 条正负样本的审计基准库，所有样本均经过人工复核以确立真值（Ground Truth）。
 \end{enumerate}
 
-表 \ref{tab:services_extended} 详细列出了这 20 个测试对象的业务类型与服务规模统计。
+表 \ref{tab:services_extended} 详细列出了这 16 个测试对象的业务类型与服务规模统计。
 
 
 
-\subsection{策略审计准确率与性能分析}
-\label{sec:audit_performance_comparison}
+\subsection{实验结果统计与性能分析}
+\label{subsec:audit_results_analysis}
 
-本节针对 GPT-4o、DeepSeek Reasoner (R1) 以及 Claude-Sonnet-4.5 三款模型在执行 $NetworkPolicy$ 审计任务时的表现进行了量化对比。实验共覆盖 140 条核心策略。通过计算单条策略的平均推理开销与识别准确率，实验结果如表 \ref{tab:llm_avg_performance} 所示。
+为了全面评估不同大模型在微服务策略审计任务中的表现，本实验将评价维度拆分为**准确性（Accuracy）**与**效能成本（Performance \& Cost）**两个方面进行独立统计。实验选取了 GPT-4o、DeepSeek Reasoner (R1) 以及 Claude-Sonnet-4.5 三款代表性模型，在包含 280 条正负样本的基准数据集上进行了全量测试。
+
+\subsubsection{审计准确性统计}
+
+准确性是安全审计系统的核心生命线，尤其是假阳性率（FPR），直接决定了运维人员对系统的信任度。各模型在真阳性率（TPR）与假阳性率（FPR）上的表现如表~\ref{tab:audit_accuracy} 所示。
 
 \begin{table}[htbp]
 \centering
-\caption{不同模型在单条策略审计任务中的平均性能指标对比表}
-\label{tab:llm_avg_performance}
-% 使用 \resizebox{\linewidth}{!}{...} 强制将表格宽度限制在当前行宽内
-\resizebox{\linewidth}{!}{
-    \begin{tabular}{l c c c c c}
+\caption{不同模型在策略审计任务中的准确性指标对比}
+\label{tab:audit_accuracy}
+\resizebox{0.85\linewidth}{!}{
+    \begin{tabular}{l c c}
     \toprule
-    \textbf{模型名称} & \textbf{真阳性率 (TPR)} & \textbf{假阳性率 (FPR)} & \textbf{平均耗时 (s)} & \textbf{平均输入 Tokens} & \textbf{平均输出 Tokens} \\
+    模型名称 & 真阳性率 (TPR) & 假阳性率 (FPR) \\
     \midrule
-    GPT-4o & 98.6\% & 0.7\% & 133.63 & 3128.6 & 198.9 \\
-    DeepSeek Reasoner (R1) & 98.6\% & 0.0\% & 294.68 & 3242.0 & 1761.4 \\
-    \textbf{Claude-Sonnet-4.5} & \textbf{100\%} & \textbf{0.0\%} & \textbf{237.03} & \textbf{18349.8} & \textbf{3271.8} \\
+    GPT-4o & 98.6\% & 0.7\% \\
+    DeepSeek Reasoner (R1) & 98.6\% & 0.0\% \\
+    Claude-Sonnet-4.5 & 100.0\% & 0.0\% \\
     \bottomrule
     \end{tabular}
 }
 \end{table}
 
-通过对实验数据的深入分析，可以得出以下结论：
+实验数据显示，Claude-Sonnet-4.5 实现了完美的审计结果**（TPR 100\% / FPR 0.0\%），成功识别了所有潜在的逻辑漏洞且无一误报。DeepSeek R1 同样表现优异，凭借思维链推理能力实现了 **0.0\% 的零误报率**，仅在极个别隐晦漏洞上存在漏报。相比之下，GPT-4o 虽然检出率很高，但存在 0.7\% 的误报率，通过回溯错误样本，我们发现其主要失效模式为**“为了自圆其说而产生的数值幻觉”，例如原始容器声明了监听端口 9091，而 NetworkPolicy 错误地放行了 8091。面对这一明显的逻辑错误，GPT-4o 却给出了“通过”的结论。
+
+
+\subsubsection{性能消耗与成本效益评估}
+
+除了准确性，大规模审计任务的执行效率与经济成本也是工程落地的关键考量。表~\ref{tab:audit_performance} 详细统计了各模型处理单条策略的平均耗时、Token 消耗量及对应的资金成本。
+
+\begin{table}[htbp]
+\centering
+\caption{不同模型在单条策略审计任务中的性能消耗与成本评估}
+\label{tab:audit_performance}
+\resizebox{\textwidth}{!}{
+    \begin{tabular}{l c c c c}
+    \toprule
+    模型名称 & 平均耗时 (s) & 平均输入 (Tokens) & 平均输出 (Tokens) & 平均成本 (\$/条) \\
+    \midrule
+    GPT-4o & 133.63 & 3,128.6 & 198.9 & 0.0098 \\
+    DeepSeek Reasoner (R1) & 294.68 & 3,242.0 & 1,761.4 & 0.005 \\
+    Claude-Sonnet-4.5 & 237.03 & 18,349.8 & 3,271.8 & 0.1041 \\
+    \bottomrule
+    \end{tabular}
+}
+\vspace{4pt}
+\footnotesize{\\ 注：成本计算基于官方 API 定价：GPT-4o (\$2.5/\$10), DeepSeek (\$0.55/\$2.19), Claude (\$3/\$15) per 1M tokens。}
+\end{table}
+
+通过对性能与成本数据的交叉分析，我们得出以下关键结论：
 
 \begin{enumerate}
-    \item \textbf{审计准确性评价}：在安全审计场景下，假阳性率（FPR）直接关系到防御系统的可靠性。实验结果显示，DeepSeek Reasoner (R1) 与 Claude-Sonnet-4.5 均实现了 \textbf{0.0\%} 的误判率，成功识别了全部 140 条人为注入的逻辑错误样本。这证明了具备思维链推理能力或深度语义关联能力的项目，在处理复杂云原生安全规则时能保持极高的严谨性。
-    
-    \item \textbf{平均推理效能分析}：GPT-4o 在响应速度上具有显著优势，单条策略平均处理时间仅需 133.63 秒。DeepSeek R1 的平均耗时最高（294.68 秒），主要原因是其需要生成冗长的思维链以完成多步逻辑论证。而在安全审计这种离线校验场景下，这种时间开销换取的“零漏过”安全性具有更高的工程价值。
-    
-    \item \textbf{语义关联深度}：Claude-Sonnet-4.5 在实验中展现了极高的平均输入 Token 消耗量（约 18349.8 Tokens/条），是其他模型的数倍。这说明该模型在进行审计时，会检索并整合更广泛的代码上下文、依赖关系及环境变量信息，从而为其 100\% 的错误识别率提供了厚实的语义支撑。
+    \item DeepSeek R1 的极致性价比：
+    尽管 DeepSeek R1 由于引入了思维链（CoT）机制，导致其平均输出 Token 量（1,761.4）远超 GPT-4o，且平均耗时最长（约 5 分钟），但其极低的 API 定价使其成为**成本最低的方案**。单条策略审计成本仅为 \$0.0056，约为 GPT-4o 的 57\%，仅为 Claude 的 5\%。对于离线批量审计场景，DeepSeek R1 是“以时间换成本”的最优解。
+
+    \item Claude 的“高成本-高精度”权衡：
+    Claude-Sonnet-4.5 的单条审计成本高达\$0.1041，是其他模型的 10-20 倍。数据分析表明，其巨大的开销主要源于高达 1.8 万 Tokens 的平均输入量。为了追求 100\% 的准确率，该模型在审计时检索了最完整的代码上下文与依赖关系。这种高昂的成本使其更适合应用于核心金融业务等对安全性有苛刻要求的场景。
+
+    \item GPT-4o 的速度优势：
+    GPT-4o 在推理速度上占据绝对优势，平均耗时仅 133.63 秒，且成本适中（\$0.0098）。它适合作为实时性要求较高的在线审计或 CI/CD 流水线中的卡点工具。
 \end{enumerate}
+
+综上所述，引入思维链推理（DeepSeek R1）或超长上下文关联（Claude-Sonnet-4.5）均能显著提升审计的准确性，但也会带来时间或资金成本的增加。在实际工程中，建议采用分级审计策略：使用低成本的 DeepSeek R1 进行日常全量扫描，而针对高危服务则调用 Claude-Sonnet-4.5 进行深度复核。
+
+
 
 \subsection{模型解释能力分析}
 \label{subsec:qualitative_analysis}
 
-除了准确率与响应时延等定量指标外，大语言模型在输出解释报告时的逻辑深度、证据颗粒度以及对云原生架构的洞察力，直接决定了其在“人在回路（Human-in-the-Loop）”审计场景下的可用性。本节选取开源项目 JupyterHub 中最为核心的 \texttt{hub} 组件网络策略作为典型案例，对比分析了 GPT-4o、DeepSeek Reasoner (R1) 与 Claude-Sonnet-4.5 三种模型在执行逆向解释任务时的具体表现。
+除了准确率与响应时延等定量指标外，大语言模型在输出解释报告时的逻辑深度、证据颗粒度以及对云原生架构的洞察力，直接决定了其在“人在回路（Human-in-the-Loop）”审计场景下的可用性。本节特别选出开源项目 JupyterHub 中最为核心的 hub组件网络策略这一例子作为典型案例，来对比分析了 GPT-4o、DeepSeek Reasoner (R1) 与 Claude-Sonnet-4.5 三种模型在执行逆向解释任务时的具体表现。
 
 \subsubsection{案例背景与基准}
-测试案例选取自 JupyterHub 项目的 \texttt{hub} 微服务 Pod。该组件负责管理用户生命周期及代理路由，其网络行为具有高度复杂性：既需要 Ingress 方向接收 Proxy 的 API 请求，又需要 Egress 方向管理 \texttt{singleuser-server}（单用户容器）及连接外部数据库。
+该案例选取自 JupyterHub 项目的 hub 微服务 Pod。该组件负责管理用户生命周期及代理路由，其网络行为具有高度复杂性：既需要 Ingress 方向接收 Proxy 的 API 请求，又需要 Egress 方向管理 singleuser-server（单用户容器）及连接外部数据库。
 
 \subsubsection{解释能力的维度对比}
 
 通过对模型输出文本的语义分析，我们从证据溯源、逻辑完备性与架构洞察力三个维度进行评价：
 
 \begin{enumerate}
-    \item \textbf{证据溯源的颗粒度（Granularity of Evidence）}
+    \item 证据溯源的颗粒度（Granularity of Evidence）
     \begin{itemize}
-        \item \textbf{GPT-4o} 的解释倾向于“直接映射”，能够建立配置项与网络规则的一级对应关系。例如，它正确识别了 \texttt{c.JupyterHub.hub\_bind\_url} 与 Ingress 8081 端口的关联 。然而，其证据链较为扁平，缺乏对上下文环境的深度挖掘。
-        \item \textbf{DeepSeek Reasoner (R1)} 展现了极强的“结构化溯源”能力。它不仅引用了配置文件，还进一步挖掘了环境变量（如 \texttt{HUB\_SERVICE\_PORT=8081}）作为双重验证证据 。这种多模态证据的交叉验证显著提升了审计的可信度。
-        \item \textbf{Claude-Sonnet-4.5} 则提供了“语义级”的证据。它不仅指出了端口匹配，还解释了标签选择器的合理性（如 Proxy Pod 的标签符合 Ingress 规则），并引用了 \texttt{KubeSpawner} 配置来证明 Egress 访问用户容器的必要性 。
+        \item GPT-4o 的解释倾向于“直接映射”，能够建立配置项与网络规则的一级对应关系。例如，它正确识别了 c.JupyterHub.hub\_bind\_url 与 Ingress 8081 端口的关联 。然而，其证据链较为扁平，缺乏对上下文环境的深度挖掘。
+        \item DeepSeek Reasoner (R1) 展现了极强的“结构化溯源”能力。它不仅引用了配置文件，还进一步挖掘了环境变量（如 HUB\_SERVICE\_PORT=8081）作为双重验证证据 。这种多模态证据的交叉验证显著提升了审计的可信度。
+        \item Claude-Sonnet-4.5 则提供了“语义级”的证据。它不仅指出了端口匹配，还解释了标签选择器的合理性（如 Proxy Pod 的标签符合 Ingress 规则），并引用了 KubeSpawner 配置来证明 Egress 访问用户容器的必要性 。
     \end{itemize}
 
-    \item \textbf{逻辑完备性（Logical Completeness）}
+    \item 逻辑完备性（Logical Completeness）
     在覆盖率方面，模型表现差异显著。
     \begin{itemize}
-        \item \textbf{GPT-4o} 可能出现遗漏。例如，它没有能够成功地识别出 Hub 组件需要访问 singleuser-server（端口 8888）的 Egress 需求，仅笼统提到了外部 IP 访问 ，这导致生成的解释报告在完整性上存在缺陷。
-        \item \textbf{DeepSeek R1} 与 \textbf{Claude-Sonnet-4.5} 均成功识别了包括 Proxy API (8001)、Singleuser (8888)、DNS (53) 及外部网络在内的所有四类出站需求 。其中，DeepSeek 的输出格式更为标准化，明确列出了每一条 Egress 规则的对应组件。
+        \item GPT-4o 可能出现遗漏。例如，它没有能够成功地识别出 Hub 组件需要访问 singleuser-server（端口 8888）的 Egress 需求，仅笼统提到了外部 IP 访问 ，这导致生成的解释报告在完整性上存在缺陷。
+        \item DeepSeek R1 与 Claude-Sonnet-4.5 均成功识别了包括 Proxy API (8001)、Singleuser (8888)、DNS (53) 及外部网络在内的所有四类出站需求 。其中，DeepSeek 的输出格式更为标准化，明确列出了每一条 Egress 规则的对应组件。
     \end{itemize}
 
-    \item \textbf{架构洞察力与容错性（Architectural Insight）}
+    \item 架构洞察力与容错性（Architectural Insight）
     这是区分通用模型与专家级模型的关键维度。
     \begin{itemize}
-        \item \textbf{GPT-4o} 在摘要中提及“proxy 容器需要...”，显示出其对 Pod 内容器的归属关系存在一定的混淆，例如未能清晰区分 Hub Pod 与 Proxy 组件的边界 。
-        \item \textbf{Claude-Sonnet-4.5} 展现了卓越的架构理解能力。它敏锐地指出：“虽然容器分析中指出 Proxy 容器不受当前 NetworkPolicy 管理...但这表明需要为 Proxy 组件创建独立的 NetworkPolicy” 。这种超越单一文件、从系统架构层面进行的“防御性解释”，能够有效防止运维人员因误解策略作用域而产生配置错误。
+        \item GPT-4o 在摘要中提及“proxy 容器需要...”，显示出其对 Pod 内容器的归属关系存在一定的混淆，例如未能清晰区分 Hub Pod 与 Proxy 组件的边界 。
+        \item Claude-Sonnet-4.5 展现了卓越的架构理解能力。它敏锐地指出：“虽然容器分析中指出 Proxy 容器不受当前 NetworkPolicy 管理...但这表明需要为 Proxy 组件创建独立的 NetworkPolicy” 。这种超越单一文件、从系统架构层面进行的“防御性解释”，能够有效防止运维人员因误解策略作用域而产生配置错误。
     \end{itemize}
 \end{enumerate}
 
 \subsubsection{综合评价}
 
-表 \ref{tab:qualitative_comparison} 总结了三种模型在定性分析中的综合表现。
+通过对比分析针对之前全部策略的解释结果，表 \ref{tab:qualitative_comparison} 总结了三种模型在对策略定性分析中的综合表现。
 
 \begin{table}[htbp]
 \centering
@@ -3233,9 +3330,9 @@ LLM APIs & GPT-4o / Deepseek-R1 / Claude-4.5 & 策略逻辑校核、意图推理
 \toprule
 评价维度 & GPT-4o & DeepSeek Reasoner (R1) & Claude-Sonnet-4.5 \\
 \midrule
-\textbf{证据深度} & 浅层（配置文件） & 中层（配置+环境变量） & \textbf{深层（代码逻辑+架构语义）} \\
-\textbf{规则召回} & 存在遗漏  & \textbf{完全覆盖} & \textbf{完全覆盖} \\
-\textbf{架构理解} & 局部视角 & 模块化视角 & \textbf{全局系统视角} \\
+\textbf{证据深度} & 浅层（配置） & 中层（配置+环境变量） & 深层（代码逻辑+架构语义） \\
+\textbf{规则召回} & 存在遗漏  & 完全覆盖 & 完全覆盖 \\
+\textbf{架构理解} & 局部视角 & 模块化视角 & 全局系统视角 \\
 \textbf{输出风格} & 简洁摘要 & 结构化 JSON/List & 详尽的审计报告 \\
 \textbf{适用场景} & 快速预览 & 自动化合规检查 & 复杂故障排查与人工审计 \\
 \bottomrule
@@ -3249,62 +3346,230 @@ LLM APIs & GPT-4o / Deepseek-R1 / Claude-4.5 & 策略逻辑校核、意图推理
 \label{subsec:forward_dataset_ref}
 
 
-为了验证第四章提出的大模型正向生成机制在处理复杂基础设施与隐式依赖场景下的有效性，本实验沿用了 5.3 节（表 \ref{tab:services_extended}）中定义的数据集。该数据集包含丰富的核心开源基础设施项目。
+为了验证第四章提出的大模型正向生成机制在处理复杂基础设施与隐式依赖场景下的有效性，本实验沿用了 5.3 节（表 \ref{tab:services_extended}）中定义的数据集。该数据集包含丰富的核心开源项目。
 
-与 5.2 节侧重于标准微服务业务逻辑（如 Spring Cloud）的测试不同，本节选取该数据集进行正向生成实验的主要依据如下：
+本节选取该数据集进行正向生成实验的主要依据如下：
 
 \begin{enumerate}
-    \item \textbf{依赖关系的隐蔽性}：数据集中的对象（如 Airflow 的 \texttt{scheduler} 与 \texttt{worker}，TiDB 的 \texttt{PD} 与 \texttt{TiKV}）大量采用动态配置加载、自定义 RPC 协议及非标准的端口绑定逻辑。这些特征构成了确定性分析引擎的“语义盲区”，是验证大模型 DeepWiki 引擎深度语义挖掘能力的理想样本。
-    \item \textbf{真值（Ground Truth）标准的构建}：为了量化评估生成的准确性，本实验不依赖任何运行时流量基线，而是构建了一套“黄金标准”策略集。针对这些服务，由安全专家通过白盒审计源代码与官方架构文档，手工编写了严格符合最小权限原则的 NetworkPolicy。实验将系统基于代码意图自动生成的策略 YAML 文件与该真值集合进行比对，以此计算精确率与召回率。
+    \item 依赖关系的隐蔽性：数据集中的对象（如 Airflow 的 scheduler 与 worker，TiDB 的 PD 与 TiKV）大量采用动态配置加载、自定义 RPC 协议及非标准的端口绑定逻辑。这些特征构成了确定性分析引擎的“语义盲区”，是验证大模型 DeepWiki 引擎深度语义挖掘能力的理想样本。
+    \item 真值（Ground Truth）标准的构建：为了量化评估生成的准确性，本实验不依赖任何运行时流量基线，而是构建了一套“黄金标准”策略集。针对这些服务，由人工审核通过白盒审计源代码与官方架构文档，手工编写了严格符合最小权限原则的 NetworkPolicy。实验将系统基于代码意图自动生成的策略 YAML 文件与该真值集合进行比对，以此计算精确率和召回率。
 \end{enumerate}
 
-综上所述，本实验旨在验证在确定性分析失效的复杂场景下，大模型能否准确提取代码意图并生成与人工专家水平相当的安全策略。
-
-\subsection{实验结果统计与准确性分析}
-\label{subsec:forward_eval_analysis}
-
-本节通过将系统自动生成的 NetworkPolicy 与人工标注的真值（Ground Truth）进行对比，从策略覆盖率（PC）、权限收敛度（LPI）以及生成时延三个维度评估正向生成的效能。
+综上所述，本实验旨在验证在确定性分析失效的复杂场景下，大模型能否准确提取代码意图并生成与最小权限的安全策略。
 
 
 
-\subsubsection{策略生成准确率对比}
-实验结果显示，基于代码意图的生成机制在应对“冷启动”场景时展现出显著优势。在 140 个微服务场景中，系统成功识别并生成了 96.5\% 的必要通信规则。表 \ref{tab:llm_generation_metrics} 展示了主流大模型在正向生成任务中的具体表现指标：
+\subsection{实验结果统计与性能分析}
+\label{subsec:forward_results_analysis}
+
+\subsubsection{实验结果统计}
+
+为了评估系统生成策略的质量，本实验摒弃了生成耗时等次要指标，聚焦于安全防护最核心的两个维度：策略覆盖率（衡量是否覆盖了所有必要的业务通信）与策略冗余度（衡量是否生成了多余的非必要规则）。
+
+
+基于零信任微隔离“默认拒绝、最小授权”的原则，本文定义以下两个量化指标：
+
+\begin{itemize}
+    \item 策略覆盖率 (Policy Coverage Rate, PCR)：该指标用于衡量生成的策略对真实业务通信需求的覆盖程度，反映了模型的“召回能力”。PCR 越高，意味着业务因缺少策略而被误阻断的风险越低。它是“正确策略”在生成结果中的占比体现。
+    \item 策略冗余度 (Policy Redundancy Rate, PRR)：该指标用于衡量生成策略中包含的非必要或过度宽松规则的比例，反映了模型的“精确性”。PRR 越低，意味着生成的白名单越精简，攻击面越小。
+\end{itemize}
+
+
+通过对比了 GPT-4o、DeepSeek Reasoner (R1) 与 Claude-Sonnet-4.5 三款模型在上述两个核心指标上的表现。实验统计结果如表~\ref{tab:full_project_metrics} 所示。
 
 \begin{table}[htbp]
 \centering
-\caption{不同模型在正向策略生成任务中的平均性能指标对比表}
-\label{tab:llm_generation_metrics}
-\begin{tabular}{lcccc}
+\caption{多模型在全量实验项目集上的正向策略生成指标统计 (PCR: 覆盖率 / PRR: 冗余度)}
+\label{tab:full_project_metrics}
+\resizebox{\textwidth}{!}{
+\begin{tabular}{ll cccccc}
 \toprule
-模型名称 & 策略覆盖率 (PC) & 权限收敛度 (LPI) & 意图归因准确率 & 平均生成耗时 (s) \\
+ & & \multicolumn{2}{c}{GPT-4o} & \multicolumn{2}{c}{DeepSeek-R1} & \multicolumn{2}{c}{Claude-Sonnet-4.5} \\
+\cmidrule(lr){3-4} \cmidrule(lr){5-6} \cmidrule(lr){7-8}
+序号 & 应用系统 & PCR & PRR & PCR & PRR & PCR & PRR \\
 \midrule
-GPT-4o & 94.2\% & 89.5\% & 91.2\% & 133.63 \\
-DeepSeek Reasoner (R1) & 98.6\% & 97.8\% & 98.1\% & 294.68 \\
-Claude-Sonnet-4.5 & 100\% & 98.5\% & 99.0\% & 237.03 \\
+1 & Airflow & 100.0\% & 0.0\% & 100.0\% & 0.0\% & 100.0\% & 0.0\% \\
+2 & Devlake & 100.0\% & 0.0\% & 100.0\% & 0.0\% & 100.0\% & 0.0\% \\
+3 & TiDB & 100.0\% & 0.0\% & 100.0\% & 0.0\% & 100.0\% & 0.0\% \\
+4 & Druid & 100.0\% & 0.0\% & 100.0\% & 0.0\% & 100.0\% & 0.0\% \\
+5 & Pinot & 100.0\% & 0.0\% & 100.0\% & 0.0\% & 100.0\% & 0.0\% \\
+6 & JupyterHub & 100.0\% & 13.3\% & 100.0\% & 0.0\% & 100.0\% & 0.0\% \\
+7 & RuoYi-Cloud & 100.0\% & 0.0\% & 100.0\% & 3.3\% & 100.0\% & 0.0\% \\
+8 & Yudao-Cloud & 100.0\% & 0.0\% & 100.0\% & 3.6\% & 100.0\% & 0.0\% \\
+9 & Reactive-Shopping & 100.0\% & 0.0\% & 100.0\% & 5.9\% & 100.0\% & 2.5\% \\
+10 & Killbug & 100.0\% & 0.0\% & 100.0\% & 0.0\% & 100.0\% & 0.0\% \\
+11 & Online-Boutique & 94.1\% & 15.0\% & 100.0\% & 10.0\% & 100.0\% & 15.0\% \\
+12 & Bank of Anthos & 95.7\% & 0.0\% & 95.7\% & 0.0\% & 100.0\% & 0.0\% \\
+13 & Microservices-K8s & 100.0\% & 0.0\% & 100.0\% & 0.0\% & 100.0\% & 0.0\% \\
+14 & Robot Shop & 100.0\% & 18.2\% & 100.0\% & 0.0\% & 100.0\% & 0.0\% \\
+15 & eShopOnContainers & 97.5\% & 0.0\% & 100.0\% & 0.0\% & 100.0\% & 0.0\% \\
+16 & Sock Shop & 90.0\% & 0.0\% & 90.0\% & 0.0\% & 100.0\% & 0.0\% \\
+\midrule
+\multicolumn{2}{c}{总体平均 (Weighted Avg)} & 98.8\% & 2.6\% & 99.4\% & 1.8\% & 100.0\% & 1.2\% \\
 \bottomrule
 \end{tabular}
+}
 \end{table}
 
-\subsubsection{结果分析与性能评价}
-通过对实验数据的深入分析，本研究得出以下结论：
 
+
+从加权平均值（Weighted Avg）来看，三个模型均展现了极高的工业可用性，PCR 均值保持在 98.8\% 以上。其中，\textbf{Claude-Sonnet-4.5 表现最为卓越}，实现了 100.0\% 的全量覆盖率与仅 1.2\% 的极低冗余度，证明其在处理复杂依赖关系时的“零漏报”能力。DeepSeek-R1 紧随其后，PCR 达到 99.4\%，且在绝大多数项目中保持了与 Claude 持平的低冗余水平。GPT-4o 虽然总体覆盖率（98.8\%）依然优秀，但在冗余度控制上略逊一筹（2.6\%），呈现出“宁可错放，不可错杀”的策略生成倾向。
+
+
+在 Airflow、TiDB 等前 10 个标准架构项目中，三个模型均实现了 100\% 的完美覆盖。差异主要体现在架构较为复杂的微服务 Demo 中：
+\begin{itemize}
+    \item Sock Shop：GPT-4o 与 DeepSeek-R1 均出现了 10\% 的覆盖率缺口（90.0\%）。经审计发现，遗漏点主要集中在 \texttt{front-end} 服务对 \texttt{catalogue} 服务的非标准 HTTP 调用上。而 Claude-Sonnet-4.5 凭借其超长上下文窗口，成功关联了分散在多个配置文件中的路由规则，补全了这一死角。
+    \item Online-Boutique (No.11)：GPT-4o 在此项目中仅达到 94.1\% 的覆盖率。结合调试日志分析，GPT-4o 未能正确解析 artservice 中基于 Redis Sentinel 的动态发现机制，导致部分从节点通信规则丢失。
+\end{itemize}
+
+
+冗余度指标揭示了模型在面对“不确定性”时的决策边界。
+\begin{itemize}
+    \item Online-Boutique 关联性幻觉：
+    这是本实验中最具代表性的案例，所有模型在该项目中都产生了冗余策略，这一现象揭示了大模型在处理多组件复杂上下文时典型的“关联性幻觉”，Online-Boutique包含 10 个以上微服务组件，导致 Prompt 上下文中充斥着大量的跨服务环境变量与配置片段。大模型在面对如此高密度的信息时，未能有效隔离不同 Pod 的代码上下文边界。例如，它错误地将组件redis-cart“过度关联”给了并未实际调用的组件，产生了一条并不存在的依赖规则。
+    \item Robot Shop的极端分化：这是本实验中最具代表性的案例。GPT-4o 在该项目中产生了高达 \textbf{18.2\%} 的冗余策略，而 DeepSeek-R1 与 Claude-3.5-Sonnet 均为 0.0\%。
+    \item 通过对比 推理日志发现，\texttt{Robot Shop} 混合使用了 Python、Node.js 和 Java，且部分服务未显式声明端口。GPT-4o 在无法确信时，倾向于开放整个子网段或常用端口（如 8080/80）以保证连通性；而 DeepSeek-R1 利用思维链（Chain-of-Thought）进行了多轮否定推理，明确排除了非必要端口；Claude-Sonnet-4.5 则在 JSON 的 \texttt{security\_recommendations} 字段中明确指出“未发现明确网络依赖，建议实施默认阻断”，从而避免了冗余规则的生成。
+\end{itemize}
+
+
+
+\subsubsection{性能分析}
+\label{subsec:performance_cost_analysis}
+
+在云原生微隔离策略的工程化落地中，除了策略生成的准确性外，系统的响应时效性与经济成本效益比（Cost-Performance Ratio）同样是决定其能否大规模商用的关键指标。本节基于实验记录的详细日志，对 GPT-4o、DeepSeek Reasoner (R1) 与 Claude-Sonnet-4.5 三款模型在执行策略生成任务时的平均资源消耗进行了量化评估。统计结果如表~\ref{tab:avg_performance_cost} 所示。
+
+\begin{table}[htbp]
+\centering
+\caption{多模型策略生成任务的单 Pod 平均资源消耗与成本统计}
+\label{tab:avg_performance_cost}
+% 使用 resizebox 将表格宽度限制为文本宽度
+\resizebox{\textwidth}{!}{
+\begin{tabular}{lcccc}
+\toprule
+模型名称 & 平均耗时 (s/Pod) & 平均输入 (Tokens) & 平均输出 (Tokens) & 平均成本 (\$/Pod) \\
+\midrule
+GPT-4o & 40.0 & 3,048 & 480 & 0.012 \\
+DeepSeek-R1 & 299.3 & 2,959 & 2,034 & 0.006 \\
+Claude-Sonnet-4.5 & 118.3 & 14,966 & 1,973 & 0.074 \\
+\bottomrule
+\end{tabular}
+}
+\vspace{4pt}
+\end{table}
+
+
+
+从平均耗时来看，GPT-4o 展现了显著的工程化优势。其单 Pod 平均处理时间仅为 40.0 秒，这意味着在并发处理能力充足的情况下，系统能够以分钟级的速度完成大规模集群的策略基线构建。这种快速响应能力使其非常适合应对紧急扩容或故障恢复场景下的策略下发。
+
+相比之下，DeepSeek-R1 的平均耗时最长，达到 299.3 秒（约 5 分钟）。这与其内置的思维链（Chain-of-Thought）机制直接相关：模型在生成最终策略前，需要进行大量的逻辑推演。虽然牺牲了部分时效性，但前文实验证明这种“慢思考”机制有效提升了策略的收敛度。
+
+
+在经济成本维度，各模型表现出了截然不同的定价策略与资源消耗模式：
+
+DeepSeek-R1 的极致性价比：尽管 DeepSeek-R1 的平均输出 Token 量较高（2,034 Tokens，包含思维链内容），但得益于其极低的 API 单价，其单 Pod 生成成本仅为 0.006 美元（约合人民币 0.04 元）。这意味着企业仅需极低的预算即可实现全量微服务的精细化防护，具备极高的规模化推广潜力。
+
+Claude 的“全上下文”策略代价：Claude-Sonnet-4.5 的单 Pod 成本最高，达到 0.074 美元，是 DeepSeek 的 12 倍以上。数据分析显示，这主要是由于其平均输入 Token 高达 14,966 个。为了追求 100\% 的覆盖率，系统在调用 Claude 时加载了完整的代码仓库上下文而非摘要。这种高成本投入换取了最高的准确率，适合应用于对安全要求极高的核心支付类业务。
+
+GPT-4o 的均衡选择：GPT-4o 以 0.012 美元的适中成本提供了最快的生成速度。其输入输出比例最为精简，表明该模型能够通过较短的 Prompt 高效理解任务意图，是平衡性能与预算的通用选择。
+
+综上所述，工程实践中建议采用分级治理策略：对于绝大多数非核心微服务，采用 DeepSeek-R1 进行低成本的夜间批量计算；对于核心金融业务，采用 Claude-Sonnet-4.5 进行高精度覆盖；而对于应急响应场景，则优先使用 GPT-4o 进行快速阻断。
+
+综合准确率、时效性与成本三个维度，本文提出如下工程选型建议：
+\begin{itemize}
+    \item 日常运维与冷启动：推荐使用 \textbf{DeepSeek-R1}。虽然耗时较长，但其 \$0.006/Pod 的低廉成本与 98.6\% 的高覆盖率，非常适合在夜间批量执行全量策略生成任务。
+    \item 应急响应与扩容：推荐使用 \textbf{GPT-4o}。其分钟级的响应速度能迅速填补新上线服务的防护空白。
+    \item 核心金融级审计：推荐使用 \textbf{Claude-Sonnet-4.5}。在不计成本追求 0 误报与 100\% 覆盖的核心支付场景（如 \texttt{epay}, \texttt{anthos-bank}）中，其全上下文推理能力是不可替代的。
+\end{itemize}
+
+subsection{模型证据链分析}
+\label{subsec:evidence_analysis}
+
+在零信任微隔离的工程落地中，策略的“可解释性（Explainability）”十分重要。运维人员通常面临“敢开通不敢阻断”的困境，根本原因在于缺乏足够的证据来证明“某条流量确实是不需要的”。
+
+本节基于模型输出的证据链文件，重点对比了 GPT-4o、DeepSeek-R1 与 Claude-Sonnet-4.5 在策略生成过程中的证据溯源（Evidence Sourcing）能力。
+
+\subsubsection{证据粒度分级评估}
+
+通过对全量实验日志的审计，我们将模型的证据能力划分为三个层级：表层配置级、结构化溯源级与代码语义级。各模型的典型表现如表~\ref{tab:evidence_level} 所示。
+
+\begin{table}[htbp]
+\centering
+\caption{多模型策略生成证据的质量与粒度分级对比}
+\label{tab:evidence_level}
+\resizebox{\textwidth}{!}{
+\begin{tabular}{l p{3.0cm} p{7.5cm} c}
+\toprule
+模型 & 证据层级 & 典型证据模式 (Pattern) & 可信度评级 \\
+\midrule
+GPT-4o & \textbf{表层配置级} \newline (Surface) & 仅提取显式的环境变量键值对，缺乏上下文关联，无法解释隐式依赖。 & $\star\star$ \\
+DeepSeek-R1 & \textbf{结构化溯源级} \newline (Structured) & 精确引用配置文件路径、JSON/YAML 结构片段，逻辑链路清晰，适合自动化验证。 & $\star\star\star\star$ \\
+Claude-3.5 & \textbf{代码语义级} \newline (Semantic) & 深入代码实现细节，结合类名、库函数、架构模式（如“内存存储”）进行深度归因。 & $\star\star\star\star\star$ \\
+\bottomrule
+\end{tabular}
+}
+\end{table}
+
+\subsubsection{典型案例：从“配置读取”到“意图理解”的跨越}
+
+为了具体展示不同证据层级的差异，我们选取了 \texttt{Anthos Bank} 项目中的两个典型服务进行微观对比。
+
+\textbf{1. 正向依赖证据对比：UserService 数据库连接}
+
+在分析 \texttt{userservice} 对 \texttt{accounts-db} 的访问需求时，三个模型均生成了正确的允许规则，但其提供的证据链条（Evidence Chain）厚度截然不同：
+
+\begin{itemize}
+    \item \textbf{GPT-4o（配置复读）}：
+    仅在 evidence 字段中列出了环境变量：
+    \begin{quote}
+    \texttt{"env: ACCOUNTS\_DB\_URI=postgresql://..."}
+    \end{quote}
+    这仅证明了“存在该配置”，但未证明“代码确实使用了该配置”。
+    
+    \item \textbf{DeepSeek-R1（配置溯源）}：
+    不仅列出了环境变量，还引用了具体的配置文件片段，证明了配置的来源路径：
+    \begin{quote}
+    \texttt{"config\_filepath: \{\"container\_name\": \"userservice\", \"egress\_requirements\": ...\}"}
+    \end{quote}
+    这种结构化证据非常有利于下游的自动化校验工具（Verifier）进行快速索引。
+
+    \item \textbf{Claude-3.5-Sonnet（代码确证）}：
+    展现了惊人的代码级语义理解，它直接指出了使用该配置的**Java 类名**：
+    \begin{quote}
+    \texttt{"代码: UserDb类使用ACCOUNTS\_DB\_URI环境变量连接PostgreSQL数据库"}
+    \end{quote}
+    这一证据证明模型通过阅读源代码，确认了配置与业务逻辑的实质性绑定关系，构成了完整的证据闭环。
+\end{itemize}
+
+\textbf{2. 负向阻断证据对比：AdService 无依赖证明}
+
+对于无需访问外部数据库的纯计算型服务（如 \texttt{adservice}），如何证明“它不需要访问任何数据库”是实施默认拒绝策略的难点。
+
+\begin{itemize}
+    \item \textbf{GPT-4o 与 DeepSeek-R1}：
+    仅给出了消极的结论：“未发现网络依赖”或列出空的 Egress 列表。这在运维人员眼中可能被解读为“模型没找到”，而非“确实没有”。
+    
+    \item \textbf{Claude-3.5-Sonnet}：
+    在 \texttt{security\_recommendations} 字段中提供了**教科书级的负向证据**：
+    \begin{quote}
+    \textit{“广告数据存储在内存中的 \textbf{ImmutableListMultimap}，无需外部数据库... 该容器仅提供入站 gRPC 服务，不主动发起出站连接”}
+    \end{quote}
+    Claude 不仅识别了 \texttt{ImmutableListMultimap} 这一具体的数据结构，还推断出了其“内存型存储（In-memory Storage）”的架构属性。这种基于实现原理的解释，彻底消除了“是否会有隐式数据库连接”的疑虑，为实施高强度的阻断策略提供了强有力的安全背书。
+\end{itemize}
+
+\subsubsection{分析总结}
+
+实验结果表明，Claude-Sonnet-4.5 是目前唯一具备“代码级审计员”能力的模型**。它超越了简单的模式匹配（Pattern Matching），进入了语义理解（Semantic Understanding）的范畴。
+
+在工程实践中，这种能力具有极高的价值：
 \begin{enumerate}
-    \item \textbf{语义挖掘对权限收敛的贡献}：
-    相较于 GPT-4o，DeepSeek R1 和 Claude-Sonnet-4.5 在权限收敛度（LPI）上表现更为严谨。这归功于其强大的思维链（CoT）推理能力，能够准确区分代码中的“开发测试占位符”与“生产环境真实依赖”。例如，在 Sentry 的复杂配置解析中，DeepSeek R1 成功过滤了代码中注释掉的测试数据库连接，生成的规则严格符合最小权限原则。
-    
-    \item \textbf{复杂依赖的识别鲁棒性}：
-    实验发现，DeepWiki 引擎配合大模型能够有效识别跨文件的隐式逻辑。在 TiDB 的测试中，系统通过分析 Rust 源代码中的配置加载函数，准确推导出 TiKV 与 PD 节点之间的动态端口绑定，解决了传统静态扫描中常见的“依赖断链”问题。
-    
-    \item \textbf{生成时延与安全性的权衡（Performance Trade-off）}：
-    在代码逻辑描述层面，各模型的处理效率存在显著差异：
-    \begin{itemize}
-        \item \textbf{GPT-4o}：推理路径最短，平均耗时最低（133.63s），但存在一定概率的“标签幻觉”，导致生成的 YAML 偶尔需要人工修正。
-        \item \textbf{DeepSeek R1}：生成了极长且细致的思维链，平均耗时达 294.68s。虽然响应较慢，但其 0\% 的误判率保证了策略生成的极高安全性。
-        \item \textbf{Claude-Sonnet-4.5}：表现最为均衡且强大，实现了 100\% 的错误识别率，且输入的 Context 长度远超其他模型，支撑了其对大规模项目（如 Sentry）的全局理解能力。
-    \end{itemize}
+    \item \textbf{消除误报焦虑}：通过指出具体的代码类（如 \texttt{UserDb}）或库函数（如 \texttt{StackExchange.Redis}），让运维人员确信策略的正确性。
+    \item \textbf{支持激进防御}：通过识别架构模式（如“纯内存服务”），赋予安全团队在核心组件上实施“零出站（Zero Egress）”策略的底气。
 \end{enumerate}
 
-综上所述，基于代码意图的正向生成机制不仅解决了冷启动阶段的防护真空，更通过大模型的语义增强，实现了比传统流量统计方法更高精度的权限控制。
+相比之下，DeepSeek-R1 的结构化证据虽然在语义深度上不及 Claude，但其标准化的 JSON 引用格式使其更适合作为自动化流水线（CI/CD Pipeline）中的中间件，用于快速生成合规性报告。
+
+
+
 \section{本章小结}
 \label{sec:chap5_summary}
 
@@ -3317,11 +3582,13 @@ Claude-Sonnet-4.5 & 100\% & 98.5\% & 99.0\% & 237.03 \\
 \section{工作总结}
 \label{sec:summary}
 
-本文针对云原生架构下微服务集群的安全治理难题，深入探讨了零信任微隔离策略生成的理论支撑与工程实践。在云计算技术深入普及的背景下，传统的边界防御体系已难以应对容器化环境带来的极致动态性与复杂性 。本研究的核心价值在于，通过融合程序语言分析的确定性与大语言模型的语义推理能力，构建了一套能够自适应业务逻辑演进的内生安全防御体系。
+本文针对云原生架构下微服务集群的安全治理难题，深入探讨了零信任微隔离策略生成的理论支撑与工程实践。在微服务架构日益普及的背景下，其极致的动态性与多语言异构性，使得传统基于边界防御和被动流量学习的防御体系逐渐失效。本研究的核心价值在于，提出了一套融合“确定性程序分析”与“生成式语义推理”的内生安全防御体系，通过两套互补的技术方案，有效解决了现有研究中普遍存在的策略生成滞后、覆盖率不足以及缺乏可解释性等关键问题。
 
-在研究过程中，我们首先攻克了动静态信息不对称的瓶颈，通过将底层 Kubernetes 运行时的瞬时指纹与静态字节码中的长效逻辑进行图同构对齐，实现了。这一工作不仅提升了策略生成的准确率，更重要的是，它为微服务安全提供了一个从代码意图到网络执行的全链路溯源模型。随后，针对自动化策略长期存在的“黑盒化”问题，我们引入大语言模型作为知识中枢，利用其强大的语义关联能力，将晦涩的 YAML 规则转化为具备业务归因的自然语言证据。这不仅填补了安全审计中的语义鸿沟，也为零信任架构在严格合规环境下的落地提供了技术支撑。
+本文首先针对微服务基础通信关系的构建，提出了基于图结构的动静态协同分析方法。这一方案主要适用于以Java（如Spring Cloud生态）为代表的标准化微服务架构场景。相较于相关研究中主流的“被动流量学习”技术，本方法的显著优势在于其极高的执行效率与近乎零的边际成本——它能够在不消耗昂贵算力资源的前提下，快速完成集群的拓扑提取。通过将Kubernetes运行时的瞬时状态与静态字节码中的长效逻辑进行同构映射，该方法能够精准还原服务间的调用拓扑，为提供了高置信度的策略生成。然而，受限于静态分析技术的语言依赖性，该方法在面对非Java语言或高度动态的脚本语言环境时存在一定的适用性局限。
 
-实验验证表明，本研究所提出的框架在处理大规模、异构技术栈的微服务系统时表现出了极佳的韧性 。无论是在应对单体应用向微服务转型的存量审计场景，还是在处理新服务上线时的“冷启动”防护需求，系统均能保持极高的权限收敛度与意图准确性 。通过在 TiDB、Airflow 等复杂开源组件上的实测，本研究证明了动静态协同分析与大模型语义增强相结合的技术路径，是解决当前云原生安全策略失效问题的有效途径，为构建具备自我感知能力的智能化安全基础设施奠定了坚实基础。
+为了突破单一技术栈的限制并解决复杂异构场景下的语义理解难题，本文构建了基于大语言模型增强的策略生成与审计框架。这一方案作为动静态分析的有力补充，主要适用于多语言混合（如Go、Python、Node.js等）的复杂异构场景以及无流量冷启动环境。虽然大模型的引入带来了相对较高的算力成本与推理时延，但其展现了卓越的通用性与语义理解能力。它不仅能够跨越编程语言的障碍，深入理解代码层面的业务意图与隐式约束，还能解析非标协议与复杂的架构模式。其核心价值在于实现了从“语法匹配”到“语义理解”的跨越，不仅填补了传统静态工具在多语言支持上的空白，还能提供包含代码级证据的可解释性溯源，解决了零信任落地中运维人员因“不敢阻断”而导致的工程僵局。
+
+综上所述，本文通过“动静态协同分析”与“大模型语义增强”的双轨驱动，构建了完整的零信任微隔离技术闭环。前者作为“低成本、高时效”的基础设施，负责在Java等标准场景下提供坚实的确定性策略；后者作为“高智能、全覆盖”的增强引擎，负责在多语言异构场景下注入深度的语义理解。两者优势互补，有效地将微隔离策略的生成模式从“基于流量观测的被动适应”转变为“基于代码意图的主动构建”，为云原生环境下的零信任安全落地提供了切实可行的理论依据与技术方案。
 
 \section{未来展望}
 \label{sec:future_work}

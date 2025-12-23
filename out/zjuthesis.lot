@@ -1,17 +1,20 @@
 \addvspace {10.0pt}
 \addvspace {10.0pt}
 \addvspace {10.0pt}
-\contentsline {table}{\numberline {3.1}{\ignorespaces Kubernetes 核心资源对象与策略生成维度的映射关系}}{26}{table.caption.20}%
-\contentsline {table}{\numberline {3.2}{\ignorespaces 微隔离策略冲突类型定义与系统消解动作}}{40}{table.caption.30}%
+\contentsline {table}{\numberline {3.1}{\ignorespaces Kubernetes 核心资源对象与策略生成维度的映射关系}}{27}{table.caption.20}%
+\contentsline {table}{\numberline {3.2}{\ignorespaces 微隔离策略冲突类型定义与系统消解动作}}{44}{table.caption.30}%
 \addvspace {10.0pt}
-\contentsline {table}{\numberline {4.1}{\ignorespaces 流量意图类型与 NetworkPolicy 规则合成逻辑对照表}}{57}{table.caption.35}%
+\contentsline {table}{\numberline {4.1}{\ignorespaces 流量意图类型与 NetworkPolicy 规则合成逻辑对照表}}{62}{table.caption.35}%
 \addvspace {10.0pt}
-\contentsline {table}{\numberline {5.1}{\ignorespaces 实验环境多集群硬件配置表}}{63}{table.caption.38}%
-\contentsline {table}{\numberline {5.2}{\ignorespaces 实验环境软件系统版本及用途}}{64}{table.caption.39}%
-\contentsline {table}{\numberline {5.3}{\ignorespaces 实验项目集：业务场景与部署规模统计}}{65}{table.caption.40}%
-\contentsline {table}{\numberline {5.4}{\ignorespaces 动静态协同分析引擎在开源微服务项目上的测试结果统计}}{65}{table.caption.41}%
-\contentsline {table}{\numberline {5.5}{\ignorespaces 实验项目集：业务场景与部署规模统计}}{68}{table.caption.43}%
-\contentsline {table}{\numberline {5.6}{\ignorespaces 不同模型在单条策略审计任务中的平均性能指标对比表}}{69}{table.caption.44}%
-\contentsline {table}{\numberline {5.7}{\ignorespaces 不同大模型在微隔离策略解释任务中的定性能力对比}}{72}{table.caption.45}%
-\contentsline {table}{\numberline {5.8}{\ignorespaces 不同模型在正向策略生成任务中的平均性能指标对比表}}{73}{table.caption.46}%
+\contentsline {table}{\numberline {5.1}{\ignorespaces 实验环境多集群硬件配置表}}{67}{table.caption.38}%
+\contentsline {table}{\numberline {5.2}{\ignorespaces 实验环境软件系统版本及用途}}{68}{table.caption.39}%
+\contentsline {table}{\numberline {5.3}{\ignorespaces 实验项目集：业务场景与部署规模统计}}{69}{table.caption.40}%
+\contentsline {table}{\numberline {5.4}{\ignorespaces 动静态协同分析引擎在开源微服务项目上的测试结果统计}}{69}{table.caption.41}%
+\contentsline {table}{\numberline {5.5}{\ignorespaces 实验项目集：业务场景与部署规模统计}}{72}{table.caption.43}%
+\contentsline {table}{\numberline {5.6}{\ignorespaces 不同模型在策略审计任务中的准确性指标对比}}{73}{table.caption.44}%
+\contentsline {table}{\numberline {5.7}{\ignorespaces 不同模型在单条策略审计任务中的性能消耗与成本评估}}{74}{table.caption.45}%
+\contentsline {table}{\numberline {5.8}{\ignorespaces 不同大模型在微隔离策略解释任务中的定性能力对比}}{77}{table.caption.46}%
+\contentsline {table}{\numberline {5.9}{\ignorespaces 多模型在全量实验项目集上的正向策略生成指标统计 (PCR: 覆盖率 / PRR: 冗余度)}}{79}{table.caption.47}%
+\contentsline {table}{\numberline {5.10}{\ignorespaces 多模型策略生成任务的单 Pod 平均资源消耗与成本统计}}{81}{table.caption.48}%
+\contentsline {table}{\numberline {5.11}{\ignorespaces 多模型策略生成证据的质量与粒度分级对比}}{82}{table.caption.49}%
 \addvspace {10.0pt}
