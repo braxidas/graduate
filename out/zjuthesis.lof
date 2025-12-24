@@ -1,27 +1,26 @@
 \addvspace {10.0pt}
-\contentsline {figure}{\numberline {1.1}{\ignorespaces 传统边界防御体系在云原生环境下的失效机理示意图}}{1}{figure.caption.16}%
+\contentsline {figure}{\numberline {1.1}{\ignorespaces 传统边界防御体系在云原生环境下的失效机理示意图}}{1}{figure.caption.8}%
 \addvspace {10.0pt}
-\contentsline {figure}{\numberline {2.1}{\ignorespaces Kubernetes Informer 机制组件协作与事件驱动流程示意图}}{17}{figure.caption.17}%
-\contentsline {figure}{\numberline {2.2}{\ignorespaces Soot 框架类层次分析与程序结构提取流程示意图}}{19}{figure.caption.18}%
+\contentsline {figure}{\numberline {2.1}{\ignorespaces Kubernetes Informer 机制组件协作与事件驱动流程示意图}}{17}{figure.caption.9}%
+\contentsline {figure}{\numberline {2.2}{\ignorespaces Soot 框架类层次分析与程序结构提取流程示意图}}{19}{figure.caption.10}%
 \addvspace {10.0pt}
-\contentsline {figure}{\numberline {3.1}{\ignorespaces 动静态协同分析的零信任策略生成系统总体架构}}{23}{figure.caption.19}%
-\contentsline {figure}{\numberline {3.2}{\ignorespaces Kubernetes 关键资源对象与策略采集维度映射示意图}}{27}{figure.caption.21}%
-\contentsline {figure}{\numberline {3.3}{\ignorespaces 基于内核内存映射的容器活跃资产锁定与提取原理}}{29}{figure.caption.22}%
-\contentsline {figure}{\numberline {3.4}{\ignorespaces 异构注册中心数据的统一采集与映射机制}}{32}{figure.caption.23}%
-\contentsline {figure}{\numberline {3.5}{\ignorespaces 基于指纹与启发式规则的第三方依赖过滤流程}}{36}{figure.caption.24}%
-\contentsline {figure}{\numberline {3.6}{\ignorespaces 静态污点分析与调用提取示例}}{38}{figure.caption.25}%
-\contentsline {figure}{\numberline {3.7}{\ignorespaces 复杂场景下类级调用关系图的关联传递示例}}{39}{figure.caption.26}%
-\contentsline {figure}{\numberline {3.8}{\ignorespaces 基于类级关联聚合的微服务调用关系图构建示例}}{40}{figure.caption.27}%
-\contentsline {figure}{\numberline {3.9}{\ignorespaces 最小化白名单策略生成流程示意图}}{42}{figure.caption.28}%
-\contentsline {figure}{\numberline {3.10}{\ignorespaces 策略冗余消除与冲突检测流程示意图}}{43}{figure.caption.29}%
+\contentsline {figure}{\numberline {3.1}{\ignorespaces 动静态协同分析的零信任策略生成系统总体架构}}{22}{figure.caption.11}%
+\contentsline {figure}{\numberline {3.2}{\ignorespaces Kubernetes 关键资源对象与策略采集维度映射示意图}}{26}{figure.caption.13}%
+\contentsline {figure}{\numberline {3.3}{\ignorespaces 基于内核内存映射的容器活跃资产锁定与提取原理}}{28}{figure.caption.14}%
+\contentsline {figure}{\numberline {3.4}{\ignorespaces 异构注册中心数据的统一采集与映射机制}}{31}{figure.caption.15}%
+\contentsline {figure}{\numberline {3.5}{\ignorespaces 基于指纹与启发式规则的第三方依赖过滤流程}}{35}{figure.caption.16}%
+\contentsline {figure}{\numberline {3.6}{\ignorespaces 静态污点分析与调用提取示例}}{37}{figure.caption.17}%
+\contentsline {figure}{\numberline {3.7}{\ignorespaces 复杂场景下类级调用关系图的关联传递示例}}{38}{figure.caption.18}%
+\contentsline {figure}{\numberline {3.8}{\ignorespaces 基于类级关联聚合的微服务调用关系图构建示例}}{40}{figure.caption.19}%
+\contentsline {figure}{\numberline {3.9}{\ignorespaces 最小化白名单策略生成流程示意图}}{42}{figure.caption.20}%
+\contentsline {figure}{\numberline {3.10}{\ignorespaces 策略冗余消除与冲突检测流程示意图}}{42}{figure.caption.21}%
 \addvspace {10.0pt}
-\contentsline {figure}{\numberline {4.1}{\ignorespaces 基于大模型语义分析的双向策略智能生成系统架构}}{48}{figure.caption.31}%
-\contentsline {figure}{\numberline {4.2}{\ignorespaces 指纹采集逻辑图}}{50}{figure.caption.32}%
-\contentsline {figure}{\numberline {4.3}{\ignorespaces 策略与工作负载信息的级联采集机制}}{56}{figure.caption.33}%
-\contentsline {figure}{\numberline {4.4}{\ignorespaces 容器级网络行为的推理流程}}{58}{figure.caption.34}%
-\contentsline {figure}{\numberline {4.5}{\ignorespaces 确定性锚定与熔断机制}}{64}{figure.caption.36}%
-\contentsline {figure}{\numberline {4.6}{\ignorespaces 基于证据的规则合成流程}}{65}{figure.caption.37}%
+\contentsline {figure}{\numberline {4.1}{\ignorespaces 基于大模型语义分析的双向策略智能生成系统架构}}{46}{figure.caption.23}%
+\contentsline {figure}{\numberline {4.2}{\ignorespaces 指纹采集逻辑图}}{48}{figure.caption.24}%
+\contentsline {figure}{\numberline {4.3}{\ignorespaces 策略与工作负载信息的级联采集机制}}{54}{figure.caption.25}%
+\contentsline {figure}{\numberline {4.4}{\ignorespaces 容器级网络行为的推理流程}}{57}{figure.caption.26}%
+\contentsline {figure}{\numberline {4.5}{\ignorespaces 确定性锚定与熔断机制}}{63}{figure.caption.28}%
+\contentsline {figure}{\numberline {4.6}{\ignorespaces 基于证据的规则合成流程}}{64}{figure.caption.29}%
 \addvspace {10.0pt}
-\contentsline {figure}{\numberline {5.1}{\ignorespaces 针对不同项目的微服务单元 (Pod) 平均耗时统计举例}}{70}{figure.caption.42}%
+\contentsline {figure}{\numberline {5.1}{\ignorespaces 针对不同项目的微服务单元 (Pod) 平均耗时统计举例}}{69}{figure.caption.34}%
 \addvspace {10.0pt}
-\contentsline {figure}{\numberline {A.1}{\ignorespaces 附录中的图片}}{93}{figure.caption.54}%

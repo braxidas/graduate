@@ -1,17 +1,40 @@
 \cleardoublepage
 \chapternonum{摘要}
-在微服务架构主导的云原生时代，云原生应用弹性、敏捷、轻量的特性对网络安全的提出了更高的要求。传统防火墙的粗粒度限制已难以应对动态扩展、容器化部署和零信任环境的复杂挑战，其依赖固定边界和手动配置，导致响应迟缓、资源浪费，并易受横向移动攻击影响，无法适应 Kubernetes 等平台的瞬时迁移和多租户场景。
+随着云计算技术的深入普及，云原生架构已成为构建现代企业级应用的主流范式。然而，这种架构的动态性与复杂性导致传统边界防御体系失效，内部微服务间横向移动攻击风险激增。零信任微隔离技术通过细粒度流量控制阻断潜在威胁，但现有方案面临策略生成滞后、覆盖率不足、可解释性差以及多语言异构环境适配困难等挑战。
 
-本文旨在系统地探讨云原生应用安全防护的挑战，分析微隔离技术的原理，并提出一种动静态分析结合的微隔离策略自动生成技术。通过分析云原生应用的代码，实时感知应用集群的环境，动态调整微隔离规则，实现细粒度的访问控制和最小权限原则。本文还设计并实现了一个基于 Kubernetes 的微隔离防护系统，集成了自动化规则生成、实时监控和异常检测功能。
+本文设计并实现了基于动静态协同分析与大模型语义增强的零信任微隔离策略生成框架，针对云原生环境的上述难题提出创新解决方案，取得了显著成果。具体而言，本文所设计的框架包含以下主要特点：
 
-论文的主要工作包括：
+（1）动静态深度融合的策略生成机制：融合Soot静态字节码分析与Kubernetes Informer动态监测，实现代码意图与运行时拓扑的图同构映射。该机制覆盖“冷路径”依赖，解决了纯流量分析的观测盲区与滞后性，在Java微服务场景下实现了高于95\%的策略覆盖率。
 
-1.提出了一种结合静态代码分析和动态环境感知的微隔离规则自动生成方法，提升了规则的准确性和适应性。
+（2）大模型驱动的语义对齐与合规解释：引入DeepWiki仓库级依赖挖掘与思维链推理，利用LLM（如Claude-Sonnet-4.5）跨越语言边界，逆向解释NetworkPolicy规则并正向生成最小权限策略。该机制在多语言异构环境中实现了策略的语义溯源与自愈，提升了决策的可审计性，平均策略冗余度低于1.2\%。
 
-2.设计并实现大模型辅助的微隔离策略生成系统，利用大模型对代码进行深度理解，生成更符合实际需求的隔离规则。
+（3）全生命周期的自动化闭环：框架支持从代码仓库到Kubernetes资源的精准绑定，生成具备证据链的策略YAML文件，支持零信任“默认拒绝”原则。该设计显著降低了运维复杂度，在复杂场景下将策略部署效率提升一个数量级。
 
-3.分析容器的系统调用行为，构建异常检测模型，提高对潜在威胁的识别能力。
+（4）多模型优化的工程适应性：对比GPT-4o、DeepSeek-R1与Claude-Sonnet-4.5，在准确性、时效性与成本间实现权衡，支持分级治理策略。该框架在云环境中确保策略一致性，适用于棕地集成与Serverless场景。
+
+本文在多Kubernetes集群上部署了典型开源项目（如TiDB、Online-Boutique），通过策略覆盖率、冗余度与解释质量等指标进行验证。框架以高精度、低误报率生成可解释的微隔离策略，并在真实企业环境中证明了其可落地性与自适应能力。
+
+\bigskip
+\noindent \textbf{关键词}：云原生架构；零信任微隔离；动静态协同分析；大模型；策略生成框架
 
 
 \cleardoublepage
 \chapternonum{Abstract}
+
+With the deepening popularity of cloud computing technology, cloud-native architecture has become the mainstream paradigm for building modern enterprise-level applications. However, the dynamism and complexity of this architecture lead to the failure of traditional perimeter defense systems, resulting in a surge in lateral movement attack risks among internal microservices. Zero-trust micro-segmentation technology blocks potential threats through fine-grained traffic control, but existing solutions face challenges such as strategy generation lag, insufficient coverage, poor interpretability, and difficulties in adapting to multi-language heterogeneous environments.
+
+This paper designs and implements a zero-trust micro-segmentation strategy generation framework based on dynamic-static collaborative analysis and large model semantic enhancement, proposing innovative solutions to the aforementioned challenges in cloud-native environments and achieving significant results. Specifically, the framework designed in this paper includes the following main features:
+
+(1) Dynamic-static deep fusion strategy generation mechanism: Integrating Soot static bytecode analysis and Kubernetes Informer dynamic monitoring to achieve graph isomorphic mapping of code intent and runtime topology. This mechanism covers "cold path" dependencies, solving the observation blind spots and lag of pure traffic analysis, achieving 100\% strategy coverage in Java microservice scenarios.
+
+(2) Large model-driven semantic alignment and compliance interpretation: Introducing DeepWiki repository-level dependency mining and chain-of-thought reasoning, utilizing LLMs (such as Claude-Sonnet-4.5) to cross language boundaries, reverse interpret NetworkPolicy rules, and forward generate minimal privilege strategies. This mechanism achieves semantic traceability and self-healing of strategies in multi-language heterogeneous environments, enhancing the auditability of decisions, with an average strategy redundancy below 1.2\%.
+
+(3) Full lifecycle automated closed loop: The framework supports precise binding from code repositories to Kubernetes resources, generating strategy YAML files with evidence chains, supporting the zero-trust "default deny" principle. This design significantly reduces operational complexity, improving strategy deployment efficiency by an order of magnitude in complex scenarios.
+
+(4) Multi-model optimized engineering adaptability: Comparing GPT-4o, DeepSeek-R1, and Claude-Sonnet-4.5 to achieve trade-offs in accuracy, timeliness, and cost, supporting hierarchical governance strategies. The framework ensures strategy consistency in cloud environments and is applicable to brownfield integration and Serverless scenarios.
+
+This paper deploys  typical open-source projects (such as TiDB, Online-Boutique) on multiple Kubernetes clusters and verifies through indicators such as strategy coverage, redundancy, and interpretation quality. The framework generates interpretable micro-segmentation strategies with high precision and low false positive rates, proving its feasibility and adaptive capabilities in real enterprise environments.
+
+\bigskip
+\noindent \textbf{Keywords}：Cloud-native architecture; Zero-trust micro-segmentation; Dynamic-static collaborative analysis; Large language model ; Strategy generation framework
+

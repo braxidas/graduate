@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025) (preloaded format=xelatex 2025.11.9)  23 DEC 2025 23:31
+This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025) (preloaded format=xelatex 2025.11.9)  24 DEC 2025 21:48
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1306,7 +1306,7 @@ LaTeX Font Info:    ... okay on input line 166.
 * paper: a4paper
 * layout: <same size as paper>
 * layoutoffset:(h,v)=(0.0pt,0.0pt)
-* modes: includehead includefoot twoside 
+* modes: includehead includefoot 
 * h-part:(L,W,R)=(71.13188pt, 455.24411pt, 71.13188pt)
 * v-part:(T,H,B)=(56.9055pt, 731.23584pt, 56.9055pt)
 * \paperwidth=597.50787pt
@@ -1328,8 +1328,8 @@ LaTeX Font Info:    ... okay on input line 166.
 * \voffset=0.0pt
 * \mag=1000
 * \@twocolumnfalse
-* \@twosidetrue
-* \@mparswitchtrue
+* \@twosidefalse
+* \@mparswitchfalse
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
@@ -1392,154 +1392,65 @@ File: figure/logo/zjuchar.pdf Graphic file (type pdf)
 <use figure/logo/zjuchar.pdf>
 File: figure/logo/zju.pdf Graphic file (type pdf)
 <use figure/logo/zju.pdf>
-) (./page/graduate/title-chn.tex
+
+Overfull \hbox (30.68092pt too wide) in paragraph at lines 83--83
+ |   [] 
+ []
+
+
+Overfull \hbox (13.68788pt too wide) in paragraph at lines 83--83
+ |   [] 
+ []
+
+
+Overfull \hbox (70.03902pt too wide) in paragraph at lines 83--83
+ |   [] 
+ []
+
+) (./page/graduate/title-chn.tex) (./page/graduate/title-eng.tex) (./page/graduate/auth-claim.tex))
 
 [1
 
+] (./page/graduate/previous.tex (./page/graduate/correction.tex) (./page/graduate/acknowledgement.tex) (./page/graduate/preface.tex) (./page/graduate/abstract.tex
+
+[1
+
+
+
+
 ]
+Overfull \hbox (0.50528pt too wide) in paragraph at lines 32--33
+\TU/TimesNewRoman(0)/m/n/12.045 code repositories to Kubernetes resources, generating strategy YAML files with evidence chains,
+ []
+
+
 
 [2
 
-]
-File: figure/logo/zju.pdf Graphic file (type pdf)
-<use figure/logo/zju.pdf>
-) (./page/graduate/title-eng.tex
 
-[3]
+]) (./page/graduate/term-translation.tex)) (./page/graduate/toc.tex
+
+[3] (out/zjuthesis.toc
 
 [4
 
 ]
-File: figure/logo/zju.pdf Graphic file (type pdf)
-<use figure/logo/zju.pdf>
-) (./page/graduate/auth-claim.tex
 
 [5]
 
-[6
-
-]
-
-Package fontspec Info: 
-(fontspec)             Font family 'KaiTi(0)' created for font 'KaiTi' with
-(fontspec)             options
-(fontspec)             [Script={CJK},Path={./fonts/},AutoFakeBold={4}].
-(fontspec)              
-(fontspec)              This font family consists of the following NFSS
-(fontspec)             series/shapes:
-(fontspec)              
-(fontspec)             - 'normal' (m/n) with NFSS spec.:
-(fontspec)             <->"[./fonts/KaiTi]/OT:script=hani;language=dflt;"
-(fontspec)             - 'bold' (b/n) with NFSS spec.:
-(fontspec)             <->"[./fonts/KaiTi]/OT:script=hani;language=dflt;embolden=4;"
-
-))
-
-[7]
-
-[8
-
-] (./page/graduate/previous.tex (./page/graduate/correction.tex) (./page/graduate/acknowledgement.tex
-
-[1
-
-
-
-]
-
-[2
-
-]) (./page/graduate/preface.tex
-
-[3
-
-]
-
-[4
-
-]) (./page/graduate/abstract.tex
-
-[5
-
-]
-
-[6
-
-]
-
-[7
-
-]
-
-[8
-
-]) (./page/graduate/term-translation.tex
-
-[9
-
-]
-
-[10
-
-]
-Overfull \hbox (7.54721pt too wide) in alignment at lines 8--13
- [] [] [] 
- []
-
-
-Overfull \hbox (7.54721pt too wide) in alignment at lines 13--17
- [] [] [] 
- []
-
-
-Overfull \hbox (7.54721pt too wide) in alignment at lines 17--19
- [] [] [] 
- []
-
-
-Overfull \hbox (7.54721pt too wide) in alignment at lines 19--21
- [] [] [] 
- []
-
-
-Overfull \hbox (7.54721pt too wide) in alignment at lines 21--30
- [] [] [] 
- []
-
-)) (./page/graduate/toc.tex
-
-[11
-
-]
-
-[12
-
-] (out/zjuthesis.toc
-Underfull \vbox (badness 1675) has occurred while \output is active []
-
-
-
-[13]
-
-[14]
-
-[15])
+[6])
 \tf@toc=\write5
 \openout5 = `zjuthesis.toc'.
 
 
 
-[16] (out/zjuthesis.lof)
+[7] (out/zjuthesis.lof)
 \tf@lof=\write6
 \openout6 = `zjuthesis.lof'.
 
 
 
-[17
-
-]
-
-[18
+[8
 
 ] (out/zjuthesis.lot)
 \tf@lot=\write7
@@ -1547,15 +1458,14 @@ Underfull \vbox (badness 1675) has occurred while \output is active []
 
 )
 
-[19]
-
-[20
+[9
 
 ] (./body/graduate/content.tex
 1
 
 
 [1
+
 
 ]
 
@@ -1568,19 +1478,10 @@ Underfull \vbox (badness 1675) has occurred while \output is active []
 [5]
 
 [6]
-Underfull \vbox (badness 1552) has occurred while \output is active []
-
-
 
 [7]
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
-
 
 [8]
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
-
 
 [9]
 
@@ -1589,9 +1490,6 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 [11]
 
 [12]
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
-
 
 [13]
 
@@ -1629,9 +1527,6 @@ Package fontspec Info:
 (fontspec)             <->"FangSong/OT:script=hani;language=dflt;"
 (fontspec)             - 'bold' (b/n) with NFSS spec.:
 (fontspec)             <->"FangSong/OT:script=hani;language=dflt;embolden=4;"
-
-
-Underfull \vbox (badness 1675) has occurred while \output is active []
 
 
 
@@ -1673,12 +1568,12 @@ Package fontspec Info:
 [20]
 
 [21]
+3
+
 
 [22
 
 ]
-3
-
 
 [23]
 
@@ -1723,18 +1618,23 @@ Package fontspec Info:
 [43]
 
 [44]
-
-[45]
-
-[46
-
-]
 4
 
+
+[45
+
+]
+
+[46]
 
 [47]
 
 [48]
+Overfull \hbox (5.05205pt too wide) in paragraph at lines 2147--2148
+\TU/FangSong(0)/m/n/12.045 的 [][]\TU/lmtt/m/n/12.045 /proc []\TU/FangSong(0)/m/n/12.045 文 件 系 统，|  读 取 业 务 容 器 中 主 进 程  |（通 常 为 \TU/TimesNewRoman(0)/m/n/12.045 PID 1\TU/FangSong(0)/m/n/12.045 ）|  对 应 的 [][]\TU/lmtt/m/n/12.045 /proc/<PID>/environ[]\TU/FangSong(0)/m/n/12.045 、|
+ []
+
+
 
 [49]
 
@@ -1745,9 +1645,6 @@ Package fontspec Info:
 [52]
 
 [53]
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
-
 
 [54]
 
@@ -1760,98 +1657,74 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 [58]
 
 [59]
-
-[60]
-Underfull \hbox (badness 10000) in paragraph at lines 2594--2594
+Underfull \hbox (badness 10000) in paragraph at lines 2592--2592
 []|\TU/SimSun(1)/m/n/12.045 识 别 \TU/TimesNewRoman(0)/m/n/12.045 K8s Service \TU/SimSun(1)/m/n/12.045 名 称
  []
 
 
-Underfull \hbox (badness 5681) in paragraph at lines 2594--2594
+Underfull \hbox (badness 5681) in paragraph at lines 2592--2592
 \TU/SimSun(1)/m/n/12.045 或 内 部 \TU/TimesNewRoman(0)/m/n/12.045 DNS \TU/SimSun(1)/m/n/12.045 域 名 \TU/TimesNewRoman(0)/m/n/12.045 (e.g.,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 2594--2594
+Underfull \hbox (badness 10000) in paragraph at lines 2592--2592
 []|\TU/SimSun(1)/m/n/12.045 生 成 \TU/lmtt/m/n/12.045 podSelector\TU/SimSun(1)/m/n/12.045 ，|  匹 配 目
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 2594--2594
+Underfull \hbox (badness 10000) in paragraph at lines 2592--2592
 \TU/SimSun(1)/m/n/12.045 标 服 务 \TU/TimesNewRoman(0)/m/n/12.045 Labels\TU/SimSun(1)/m/n/12.045 。|  自 动 处 理
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 2594--2594
+Underfull \hbox (badness 10000) in paragraph at lines 2592--2592
 []|\TU/SimSun(1)/m/n/12.045 识 别 公 网 域 名 \TU/TimesNewRoman(0)/m/n/12.045 (e.g.,
  []
 
 
-Underfull \hbox (badness 5203) in paragraph at lines 2594--2594
+Underfull \hbox (badness 5203) in paragraph at lines 2592--2592
 []|\TU/SimSun(1)/m/n/12.045 识 别 数 据 库\TU/TimesNewRoman(0)/m/n/12.045 /\TU/SimSun(1)/m/n/12.045 中 间 件 连 接
  []
 
 
-Underfull \hbox (badness 2158) in paragraph at lines 2594--2594
+Underfull \hbox (badness 2158) in paragraph at lines 2592--2592
 []|\TU/SimSun(1)/m/n/12.045 自 动 注 入 \TU/lmtt/m/n/12.045 kube-dns \TU/SimSun(1)/m/n/12.045 放 行 规 则
  []
 
 
 
-[61]
+[60]
 
-[62]
-Overfull \hbox (5.3696pt too wide) in paragraph at lines 2628--2629
-[]\TU/FangSong(0)/b/n/12.045 代 码 证 据\TU/FangSong(0)/m/n/12.045 ：|  具 体 的 函 数 调 用 行 号 或 配 置 项 路 径  |（例 如：| \TU/lmtt/m/n/12.045 env: MYSQL_HOST=10.0.1.5\TU/FangSong(0)/m/n/12.045 ） 。| 
+[61]
+Overfull \hbox (1.22804pt too wide) in paragraph at lines 2616--2617
+[]\TU/FangSong(0)/m/n/12.045 代 码 证 据：|  具 体 的 函 数 调 用 行 号 或 配 置 项 路 径  |（例 如 \TU/TimesNewRoman(0)/m/n/12.045 env: MYSQL_HOST=10.0.1.5\TU/FangSong(0)/m/n/12.045 ） 。| 
  []
 
 
+
+[62]
 
 [63]
 
 [64]
 
 [65]
-Overfull \hbox (5.7389pt too wide) in paragraph at lines 2883--2884
-[]\TU/FangSong(0)/b/n/12.045 默 认 拒 绝 原 则\TU/FangSong(0)/m/n/12.045 ：|  若 代 码 分 析 结 果 显 示 某 容 器 无 任 何 出 站 依 赖  |（\TU/lmtt/m/n/12.045 egress_requirements
- []
-
-
-
-[66]
 5
 
-Overfull \hbox (28.26173pt too wide) in paragraph at lines 2935--2946
- [][] 
- []
 
-
-
-[67
+[66
 
 ]
 
+[67]
+
 [68]
-Underfull \vbox (badness 1968) has occurred while \output is active []
-
-
 
 [69]
-Underfull \vbox (badness 2961) has occurred while \output is active []
-
-
 
 [70]
-Underfull \vbox (badness 1147) has occurred while \output is active []
-
-
 
 [71]
-Overfull \hbox (4.39507pt too wide) in paragraph at lines 3206--3208
-\TU/FangSong(0)/m/n/12.045 的 \TU/TimesNewRoman(0)/m/n/12.045 GitHub Star \TU/FangSong(0)/m/n/12.045 数 普 遍 处 于 \TU/TimesNewRoman(0)/m/n/12.045 1k \TU/FangSong(0)/m/n/12.045 至 \TU/TimesNewRoman(0)/m/n/12.045 50k \TU/FangSong(0)/m/n/12.045 之 间  |（如 $\OML/cmm/m/it/12.045 Airflow$ \TU/FangSong(0)/m/n/12.045 达 \TU/TimesNewRoman(0)/m/n/12.045 43.6k\TU/FangSong(0)/m/n/12.045 ，| $\OML/cmm/m/it/12.045 eShopOnContainers$
- []
-
-
 
 [72]
 
@@ -1860,14 +1733,6 @@ Overfull \hbox (4.39507pt too wide) in paragraph at lines 3206--3208
 [74]
 
 [75]
-Overfull \hbox (0.95122pt too wide) in paragraph at lines 3310--3311
-\TU/TimesNewRoman(0)/m/n/12.045 gleuser (8888)\TU/FangSong(0)/m/n/12.045 、| \TU/TimesNewRoman(0)/m/n/12.045 DNS (53) \TU/FangSong(0)/m/n/12.045 及 外 部 网 络 在 内 的 所 有 四 类 出 站 需 求。|  其 中，| \TU/TimesNewRoman(0)/m/n/12.045 DeepSeek
- []
-
-
-Underfull \vbox (badness 5345) has occurred while \output is active []
-
-
 
 [76]
 
@@ -1882,43 +1747,20 @@ Underfull \vbox (badness 5345) has occurred while \output is active []
 [81]
 
 [82]
-Overfull \hbox (51.43936pt too wide) in paragraph at lines 3531--3532
-[]\TU/lmtt/m/n/12.045 "config_filepath: {c̈ontainer_name:̈ üserservice,̈ ëgress_requirements:̈
- []
-
-
-Overfull \hbox (4.04228pt too wide) in paragraph at lines 3538--3539
-[]\TU/lmtt/m/n/12.045 " \TU/FangSong(1)/m/n/12.045 代 码\TU/lmtt/m/n/12.045 : UserDb \TU/FangSong(1)/m/n/12.045 类 使 用 \TU/lmtt/m/n/12.045 ACCOUNTS_DB_URI \TU/FangSong(1)/m/n/12.045 环 境 变 量 连 接 \TU/lmtt/m/n/12.045 PostgreSQL
- []
-
-
 
 [83]
-
-LaTeX Font Warning: Font shape `TU/FangSong(0)/m/it' undefined
-(Font)              using `TU/FangSong(0)/m/n' instead on input line 3554.
-
-
-Overfull \hbox (33.61075pt too wide) in paragraph at lines 3565--3566
-[]\TU/FangSong(0)/b/n/12.045 消 除 误 报 焦 虑\TU/FangSong(0)/m/n/12.045 ：|  通 过 指 出 具 体 的 代 码 类  |（如 \TU/lmtt/m/n/12.045 UserDb\TU/FangSong(0)/m/n/12.045 ）|  或 库 函 数  |（如 \TU/lmtt/m/n/12.045 StackExchange.Redis\TU/FangSong(0)/m/n/12.045 ） ，|
- []
-
-
 
 [84]
 
 [85]
 
-[86
-
-]
+[86]
 6
 
-Underfull \vbox (badness 1052) has occurred while \output is active []
 
+[87
 
-
-[87])
+])
 
 [88] (./body/graduate/post.tex (./body/graduate/post/ref.tex
 
@@ -1932,47 +1774,31 @@ Underfull \vbox (badness 1052) has occurred while \output is active []
 
 [91]) (./body/graduate/post/appendix.tex
 
-[92]
-File: example-image.pdf Graphic file (type pdf)
-<use example-image.pdf>
-) (./body/graduate/post/cv.tex
-
-[93
-
-
-]
-
-[94
-
-]))
+[92]) (./body/graduate/post/cv.tex))
 
 Package caption Warning: Unused \captionsetup[lstlisting] on input line 54.
 See the caption package documentation for explanation.
 
-
-
-[95
-
-] (out/zjuthesis.aux)
+(out/zjuthesis.aux)
  ***********
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2022/08/05>
  ***********
-
-
-LaTeX Font Warning: Some font shapes were not available, defaults substituted.
-
 Package logreq Info: Writing requests to 'zjuthesis.run.xml'.
 \openout1 = `zjuthesis.run.xml'.
 
- ) 
-Here is how much of TeX's memory you used:
- 49898 strings out of 473832
- 1145939 string characters out of 5729027
- 2025788 words of memory out of 5000000
- 72024 multiletter control sequences out of 15000+600000
- 580670 words of font info for 212 fonts, out of 8000000 for 9000
- 1348 hyphenation exceptions out of 8191
- 108i,13n,125p,1245b,5602s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ )
+(\end occurred inside a group at level 1)
 
-Output written on out/zjuthesis.xdv (123 pages, 2097984 bytes).
+### simple group (level 1) entered at line 2376 ({)
+### bottom level 
+Here is how much of TeX's memory you used:
+ 49774 strings out of 473832
+ 1141042 string characters out of 5729027
+ 2025815 words of memory out of 5000000
+ 71912 multiletter control sequences out of 15000+600000
+ 577500 words of font info for 190 fonts, out of 8000000 for 9000
+ 1348 hyphenation exceptions out of 8191
+ 108i,13n,125p,1245b,6142s stack positions out of 10000i,1000n,20000p,200000b,200000s
+
+Output written on out/zjuthesis.xdv (102 pages, 2159200 bytes).
